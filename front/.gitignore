@@ -1,0 +1,52 @@
+# dependencies
+/node_modules
+
+# next.js build directory
+/.next
+/out/
+
+# environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# vscode settings
+.vscode
+
+# JetBrains IDE settings
+.idea
+
+# npm / yarn logs
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# coverage reports
+coverage
+
+# axois cache
+.axios_cache
+
+# react-hook-form cache
+.react-hook-form
+
+# OAuth token (for @react-oauth/google)
+oauth.json
+
+# eslint cache
+.eslintcache
+
+# styled components cache
+.styled-components
+
+# ckeditor cache
+ckeditor4.24
+
+
+
+# 타입스크립트 관련된 밑에 2개 주석 풀어주세요
+
+# typescript
+#*.tsbuildinfo
+#next-env.d.ts
