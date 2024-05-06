@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/plugin-nextjs": "^5.2.1",
     "@react-oauth/google": "^0.12.1",
     "@typescript-eslint/scope-manager": "^7.8.0",
     "axios": "^1.6.8",
