@@ -89,6 +89,11 @@
     wrap-ansi "^8.1.0"
     wrap-ansi-cjs "npm:wrap-ansi@^7.0.0"
 
+"@netlify/plugin-nextjs@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@netlify/plugin-nextjs/-/plugin-nextjs-5.2.1.tgz#7fc1711d5f95baae024691bf55259b14a4c87bf9"
+  integrity sha512-4sZQoWNA6UfWdun02p+88G+GdUIIgmqkNnyslAQFru1zy4OZHvrg6NRID/iQ/ImxrTfjMWybwpN9d04Rgy/Zbg==
+
 "@next/env@14.2.3":
   version "14.2.3"
   resolved "https://registry.yarnpkg.com/@next/env/-/env-14.2.3.tgz#d6def29d1c763c0afb397343a15a82e7d92353a0"
