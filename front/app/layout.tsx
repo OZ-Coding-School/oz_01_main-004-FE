@@ -1,3 +1,5 @@
+import Footer from "@/shared/components/footer/footer"
+import Nav from "@/shared/components/nav/nav"
 import type { Metadata } from "next"
 import "./globals.css"
 
@@ -14,9 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <Nav /> */}
+        <Nav />
         {children}
-        {/* <Footer /> */}
+        <Footer />
       </body>
     </html>
   )
