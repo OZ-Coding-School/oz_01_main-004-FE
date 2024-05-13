@@ -1,0 +1,45 @@
+.button {
+  appearance: none;
+  margin: 0;
+  min-width: 80px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttondisabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.sizesm {
+  font-size: 14px;
+  padding: 10px 20px;
+  height: 40px;
+}
+
+.sizemd {
+  font-size: 14px;
+  width: 126px;
+  height: 40px;
+}
+
+.sizelg {
+  font-size: 16px;
+  width: 449px;
+  height: 46px;
+}
+
+.variantprimary {
+  color: #ffffff;
+  background-color: #f97066;
+  border: none;
+}
+
+.variantsecondary {
+  color: #f97066;
+  background-color: #ffffff;
+  border: 1px solid #f97066;
+}
