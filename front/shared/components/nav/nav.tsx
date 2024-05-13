@@ -1,3 +1,12 @@
+"use client"
+import LoginBtn from "./loginBtn/loginBtn"
+
 export default function Nav() {
-  return <div>nav</div>
+  return (
+    <div>
+      <div>
+        <LoginBtn />
+      </div>
+    </div>
+  )
 }
