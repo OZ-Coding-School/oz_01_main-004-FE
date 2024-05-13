@@ -1,5 +1,5 @@
 "use client"
 
-export default function LoginBtn() {
+export default function LoginButton() {
   return <button>로그인</button>
 }
