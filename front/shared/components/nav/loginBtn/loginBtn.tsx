@@ -1,5 +1,5 @@
-"use Client"
+"use client"
 
 export default function LoginBtn() {
-  return <button onClick={() => {}}>로그인</button>
+  return <button>로그인</button>
 }
