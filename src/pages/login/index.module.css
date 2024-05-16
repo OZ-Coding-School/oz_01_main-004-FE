@@ -21,7 +21,7 @@
 .loginForm {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
 .etcContainer {
@@ -29,7 +29,13 @@
   /* background-color: green; */
   display: flex;
   justify-content: flex-end;
-  gap: 20px;
+  gap: 0px;
+}
+
+.bottomContents {
+  display: flex;
+  width: 491.67px;
+  flex-direction: row;
 }
 
 .linkButton {

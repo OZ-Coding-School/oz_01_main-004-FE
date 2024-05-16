@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Nav from "./components/nav/\bnav";
+
+import Nav from "./components/nav/nav";
 import UserContext from "./context/authuser";
+import Chat from "./pages/chat/chat";
 import Community from "./pages/community";
 import DetailPost from "./pages/detail_post";
 import Login from "./pages/login";
+import KakaoRedirect from "./pages/login/kakao/kakao";
 import Main from "./pages/main";
-import MyInfo from "./pages/myinfo";
+import MyPage from "./pages/mypage ";
 import SignUp from "./pages/sign_up";
 import WritePost from "./pages/write_post";
+import PrivateRoute from "./privateroute/privateroute";
 import { AuthData } from "./type/user";
 
 //유저 정보 들어오는 곳
@@ -17,8 +21,8 @@ function getAuthDataFormLocalStorage(): AuthData {
   let isAuth = true;
   const result = {
     nickname: localStorage.getItem("nickname"),
-    refreshToken: localStorage.getItem("refreshToken"),
-    accessToken: localStorage.getItem("accessToken"),
+    refresh: localStorage.getItem("refresh"),
+    access: localStorage.getItem("access"),
   };
 
   Object.keys(result).forEach((key) => {
@@ -42,11 +46,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Main />}></Route>
           <Route path="login" element={<Login />}></Route>
-          <Route path="myInfo" element={<MyInfo />}></Route>
-          <Route path="community:/id" element={<Community />}></Route>
-          <Route path="detailPost/:id" element={<DetailPost />}></Route>
-          <Route path="writePost/:id" element={<WritePost />}></Route>
-          <Route path="signUp" element={<SignUp />}></Route>
+          <Route path="/oauth2/redirect" element={<KakaoRedirect />}></Route>
+          <Route path="/community/:id" element={<Community />}></Route>
+          <Route path="/detailPost/:id" element={<DetailPost />}></Route>
+          <Route path="/signUp" element={<SignUp />}></Route>
+          <Route element={<PrivateRoute />}>
+            <Route path="/chat" element={<Chat />}></Route>
+            <Route path="/myPage" element={<MyPage />}></Route>
+            <Route path="/writePost" element={<WritePost />}></Route>
+          </Route>
         </Routes>
       </UserContext.Provider>
     </div>

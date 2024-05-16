@@ -1,0 +1,16 @@
+.navContainer {
+  display: flex;
+  width: 98%;
+  height: auto;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 20px;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+  font-size: 25px;
+}

@@ -1,14 +1,14 @@
 //user가 로그인하면 들어오는 정보
 export type AuthData = {
   nickname: string | null;
-  refreshToken: string | null;
-  accessToken: string | null;
+  refresh: string | null;
+  access: string | null;
 } | null;
 //로그인 할 때 getItem (위에껀 빌 수 있을 때 , 밑은 무조건 있을 때)
 export type getAuthData = {
   nickname: string;
-  refreshToken: string;
-  accessToken: string;
+  refresh: string;
+  access: string;
 };
 //UserContext의 타입
 export interface UserContextType {
