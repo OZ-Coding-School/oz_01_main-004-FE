@@ -68,6 +68,7 @@ const SignUp = () => {
             <div className={styles.emailInput}>
               <input
                 className={styles.emailBox}
+                placeholder="이메일ID를 입력해주세요."
                 type="text"
                 id="email"
                 {...register("email", {
@@ -86,27 +87,23 @@ const SignUp = () => {
             <ErrorMessage
               errors={errors}
               name="email"
-              render={({ message }) => (
-                <Message>{message}</Message>
-                // <p style={{ color: "red" }}>{message}</p>
-              )}
+              render={({ message }) => <Message>{message}</Message>}
             />
           </div>
-
-          {/* {errors.email && <Message>{errors.email.message}</Message>} */}
           <div className={styles.inputDiv}>
             <div className={styles.title}>비밀번호</div>
             <PasswordInputContainer>
               <input
                 className={styles.inputBox}
+                placeholder="영문,숫자,특수문자가 포함된 8~16자리 이내"
                 type={showPassword ? "text" : "password"}
                 id="password"
                 {...register("password", {
                   required: true,
                   pattern: {
                     value:
-                      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
-                    message: "숫자+영문+특수문자 조합 8자리 이상 입력해주세요.",
+                      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                    message: "영문,숫자,특수문자 조합 8자리 이상 입력해주세요.",
                   },
                   deps: ["passwordCheck"],
                 })}
@@ -116,12 +113,18 @@ const SignUp = () => {
                 as={eyeIcon ? IoMdEye : IoMdEyeOff}
               />
             </PasswordInputContainer>
+            <ErrorMessage
+              errors={errors}
+              name="password"
+              render={({ message }) => <Message>{message}</Message>}
+            />
           </div>
           <div className={styles.inputDiv}>
             <div className={styles.title}>비밀번호 확인</div>
             <PasswordInputContainer>
               <input
                 className={styles.inputBox}
+                placeholder="위 비밀번호와 동일하게 입력해 주세요."
                 type={showPassword ? "text" : "password"}
                 id="passwordCheck"
                 {...register("passwordCheck", {
@@ -143,13 +146,11 @@ const SignUp = () => {
               render={({ message }) => <Message>{message}</Message>}
             />
           </div>
-          {/* {errors.passwordCheck && (
-            <Message>{errors.passwordCheck.message}</Message>
-          )} */}
           <div className={styles.inputDiv}>
             <div className={styles.title}>닉네임</div>
             <input
               className={styles.inputBox}
+              placeholder="닉네임을 입력해주세요."
               type="text"
               {...register("nickname", {
                 required: true,
@@ -169,7 +170,6 @@ const SignUp = () => {
               render={({ message }) => <Message>{message}</Message>}
             />
           </div>
-          {/* {errors.nickname && <Message>{errors.nickname.message}</Message>} */}
           <Button
             size="lg"
             variant="primary"
@@ -188,7 +188,7 @@ export default SignUp;
 const Message = styled.p`
   width: 449px;
   color: red;
-  margin-top: 3px;
+  margin: 3px 0 0 3px;
 `;
 
 const PasswordInputContainer = styled.div`

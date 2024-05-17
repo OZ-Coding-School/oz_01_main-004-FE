@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100vh;
+  max-width: 1280px;
+}
+.containerLeft {
+  width: 300px;
+  height: 100%;
+  background-color: #fff8f7;
+  display: flex;
+  flex-direction: column;
+  padding-top: 45px;
+}
+.mypageButton {
+  width: 100px;
+  border: 0;
+  background-color: transparent;
+  margin: 25px 0 0 150px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.mypageButton:active {
+  font-weight: 800;
+}
+.mypageButton:visited:focus {
+  font-weight: 800;
+}
+.leaveBtn {
+  width: 100px;
+  border: 0;
+  background-color: transparent;
+  margin: 700px 0 0 150px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.containerRight {
+  width: 100%;
+}

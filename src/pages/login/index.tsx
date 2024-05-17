@@ -1,6 +1,7 @@
 import { FormEvent, useContext, useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 import instance from "../../api/axios";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -11,6 +12,7 @@ export default function Login(): JSX.Element {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
+  const [eyeIcon, setEyeIcon] = useState(false);
   const { setUserInfo }: any = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
@@ -23,6 +25,7 @@ export default function Login(): JSX.Element {
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
+    setEyeIcon(!eyeIcon);
   };
 
   // console.log(location);
@@ -93,18 +96,24 @@ export default function Login(): JSX.Element {
               setEmail(e.target.value);
             }}
           />
-          <div>
+
+          <PasswordInputContainer>
             <Input
               inputSize="sm"
               variant="primary"
               type={showPassword ? "text" : "password"}
-              placeholder="Password "
+              placeholder="Password"
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
             />
-          </div>
+            <EyeIcon
+              onClick={toggleShowPassword}
+              as={eyeIcon ? IoMdEye : IoMdEyeOff}
+            />
+          </PasswordInputContainer>
+
           <Button size="sm" variant="primary" value="Login" type="submit">
             로그인
           </Button>
@@ -120,9 +129,6 @@ export default function Login(): JSX.Element {
             <Link to="/signup" className={styles.linkButton}>
               비밀번호 찾기
             </Link>
-            <Button size="sm" variant="primary" onClick={toggleShowPassword}>
-              {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
-            </Button>
           </div>
           <div></div>
         </div>
@@ -130,3 +136,14 @@ export default function Login(): JSX.Element {
     </div>
   );
 }
+
+const PasswordInputContainer = styled.div`
+  position: relative;
+`;
+const EyeIcon = styled(IoMdEyeOff)`
+  position: absolute;
+  top: 48%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+`;
