@@ -1,6 +1,8 @@
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import CreateChat from "./create_chat/create_chat";
 import styles from "./index.module.css";
+
 export default function Chat() {
   return (
     <div>
@@ -23,6 +25,7 @@ export default function Chat() {
                 </div>
               </div>
             </div>
+            <CreateChat />
           </div>
           {/* 남이 보내는 채팅 */}
           <div className={styles.detailContainer}>

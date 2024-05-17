@@ -107,3 +107,16 @@
   top: 90vh;
   width: 70%;
 }
+.createRoomForm {
+  display: flex;
+  justify-content: center;
+}
+
+.createRoomSubmit {
+  box-sizing: border-box;
+  background-color: #f97066;
+  color: white;
+  outline: none;
+  border: 2px solid #f97066;
+  border-radius: 2px;
+}

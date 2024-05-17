@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
+import { BsChatDots } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import instance from "../../api/axios";
 import UserContext from "../../context/authuser";
-import Input from "../Input/Input";
+import Button from "../Button/Button";
 import styles from "./nav.module.css";
 
 export default function Nav(): JSX.Element {
@@ -64,6 +65,7 @@ export default function Nav(): JSX.Element {
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
       localStorage.removeItem("nickname");
+      localStorage.removeItem("id");
       alert(response.data.message);
       setUserInfo(null);
       navigate("/login");
@@ -78,20 +80,48 @@ export default function Nav(): JSX.Element {
         <Link to="/" className={styles.logo}>
           CookBap
         </Link>
-        <Input inputSize="sm" variant="primary"></Input>
-        <Link to="/community">커뮤니티</Link>
-        <Link to="/chat">채팅</Link>
-        {isLogin ? (
-          <button
+        <div>
+          <div className={styles.searchBox}>
+            <input className={styles.searchBar}></input>
+          </div>
+        </div>
+        <div className={styles.rightContent}>
+          <Link to="/community" className={styles.community}>
+            커뮤니티
+          </Link>
+          <BsChatDots
+            className={styles.chat}
+            style={{ width: "25px", height: "50px" }}
             onClick={() => {
-              logoutHandler();
+              navigate("/chat");
             }}
-          >
-            로그아웃
-          </button>
-        ) : (
-          <Link to="/login">로그인</Link>
-        )}
+          />
+          {isLogin ? (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                logoutHandler();
+              }}
+            >
+              로그아웃
+            </Button>
+          ) : (
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              로그인
+            </Button>
+          )}
+          <Button size="sm" variant="primary">
+            글쓰기
+          </Button>
+          {/* <Link to="/postWrite"></Link> */}
+        </div>
       </div>
     </div>
   );
