@@ -45,7 +45,7 @@ const SignUp = () => {
         nickname: data.nickname,
       };
       const response = await instance.post("users/sign-up/", signBody);
-      console.log(signBody);
+      console.log(response.data.message);
       alert("어서오세요!");
       handleSignUpSuccess();
     } catch (error) {

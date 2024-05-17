@@ -5,7 +5,7 @@ export default function CreateChat() {
   const [roomName, setRoomName] = useState<string | null>(null);
   const [memberId, setMemberId] = useState<number[]>([]);
 
-  const myId = localStorage.getItem("id");
+  // const myId = localStorage.getItem("id");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -26,13 +26,13 @@ export default function CreateChat() {
       console.log("룸생성 성공", response.data);
     } catch (error) {
       console.error("룸생성 실패", error);
-      console.log(roomName, memberId);
     }
   };
-
+  //수정 더 필요함. (빌드를 위해 serMemberId 함수를 썼을 뿐임.)
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setRoomName(value === "" ? null : value);
+    setMemberId([...memberId]);
   };
 
   return (

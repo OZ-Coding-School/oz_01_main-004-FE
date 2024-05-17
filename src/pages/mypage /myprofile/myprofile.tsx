@@ -14,7 +14,7 @@ export default function Myprofile() {
   // }
   const {
     handleSubmit,
-    formState: { isDirty },
+    // formState: { isDirty },
     setValue,
   } = useForm({
     defaultValues: {
@@ -57,7 +57,7 @@ export default function Myprofile() {
   }, []);
 
   return (
-    <div>
+    <div className={styles.bigContainer}>
       <form
         className={styles.profileContainer}
         onSubmit={handleSubmit(onClickMypage)}
