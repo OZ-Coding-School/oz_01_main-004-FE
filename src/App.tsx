@@ -4,7 +4,7 @@ import "./App.css";
 
 import Nav from "./components/nav/nav";
 import UserContext from "./context/authuser";
-import Chat from "./pages/chat/chat";
+import Chat from "./pages/chat";
 import Community from "./pages/community";
 import DetailPost from "./pages/detail_post";
 import Login from "./pages/login";

@@ -120,7 +120,9 @@ export default function Login(): JSX.Element {
             <Link to="/signup" className={styles.linkButton}>
               비밀번호 찾기
             </Link>
-            {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
+            <Button size="sm" variant="primary" onClick={toggleShowPassword}>
+              {showPassword ? <IoMdEye /> : <IoMdEyeOff />}
+            </Button>
           </div>
           <div></div>
         </div>
