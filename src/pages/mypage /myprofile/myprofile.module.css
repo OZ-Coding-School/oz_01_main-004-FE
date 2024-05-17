@@ -1,8 +1,8 @@
 .profileContainer {
-  width: 80%;
-  height: 95vh;
+  width: 100%;
+  height: 92vh;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 15vh;
   align-items: center;
 }
 .profileDiv {
@@ -10,9 +10,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-left: 280px;
 }
 .profileImgDiv {
   display: flex;
+  margin-right: 30px;
   width: 300px;
   height: 300px;
 }
@@ -22,18 +24,9 @@
   border-radius: 50%;
   object-fit: cover;
 }
-.inputDiv {
-  margin-top: 36px;
-  display: block;
-  height: 80px;
-}
-.inputBox {
-  appearance: none;
-  font-size: 14px;
-  width: 449px;
-  height: 42px;
-  margin: 0px;
-  border-radius: 6px;
-  border: 1.5px solid #b3b3b3;
-  padding: 0px 20px;
+.updateBtnDiv {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 80px;
 }
