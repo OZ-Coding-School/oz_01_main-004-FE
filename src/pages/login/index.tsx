@@ -49,10 +49,11 @@ export default function Login(): JSX.Element {
         password,
       });
       const { access, refresh } = response.data;
-      const { nickname } = response.data.user;
+      const { nickname, id } = response.data.user;
       localStorage.setItem("access", access);
       localStorage.setItem("refresh", refresh);
       localStorage.setItem("nickname", nickname);
+      localStorage.setItem("id", id);
       const userData = setAuthDataToLocalStorage({
         refresh: refresh,
         access: access,
@@ -119,18 +120,26 @@ export default function Login(): JSX.Element {
           </Button>
         </form>
         <div className={styles.bottomContents}>
-          <div onClick={hndleKakaoLogin}>
-            <img src="/kakao_login/ko/kakao_login_medium_wide.png"></img>
-          </div>
           <div className={styles.linkContainer}>
+            <Link to="/findPassword" className={styles.linkButton}>
+              비밀번호 찾기
+            </Link>
             <Link to="/signup" className={styles.linkButton}>
               회원가입
             </Link>
-            <Link to="/signup" className={styles.linkButton}>
-              비밀번호 찾기
-            </Link>
           </div>
+
           <div></div>
+        </div>
+      </div>
+      <div className={styles.snsLogin}>
+        <div className={styles.line}></div>
+        <div className={styles.snsText}>SNS</div>
+        <div className={styles.kakaoButton} onClick={hndleKakaoLogin}>
+          <img
+            style={{ cursor: "pointer", width: "300px", height: "44.67px" }}
+            src="/kakao_login/ko/kakao_login_large_wide.png"
+          ></img>
         </div>
       </div>
     </div>

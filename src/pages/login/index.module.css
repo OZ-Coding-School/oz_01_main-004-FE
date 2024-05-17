@@ -8,14 +8,14 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 18vh;
-  gap: 20px;
+  padding-top: 16vh;
+  gap: 10px;
 }
 
 .logo {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 50px;
+  margin-bottom: 25px;
 }
 
 .loginForm {
@@ -35,7 +35,21 @@
 .bottomContents {
   display: flex;
   width: 491.67px;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 10px;
+}
+
+.linkContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.linkContainer > :first-child {
+  box-sizing: border-box;
+  border-right: 1px solid black;
+  padding-right: 10px;
+  color: gray;
 }
 
 .linkButton {
@@ -45,6 +59,47 @@
 }
 
 .linkButton:hover {
+  color: #f97066;
+  transition: color 0.3s ease;
+}
+
+.snsLogin {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 0px;
+  top: 50px;
+}
+.snsText {
+  display: flex;
+  position: absolute;
+  z-index: 10;
+  background-color: white;
+  bottom: 63px;
+  padding: 0 10px;
+}
+
+.line {
+  display: flex;
+  width: 491.67px;
+  border-top: 1.2px solid black;
+  position: absolute;
+  content: "";
+  height: 1px;
+  padding-bottom: 2px;
+  z-index: 1;
+  bottom: 70px;
+}
+
+.kakaoButton {
+  display: flex;
+  width: 491.67px;
+  justify-content: center;
+}
+
+.community:hover {
   color: #f97066;
   transition: color 0.3s ease;
 }

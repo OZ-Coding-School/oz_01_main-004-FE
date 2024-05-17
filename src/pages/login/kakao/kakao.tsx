@@ -24,6 +24,7 @@ export default function KakaoRedirect() {
       localStorage.setItem("access", response.data.access);
       localStorage.setItem("refresh", response.data.refresh);
       localStorage.setItem("nickname", response.data.user.nickname);
+      localStorage.setItem("id", response.data.user.id);
       alert(response.data.message);
       window.location.href = "/";
     } catch (error) {

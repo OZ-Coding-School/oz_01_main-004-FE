@@ -7,6 +7,7 @@ import UserContext from "./context/authuser";
 import Chat from "./pages/chat";
 import Community from "./pages/community";
 import DetailPost from "./pages/detail_post";
+import FindPassword from "./pages/find_password/find_password";
 import Login from "./pages/login";
 import KakaoRedirect from "./pages/login/kakao/kakao";
 import Main from "./pages/main";
@@ -50,6 +51,7 @@ function App() {
           <Route path="/community/:id" element={<Community />}></Route>
           <Route path="/detailPost/:id" element={<DetailPost />}></Route>
           <Route path="/signUp" element={<SignUp />}></Route>
+          <Route path="/findPassword" element={<FindPassword />}></Route>
           <Route element={<PrivateRoute />}>
             <Route path="/chat" element={<Chat />}></Route>
             <Route path="/myPage" element={<MyPage />}></Route>

@@ -1,7 +1,8 @@
 .navContainer {
   display: flex;
   margin: 0;
-  padding: 0;
+  padding: 0 20px;
+  padding-right: 10px;
   width: 100%;
   height: 8vh;
   justify-content: space-between;
@@ -9,10 +10,74 @@
   position: fixed;
   z-index: 999;
   background-color: white;
+  box-sizing: border-box;
+  border-bottom: 3px solid #d8d8d8;
 }
 .logo {
   text-decoration: none;
   color: black;
   font-weight: bold;
   font-size: 25px;
+  width: 15vw;
+  padding-right: 2px;
+  /* padding-left: 20px; */
+}
+.searchBox {
+  /* padding-left: 200px; */
+}
+.searchBar {
+  width: 30vw;
+  height: 35px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  background: #faf7f7;
+  margin: 0 5%;
+}
+
+.community {
+  display: flex;
+  box-sizing: border-box;
+  border-right: 1px solid black;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: 500;
+  /* width: 77px; */
+}
+
+.rightContent {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  gap: 10px;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.chatButton {
+  cursor: pointer;
+  width: 25px;
+  height: 50px;
+}
+
+.community:hover,
+.chatButton:hover,
+.logo:hover,
+.chat:hover,
+Button:hover {
+  color: #b40404;
+  transition: color 0.3s ease;
+}
+
+.community,
+.chatButton,
+.logo,
+.chat,
+Button {
+  transition: color 0.5s ease;
+}
+
+.searchBar:focus {
+  border: 2px solid #f97066;
+  outline: none;
 }
