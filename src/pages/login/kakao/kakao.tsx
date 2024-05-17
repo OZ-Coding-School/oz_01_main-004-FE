@@ -8,8 +8,6 @@ export default function KakaoRedirect() {
 
   const code = new URL(window.location.href).searchParams.get("code");
 
-  console.log(code);
-
   const loginWithKakao = async () => {
     try {
       const response = await instance.post(
