@@ -5,7 +5,8 @@ import styled from "styled-components";
 import instance from "../../api/axios";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
-import UserContext from "../../context/authuser";
+// import UserContext from "../../context/authuser";
+import { UserContext } from "../../context/authuser";
 import styles from "./index.module.css";
 import setAuthDataToLocalStorage from "./set_auth_to_local/set_auth_to_local";
 

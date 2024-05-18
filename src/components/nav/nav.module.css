@@ -60,20 +60,17 @@
   height: 50px;
 }
 
-.community:hover,
 .chatButton:hover,
 .logo:hover,
 .chat:hover,
-Button:hover {
+.community:hover {
   color: #b40404;
   transition: color 0.3s ease;
 }
 
-.community,
 .chatButton,
 .logo,
-.chat,
-Button {
+.chat {
   transition: color 0.5s ease;
 }
 
