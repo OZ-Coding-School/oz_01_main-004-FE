@@ -7,6 +7,7 @@ import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import UserContext from "../../context/authuser";
 import styles from "./index.module.css";
+import setAuthDataToLocalStorage from "./set_auth_to_local/set_auth_to_local";
 
 export default function Login(): JSX.Element {
   const [email, setEmail] = useState<string>("");
@@ -16,31 +17,18 @@ export default function Login(): JSX.Element {
   const { setUserInfo }: any = useContext(UserContext);
   const location = useLocation();
   const navigate = useNavigate();
+  //로그인 전 왔던 페이지
   const from = location?.state?.redirectedFrom?.pathname || "/";
-
+  //카카오 관련
   const KAKAO_REST_API_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY;
   const KAKAO_REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
-
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code&prompt=select_account`;
-
+  //패스워드 보여주기
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
     setEyeIcon(!eyeIcon);
   };
-
-  // console.log(location);
-
-  function setAuthDataToLocalStorage(data: {
-    refresh: string;
-    access: string;
-    user: { nickname: string };
-  }) {
-    localStorage.setItem("access", data.access);
-    localStorage.setItem("refresh", data.refresh);
-    localStorage.setItem("nickname", data.user.nickname);
-    return data;
-  }
-
+  //로그인 폼 제출
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -50,15 +38,13 @@ export default function Login(): JSX.Element {
       });
       const { access, refresh } = response.data;
       const { nickname, id } = response.data.user;
-      localStorage.setItem("access", access);
-      localStorage.setItem("refresh", refresh);
-      localStorage.setItem("nickname", nickname);
-      localStorage.setItem("id", id);
+      setAuthDataToLocalStorage;
       const userData = setAuthDataToLocalStorage({
         refresh: refresh,
         access: access,
         user: {
           nickname: nickname,
+          id: id,
         },
       });
       setUserInfo(userData);
@@ -68,12 +54,7 @@ export default function Login(): JSX.Element {
       alert("유효하지 않은 계정입니다.");
     }
   };
-  //로그인 유무 확인
-  //   const isLogin = !!localStorage.getItem("refreshToken");
-  //   if (isLogin) {
-  //     return <Navigate to="/" replace />;
-  //   }
-
+  //카톡 로그인 하면으로 보내기
   const hndleKakaoLogin = () => {
     window.location.href = kakaoURL;
   };
