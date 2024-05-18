@@ -1,9 +1,7 @@
-import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-
 import Nav from "./components/nav/nav";
-import UserContext from "./context/authuser";
+import AuthProvider from "./context/authuser";
 import Chat from "./pages/chat";
 import Community from "./pages/community";
 import DetailPost from "./pages/detail_post";
@@ -15,34 +13,11 @@ import MyPage from "./pages/mypage ";
 import SignUp from "./pages/sign_up";
 import WritePost from "./pages/write_post";
 import PrivateRoute from "./privateroute/privateroute";
-import { AuthData } from "./type/user";
-
-//유저 정보 들어오는 곳
-function getAuthDataFormLocalStorage(): AuthData {
-  let isAuth = true;
-  const result = {
-    nickname: localStorage.getItem("nickname"),
-    refresh: localStorage.getItem("refresh"),
-    access: localStorage.getItem("access"),
-  };
-
-  Object.keys(result).forEach((key) => {
-    if (result[key as keyof AuthData] === null) {
-      isAuth = false;
-    }
-  });
-
-  return isAuth ? result : null;
-}
 
 function App() {
-  const [userInfo, setUserInfo] = useState<AuthData>(
-    getAuthDataFormLocalStorage(),
-  );
-
   return (
     <div className="App">
-      <UserContext.Provider value={{ userInfo, setUserInfo }}>
+      <AuthProvider>
         <Nav />
         <Routes>
           <Route path="/" element={<Main />}></Route>
@@ -58,7 +33,7 @@ function App() {
             <Route path="/writePost" element={<WritePost />}></Route>
           </Route>
         </Routes>
-      </UserContext.Provider>
+      </AuthProvider>
     </div>
   );
 }
