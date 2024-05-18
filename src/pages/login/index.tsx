@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -50,6 +50,9 @@ export default function Login(): JSX.Element {
       setUserInfo(userData);
       alert(response.data.message);
       navigate(from);
+      setTimeout(function () {
+        sessionStorage.removeItem("beforeLogin");
+      }, 10000);
     } catch (error) {
       alert("유효하지 않은 계정입니다.");
     }
@@ -58,6 +61,9 @@ export default function Login(): JSX.Element {
   const hndleKakaoLogin = () => {
     window.location.href = kakaoURL;
   };
+  useEffect(() => {
+    sessionStorage.setItem("beforeLogin", from);
+  }, []);
 
   return (
     <div className={styles.bodyContainer}>
