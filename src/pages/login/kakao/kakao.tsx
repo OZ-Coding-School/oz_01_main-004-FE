@@ -2,12 +2,13 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import instance from "../../../api/axios";
 import { UserContext } from "../../../context/authuser";
+import { UserContextType } from "../../../type/user";
 import setAuthDataToLocalStorage from "../set_auth_to_local/set_auth_to_local";
 
 export default function KakaoRedirect() {
   const navigate = useNavigate();
   const from = sessionStorage.getItem("beforeLogin");
-  const { setUserInfo }: any = useContext(UserContext);
+  const { setUserInfo } = useContext(UserContext) as UserContextType;
   const code = new URL(window.location.href).searchParams.get("code");
 
   const loginWithKakao = async () => {
@@ -27,10 +28,8 @@ export default function KakaoRedirect() {
       const userData = setAuthDataToLocalStorage({
         refresh: refresh,
         access: access,
-        user: {
-          nickname: nickname,
-          id: id,
-        },
+        nickname: nickname,
+        id: id,
       });
       setUserInfo(userData);
       alert(response.data.message);
