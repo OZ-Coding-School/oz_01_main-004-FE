@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/authuser";
@@ -13,6 +13,12 @@ export default function Nav(): JSX.Element {
     userInfo?.access ? true : false,
   );
   const navigate = useNavigate();
+  const [searchValue, setSearchValue] = useState("");
+  //검색제출
+  function submitSearch(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    navigate(`community/${searchValue}/1/1/1/1`);
+  }
 
   useEffect(() => {
     userInfo == null ? setIsLogin(false) : setIsLogin(true);
@@ -20,7 +26,6 @@ export default function Nav(): JSX.Element {
 
   //자동 로그아웃 구현
   useEffect(() => {
-    // autoLogout();
     let timeoutId: number;
     function resetTimeout() {
       clearTimeout(timeoutId);
@@ -46,16 +51,36 @@ export default function Nav(): JSX.Element {
   return (
     <div>
       <div className={styles.navContainer}>
-        <Link to="/" className={styles.logo}>
+        <Link
+          to="/"
+          className={styles.logo}
+          onClick={() => {
+            setSearchValue("");
+          }}
+        >
           CookBap
         </Link>
         <div>
           <div className={styles.searchBox}>
-            <input className={styles.searchBar}></input>
+            <form onSubmit={submitSearch}>
+              <input
+                value={searchValue}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                }}
+                className={styles.searchBar}
+              ></input>
+            </form>
           </div>
         </div>
         <div className={styles.rightContent}>
-          <Link to="/community" className={styles.community}>
+          <Link
+            to="/community/1/1/1/1/1"
+            onClick={() => {
+              setSearchValue("");
+            }}
+            className={styles.community}
+          >
             커뮤니티
           </Link>
           <BsChatDots
@@ -63,6 +88,7 @@ export default function Nav(): JSX.Element {
             style={{ width: "25px", height: "50px" }}
             onClick={() => {
               navigate("/chat");
+              setSearchValue("");
             }}
           />
           {isLogin ? (
@@ -71,6 +97,7 @@ export default function Nav(): JSX.Element {
               variant="secondary"
               onClick={() => {
                 logoutHandler(navigate, setUserInfo, isLogin);
+                setSearchValue("");
               }}
             >
               로그아웃
@@ -81,12 +108,19 @@ export default function Nav(): JSX.Element {
               variant="secondary"
               onClick={() => {
                 navigate("/login");
+                setSearchValue("");
               }}
             >
               로그인
             </Button>
           )}
-          <Button size="sm" variant="primary">
+          <Button
+            onClick={() => {
+              setSearchValue("");
+            }}
+            size="sm"
+            variant="primary"
+          >
             글쓰기
           </Button>
           {/* <Link to="/postWrite"></Link> */}
