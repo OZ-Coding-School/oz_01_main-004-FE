@@ -7,6 +7,7 @@ import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 // import UserContext from "../../context/authuser";
 import { UserContext } from "../../context/authuser";
+import { UserContextType } from "../../type/user";
 import styles from "./index.module.css";
 import setAuthDataToLocalStorage from "./set_auth_to_local/set_auth_to_local";
 
@@ -15,7 +16,7 @@ export default function Login(): JSX.Element {
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
   const [eyeIcon, setEyeIcon] = useState(false);
-  const { setUserInfo }: any = useContext(UserContext);
+  const { setUserInfo } = useContext(UserContext) as UserContextType;
   const location = useLocation();
   const navigate = useNavigate();
   //로그인 전 왔던 페이지
@@ -43,10 +44,8 @@ export default function Login(): JSX.Element {
       const userData = setAuthDataToLocalStorage({
         refresh: refresh,
         access: access,
-        user: {
-          nickname: nickname,
-          id: id,
-        },
+        nickname: nickname,
+        id: id,
       });
       setUserInfo(userData);
       alert(response.data.message);
