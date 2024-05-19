@@ -7,7 +7,8 @@ import setAuthDataToLocalStorage from "../set_auth_to_local/set_auth_to_local";
 
 export default function KakaoRedirect() {
   const navigate = useNavigate();
-  const from = sessionStorage.getItem("beforeLogin");
+  const getBeforeLoginPage = sessionStorage.getItem("beforeLogin");
+  const from = getBeforeLoginPage ? getBeforeLoginPage : "/";
   const { setUserInfo } = useContext(UserContext) as UserContextType;
   const code = new URL(window.location.href).searchParams.get("code");
 

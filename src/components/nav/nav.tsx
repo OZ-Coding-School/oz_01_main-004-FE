@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/authuser";
+import { UserContextType } from "../../type/user";
 import Button from "../Button/Button";
 import logoutHandler from "./logout_handler";
 import styles from "./nav.module.css";
 
 export default function Nav(): JSX.Element {
-  const { userInfo, setUserInfo }: any = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserContext) as UserContextType;
   const [isLogin, setIsLogin] = useState<boolean>(
     userInfo?.access ? true : false,
   );

@@ -3,7 +3,7 @@ import instance from "../../../api/axios";
 import styles from "../index.module.css";
 export default function CreateChat() {
   const [roomName, setRoomName] = useState<string | null>(null);
-  const [memberId, setMemberId] = useState<number[]>([]);
+  const [memberId, setMemberId] = useState<number[]>([3, 6]);
 
   // const myId = localStorage.getItem("id");
 
@@ -32,8 +32,9 @@ export default function CreateChat() {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setRoomName(value === "" ? null : value);
-    setMemberId([...memberId]);
   };
+  console.log(memberId);
+  console.log(roomName);
 
   return (
     <div>
