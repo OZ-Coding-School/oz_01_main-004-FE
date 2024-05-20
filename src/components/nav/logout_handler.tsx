@@ -9,7 +9,6 @@ export default async function logoutHandler(
 ) {
   if (isLogin) {
     try {
-      // const access = localStorage.getItem("access");
       const refresh = localStorage.getItem("refresh");
 
       if (!refresh) {
