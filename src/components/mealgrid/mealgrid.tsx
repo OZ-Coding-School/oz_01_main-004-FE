@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { BiBowlRice, BiSolidBowlRice } from "react-icons/bi";
 import { TfiCommentAlt } from "react-icons/tfi";
 
-interface FakeData {
+export interface FakeData {
   id: number;
   user_id: {
     id: number;
@@ -18,10 +18,13 @@ interface FakeData {
 
 interface MealgridProps {
   sortedData?: FakeData[];
-  sortBy: "favorites" | "recent";
+  sortBy?: "favorites" | "recent" | "myFavorites";
+  columns?: number | string;
+  row?: number | string;
+  limit?: number;
 }
 
-const fetchAllRecipes = (): Promise<FakeData[]> => {
+export const fetchAllRecipes = (): Promise<FakeData[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const allRecipes: FakeData[] = [
@@ -67,18 +70,45 @@ const fetchAllRecipes = (): Promise<FakeData[]> => {
   });
 };
 
-const fetchFavoriteRecipes = (): Promise<FakeData[]> => {
+export const fetchFavoriteRecipes = (): Promise<FakeData[]> => {
   return new Promise((resolve) => {
     setTimeout(() => {
       const favoriteRecipes: FakeData[] = [
         {
-          id: 2,
-          user_id: { id: 2, nickname: "스와니" },
+          id: 8,
+          user_id: { id: 8, nickname: "스와니" },
           thumbnail: "/images/mainpage_5.jpeg",
-          title: "맛있는 파스타, 5월6일 생성",
-          favorites: 12,
+          title: "맛있는 파스타, 4월29일 생성",
+          favorites: 13,
           comment_count: 1,
           created_at: new Date("2024-05-06T12:34:56"),
+        },
+        {
+          id: 5,
+          user_id: { id: 5, nickname: "스와니" },
+          thumbnail: "/images/mainpage_5.jpeg",
+          title: "맛있는 파스타, 5월1일 생성",
+          favorites: 2,
+          comment_count: 1,
+          created_at: new Date("2024-05-01T12:34:56"),
+        },
+        {
+          id: 6,
+          user_id: { id: 6, nickname: "스와니" },
+          thumbnail: "/images/mainpage_5.jpeg",
+          title: "맛있는 파스타, 5월2일 생성",
+          favorites: 3,
+          comment_count: 1,
+          created_at: new Date("2024-05-02T12:34:56"),
+        },
+        {
+          id: 7,
+          user_id: { id: 7, nickname: "스와니" },
+          thumbnail: "/images/mainpage_5.jpeg",
+          title: "맛있는 파스타, 5월3일 생성",
+          favorites: 4,
+          comment_count: 1,
+          created_at: new Date("2024-05-03T12:34:56"),
         },
       ];
       resolve(favoriteRecipes);
@@ -86,7 +116,13 @@ const fetchFavoriteRecipes = (): Promise<FakeData[]> => {
   });
 };
 
-const Mealgrid: React.FC<MealgridProps> = ({ sortedData, sortBy }) => {
+const Mealgrid: React.FC<MealgridProps> = ({
+  sortedData,
+  sortBy,
+  columns = 1,
+  row = 1,
+  limit,
+}) => {
   const [sortedDataState, setSortedDataState] = useState<FakeData[]>([]);
   const [favoriteIds, setFavoriteIds] = useState<number[]>([]);
 
@@ -106,21 +142,43 @@ const Mealgrid: React.FC<MealgridProps> = ({ sortedData, sortBy }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const allRecipes = await fetchAllRecipes();
+        let allRecipes: FakeData[] = [];
+        let favoriteRecipes: FakeData[] = [];
 
-        const favoriteRecipes = await fetchFavoriteRecipes();
-
-        const favoriteIds = favoriteRecipes.map((recipe) => recipe.id);
-        setFavoriteIds(favoriteIds);
+        if (sortBy === "myFavorites") {
+          // 내가 찜한 목록만 가져오는 경우
+          favoriteRecipes = await fetchFavoriteRecipes();
+          // 찜한 목록 레시피의 id 배열 생성
+          const favoriteIds = favoriteRecipes.map((recipe) => recipe.id);
+          setFavoriteIds(favoriteIds);
+        } else {
+          // 전체 레시피 데이터 가져오기
+          allRecipes = await fetchAllRecipes();
+          // 찜한 목록 레시피 데이터 가져오기
+          favoriteRecipes = await fetchFavoriteRecipes();
+          // 찜한 목록 레시피의 id 배열 생성
+          const favoriteIds = favoriteRecipes.map((recipe) => recipe.id);
+          setFavoriteIds(favoriteIds);
+        }
 
         // 전체 레시피 데이터에서 찜한 레시피를 제외한 데이터만 가져와서 병합
         const mergedData = allRecipes.filter(
           (recipe) => !favoriteIds.includes(recipe.id),
         );
-        const sortedData = sortData(
-          [...mergedData, ...favoriteRecipes],
-          sortBy,
-        );
+
+        // favorites나 recent를 선택한 경우 정렬
+        let sortedData: FakeData[] = [];
+        if (sortBy === "favorites" || sortBy === "recent") {
+          sortedData = sortData([...mergedData, ...favoriteRecipes], sortBy);
+        } else {
+          // myFavorites를 선택한 경우 찜한 목록 레시피만 출력
+          sortedData = favoriteRecipes;
+        }
+
+        if (limit) {
+          sortedData = sortedData.slice(0, limit);
+        }
+
         setSortedDataState(sortedData);
       } catch (error) {
         console.error("에러:", error);
@@ -128,22 +186,30 @@ const Mealgrid: React.FC<MealgridProps> = ({ sortedData, sortBy }) => {
     };
 
     fetchData();
-  }, [sortBy]);
+  }, [sortBy, limit]);
 
   return (
-    <Container>
+    <MealgridWrapper columns={columns} row={row}>
       {(sortedData || sortedDataState).map((item) => (
         <MealItem key={item.id}>
           <ThumbnailWrapper>
             <Thumbnail src={item.thumbnail} alt="Thumbnail" />
-            <IconWrapper>
-              <FavoriteIcon isFavorite={favoriteIds.includes(item.id)}>
+            {/* <IconWrapper>
+              <FavoriteIcon isfavorite={favoriteIds.includes(item.id)}>
                 {favoriteIds.includes(item.id) ? (
                   <BiSolidBowlRice />
                 ) : (
                   <BiBowlRice />
                 )}
               </FavoriteIcon>
+            </IconWrapper> */}
+
+            <IconWrapper>
+              {favoriteIds.includes(item.id) ? (
+                <StyledFavoriteIconFilled />
+              ) : (
+                <StyledFavoriteIconOutlined />
+              )}
             </IconWrapper>
           </ThumbnailWrapper>
           <Title>{item.title}</Title>
@@ -162,14 +228,14 @@ const Mealgrid: React.FC<MealgridProps> = ({ sortedData, sortBy }) => {
           </UserInfo>
         </MealItem>
       ))}
-    </Container>
+    </MealgridWrapper>
   );
 };
 
-const Container = styled.div`
+const MealgridWrapper = styled.div<MealgridProps>`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-
+  grid-template-columns: repeat(${(props) => props.columns || 1}, 1fr);
+  grid-template-rows: repeat(${(props) => props.row || "auto"}, auto);
   max-width: 1280px;
   margin: 0;
   margin-bottom: 50px;
@@ -193,14 +259,29 @@ const IconWrapper = styled.div`
   border-radius: 10px;
 `;
 
-const FavoriteIcon = styled.div<{ isFavorite: boolean }>`
+const StyledFavoriteIconFilled = styled(BiSolidBowlRice)`
   position: absolute;
   top: 10px;
   right: 11px;
-  color: ${({ isFavorite }) => (isFavorite ? "#f97066" : "grey")};
+  color: #f97066;
   font-size: 24px;
 `;
 
+const StyledFavoriteIconOutlined = styled(BiBowlRice)`
+  position: absolute;
+  top: 10px;
+  right: 11px;
+  color: grey;
+  font-size: 24px;
+`;
+
+// const FavoriteIcon = styled.div<FavoriteIconProps>`
+//   position: absolute;
+//   top: 10px;
+//   right: 11px;
+//   color: ${({ isfavorite }) => (isfavorite ? "#f97066" : "grey")};
+//   font-size: 24px;
+// `;
 const MealItem = styled.div`
   width: 277px;
   height: 263px;

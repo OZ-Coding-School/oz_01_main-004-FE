@@ -9,6 +9,10 @@ import mainpage_3 from "/images/mainpage_3.png";
 import mainpage_4 from "/images/mainpage_4.jpeg";
 import mainpage_5 from "/images/mainpage_5.jpeg";
 
+interface SlideImageProps {
+  active: string;
+}
+
 const images = [
   { image: mainpage_1, alt: "연회색" },
   { image: mainpage_2, alt: "삽찐한회색" },
@@ -51,10 +55,10 @@ const Main: React.FC = () => {
               key={index}
               src={image.image}
               alt={image.alt}
-              active={index === currentImageIndex}
+              active={index === currentImageIndex ? "true" : "false"}
             />
           ))}
-          <Button left onClick={prevSlide}>
+          <Button left={"true"} onClick={prevSlide}>
             &#10094;
           </Button>
           <Button onClick={nextSlide}>&#10095;</Button>
@@ -67,7 +71,7 @@ const Main: React.FC = () => {
             <PopularRecipe>인기 많은 레시피</PopularRecipe>
             <MoreLink to="/community">더보기</MoreLink>
           </Textinfo>
-          <Mealgrid sortBy="favorites" />
+          <Mealgrid sortBy="favorites" columns={4} row={1} limit={4} />
         </FamousArticle>
 
         <RecentArticle>
@@ -75,7 +79,7 @@ const Main: React.FC = () => {
             <RecentRecipe>최근 올라온 레시피</RecentRecipe>
             <RecentMoreLink to="/community">더보기</RecentMoreLink>
           </Textinfo>
-          <Mealgrid sortBy="recent" />
+          <Mealgrid sortBy="recent" columns={4} row={1} limit={4} />
         </RecentArticle>
       </Section>
     </>
@@ -107,7 +111,7 @@ const Title = styled.h1`
 `;
 
 interface SlideImageProps {
-  active: boolean;
+  active: string;
 }
 
 const SlideImage = styled.img<SlideImageProps>`
@@ -117,7 +121,7 @@ const SlideImage = styled.img<SlideImageProps>`
 `;
 
 interface ButtonProps {
-  left?: boolean;
+  left?: string;
 }
 
 const Button = styled.button<ButtonProps>`
