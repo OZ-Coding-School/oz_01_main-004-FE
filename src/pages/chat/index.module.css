@@ -49,7 +49,6 @@
 }
 .chatContent {
   box-sizing: border-box;
-
   width: 16vw;
   white-space: nowrap;
   overflow: hidden;

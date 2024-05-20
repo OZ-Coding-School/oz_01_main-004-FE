@@ -3,9 +3,7 @@ import instance from "../../../api/axios";
 import styles from "../index.module.css";
 export default function CreateChat() {
   const [roomName, setRoomName] = useState<string | null>(null);
-  const [memberId] = useState<number[]>([3, 6]);
-
-  // const myId = localStorage.getItem("id");
+  const [memberId] = useState<number[]>([8]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -24,6 +22,8 @@ export default function CreateChat() {
         },
       );
       console.log("룸생성 성공", response.data);
+      alert("채팅방이 개설되었습니다.");
+      window.location.reload();
     } catch (error) {
       console.error("룸생성 실패", error);
     }
@@ -43,8 +43,6 @@ export default function CreateChat() {
           value={roomName == null ? "" : roomName}
           onChange={handleInputChange}
         />
-        {/* <input type="number" placeholder="첫째 채팅멤버ID" />
-        <input type="number" placeholder="둘째 채팅멤버ID" /> */}
         <button className={styles.createRoomSubmit}>생성</button>
       </form>
     </div>
