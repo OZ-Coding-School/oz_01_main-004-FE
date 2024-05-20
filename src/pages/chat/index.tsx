@@ -11,7 +11,7 @@ export default function Chat() {
   const myNickname = localStorage.getItem("nickname");
   // const [messages, setMessages] = useState<string[]>([]);
   const webSocket = useRef<WebSocket | null>(null);
-  const webSocketUrl = `wss://cookbap.store/api/v1/chat/ws/chatrooms/13/`;
+  const webSocketUrl = `wss://cookbap.store/chatrooms/12/`;
 
   useEffect(() => {
     const connectWebSocket = () => {
