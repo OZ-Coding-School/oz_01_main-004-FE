@@ -5,7 +5,6 @@ import styled from "styled-components";
 import instance from "../../api/axios";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
-// import UserContext from "../../context/authuser";
 import { UserContext } from "../../context/authuser";
 import { UserContextType } from "../../type/user";
 import styles from "./index.module.css";
