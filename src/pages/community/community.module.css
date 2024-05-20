@@ -1,0 +1,37 @@
+.maincontainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+h1 {
+  margin-top: 120px;
+  color: #101828;
+}
+
+.categoryBox {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.filtercontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 60px;
+}
+
+.selectBox {
+  display: flex;
+  width: 120px;
+}
+
+.cardcontainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+}
