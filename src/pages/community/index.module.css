@@ -1,5 +1,28 @@
-.CommunityContainer {
-  margin: 0;
-  padding: 0;
-  padding-top: 8vh;
+.maincontainer {
+  padding-top: 80px;
+  display: flex;
+  flex-direction: column;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+h1 {
+  color: #101828;
+}
+
+.categoryBox {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.filtercontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 60px;
+}
+
+.selectBox {
+  display: flex;
+  width: 120px;
 }
