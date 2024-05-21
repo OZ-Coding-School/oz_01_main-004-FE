@@ -8,9 +8,9 @@ const QueryTagButton = () => {
   const handleSelect = (selectedTag: string | null) => {
     const newParams = Object.fromEntries(searchParams); // 배열로 받아서 객체로 변환
     if (selectedTag) {
-      newParams.difficulty = selectedTag;
+      newParams.level = selectedTag;
     } else {
-      delete newParams.difficulty;
+      delete newParams.level;
     }
     setSearchParams(newParams);
   };

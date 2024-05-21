@@ -7,15 +7,14 @@ const PostList = () => {
   const [searchParams] = useSearchParams();
   const foodTypeId = searchParams.get("food_type");
   const foodIngredientId = searchParams.get("food_ingredient");
-  const difficulty = searchParams.get("difficulty");
+  const Level = searchParams.get("level");
 
   const matchFoodType = (recipe: Recipe) =>
     !foodTypeId || recipe.food_type.id.toString() === foodTypeId;
   const matchFoodIngredient = (recipe: Recipe) =>
     !foodIngredientId ||
     recipe.food_ingredient.id.toString() === foodIngredientId;
-  const matchDifficulty = (recipe: Recipe) =>
-    !difficulty || recipe.difficulty === difficulty;
+  const matchDifficulty = (recipe: Recipe) => !Level || recipe.level === Level;
 
   const filteredRecipes = RecipeList.filter(
     (recipe) =>
