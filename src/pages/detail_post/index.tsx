@@ -1,4 +1,5 @@
 import { BsChatDots } from "react-icons/bs";
+import Input from "../../components/Input/Input";
 import styles from "./index.module.css";
 export default function DetailPost() {
   return (
@@ -48,6 +49,71 @@ export default function DetailPost() {
             <div>태그</div>
             <div className={styles.tagType}>
               <div className={styles.tag}>다이어트</div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.CommentContainer}>
+          <div className={styles.oneCommentBox}>
+            <div>댓글 3</div>
+            <div className={styles.inputBox}>
+              <Input
+                inputSize="md"
+                variant="primary"
+                type="text"
+                style={{ width: "75vw" }}
+              />
+              <button className={styles.commentSubmit}>입력</button>
+            </div>
+            {/* 커멘트 박스 */}
+            <div className={styles.getCommentBox}>
+              <div className={styles.commentLeftBox}>
+                <img src="/public/vite.svg" alt="" />
+                <div className={styles.commentLeftData}>
+                  <div className={styles.userNick}>나는채원</div>
+                  <div>오오! 잘보고 갑니다!</div>
+                </div>
+              </div>
+              <div className={styles.commentRightBox}>
+                <div>2024.01.01</div>
+                <div className={styles.rightFuncBox}>
+                  <div>수정</div>
+                  <div>삭제</div>
+                </div>
+              </div>
+            </div>
+            {/* 커멘트 박스 */}
+            <div className={styles.getCommentBox}>
+              <div className={styles.commentLeftBox}>
+                <img src="/public/vite.svg" alt="" />
+                <div className={styles.commentLeftData}>
+                  <div className={styles.userNick}>나는채원</div>
+                  <div>오오! 잘보고 갑니다!</div>
+                </div>
+              </div>
+              <div className={styles.commentRightBox}>
+                <div>2024.01.01</div>
+                <div className={styles.rightFuncBox}>
+                  <div>수정</div>
+                  <div>삭제</div>
+                </div>
+              </div>
+            </div>
+            {/* 커멘트 박스 */}
+            <div className={styles.getCommentBox}>
+              <div className={styles.commentLeftBox}>
+                <img src="/public/vite.svg" alt="" />
+                <div className={styles.commentLeftData}>
+                  <div className={styles.userNick}>나는채원</div>
+                  <div>오오! 잘보고 갑니다!</div>
+                </div>
+              </div>
+              <div className={styles.commentRightBox}>
+                <div>2024.01.01</div>
+                <div className={styles.rightFuncBox}>
+                  <div>수정</div>
+                  <div>삭제</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
