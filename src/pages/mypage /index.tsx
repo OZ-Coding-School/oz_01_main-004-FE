@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import instance from "../../api/axios";
+import { UserContext } from "../../context/authuser";
+import { UserContextType } from "../../type/user";
 import styles from "./index.module.css";
 import LikeList from "./likelist/likelist";
 import MyPost from "./mypost/mypost";
@@ -7,6 +11,23 @@ import Myprofile from "./myprofile/myprofile";
 
 export default function MyPage() {
   const [selectTab, setSelectTab] = useState(1);
+  const navigate = useNavigate();
+  const { userInfo, setUserInfo } = useContext(UserContext) as UserContextType;
+  const [isLogin] = useState<boolean>(userInfo?.access ? true : false);
+  const logout = () => {
+    try {
+      const refresh = localStorage.getItem("refresh");
+      instance.post("users/sign-out/", { refresh });
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("nickname");
+      localStorage.removeItem("id");
+      setUserInfo(null);
+      navigate("/");
+    } catch (error) {
+      alert("실패");
+    }
+  };
 
   const SelectedComponent = () => {
     switch (selectTab) {
@@ -20,6 +41,27 @@ export default function MyPage() {
         return 1;
     }
   };
+
+  async function handleDelete(e: { preventDefault: () => void }) {
+    e.preventDefault();
+    if (window.confirm("정말 탈퇴하시겠습니까?")) {
+      instance
+        .delete("users/detail/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        })
+        .then(() => {
+          localStorage.removeItem("access");
+          alert("그동안 이용해주셔서 감사합니다.");
+          logout();
+          navigate("/");
+        })
+        .catch((err) => alert(err.response.data.message));
+    } else {
+      alert("요청이 안감");
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -48,7 +90,9 @@ export default function MyPage() {
         >
           작성한 글
         </MypageBtn>
-        <button className={styles.leaveBtn}>회원탈퇴</button>
+        <button className={styles.leaveBtn} onClick={handleDelete}>
+          회원탈퇴
+        </button>
       </div>
       <div className={styles.containerRight}>
         {/* 선택된 숫자에 따라 해당하는 컴포넌트를 렌더링합니다. */}
