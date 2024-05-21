@@ -29,7 +29,7 @@ export interface Recipe {
   title: string;
   content: string;
   thumbnail: string;
-  difficulty: string;
+  level: string;
   favorites: number;
   comment_count: number;
 }
