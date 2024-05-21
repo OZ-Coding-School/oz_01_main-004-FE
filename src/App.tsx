@@ -25,6 +25,7 @@ function App() {
           <Route path="/oauth2/redirect" element={<KakaoRedirect />}></Route>
           <Route
             path="/community/:search/:type/:ingredient/:level/:page"
+            // path="/community"
             element={<Community />}
           ></Route>
           <Route path="/detailPost/:id" element={<DetailPost />}></Route>
