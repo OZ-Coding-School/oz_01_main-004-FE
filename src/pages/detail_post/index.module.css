@@ -5,6 +5,7 @@
   height: auto;
   display: flex;
   justify-content: center;
+  padding-bottom: 100px;
   /* flex-direction: column; */
 }
 .postContainer {
@@ -71,7 +72,7 @@
 }
 
 .postContent {
-  margin-bottom: 60px;
+  margin-bottom: 40px;
 }
 
 .tagDirection {
@@ -82,7 +83,6 @@
 .tagSectionContainer {
   display: flex;
   flex-direction: column;
-
   gap: 10px;
 }
 .tagType {
@@ -94,4 +94,71 @@
   border: 1px solid gray;
   padding: 10px;
   border-radius: 15px;
+}
+.CommentContainer {
+  box-sizing: border-box;
+  border-top: 1px solid black;
+  margin-top: 50px;
+  padding-top: 25px;
+  display: flex;
+  justify-content: center;
+}
+.inputBox {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.commentSubmit {
+  display: flex;
+  position: absolute;
+  background: none;
+  border: none;
+  font-size: 20px;
+  top: 20%;
+  margin-left: 73vw;
+  color: #ff4d00;
+  /* margin-left: 71vw;
+  margin-top: 1vw; */
+}
+.commentSubmit {
+  cursor: pointer;
+}
+.getCommentBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px 10px;
+  box-sizing: border-box;
+  border-bottom: 1px solid gray;
+}
+.commentLeftBox {
+  display: flex;
+  gap: 20px;
+  width: 60vw;
+}
+
+.commentLeftData {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.userNick {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.commentRightBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  vertical-align: center;
+}
+
+.rightFuncBox {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
 }
