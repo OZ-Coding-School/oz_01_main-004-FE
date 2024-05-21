@@ -12,8 +12,7 @@ import Myprofile from "./myprofile/myprofile";
 export default function MyPage() {
   const [selectTab, setSelectTab] = useState(1);
   const navigate = useNavigate();
-  const { userInfo, setUserInfo } = useContext(UserContext) as UserContextType;
-  const [isLogin] = useState<boolean>(userInfo?.access ? true : false);
+  const { setUserInfo } = useContext(UserContext) as UserContextType;
   const logout = () => {
     try {
       const refresh = localStorage.getItem("refresh");

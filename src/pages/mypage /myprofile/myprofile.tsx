@@ -20,7 +20,7 @@ export default function Myprofile() {
   const {
     handleSubmit,
     register,
-    formState: { isDirty, errors },
+    formState: { errors },
     watch,
     setValue,
   } = useForm<MyprofileInput>({
@@ -41,9 +41,7 @@ export default function Myprofile() {
         password: data.password,
         nickname: data.nickname,
       };
-      const putResponse = await instance.put("users/detail/", signBody, config);
-      console.log(signBody);
-
+      await instance.put("users/detail/", signBody, config);
       alert("수정완료했습니다.");
     } catch (error) {
       console.error("error", error);
@@ -85,27 +83,26 @@ export default function Myprofile() {
 
   useEffect(() => {
     if (data) {
-      const { email, nickname, password, profile_imgae } = data as {
+      const { email, nickname, password, profile_image } = data as {
         email: string;
         nickname: string;
         password: string;
-        profile_imgae: string;
+        profile_image: string;
       };
       setValue("email", email);
       setValue("nickname", nickname);
       setValue("password", password);
-      setValue("profile_image", profile_imgae);
+      setValue("profile_image", profile_image);
     }
   }, [data, setValue]);
 
   const [userImage, setUserImage] = useState<string | null>(null);
-  const [putUserImage, setPutUserImage] = useState(null);
+  const [, setPutUserImage] = useState(null);
   const defaultImg = "../public/mypage/basicProfile.jpg";
 
   //이미지 바꿔주기
   const handleImageChange = async (e: any) => {
     const file = e.target.files[0];
-
     setPutUserImage(file);
     if (file) {
       const reader = new FileReader();
