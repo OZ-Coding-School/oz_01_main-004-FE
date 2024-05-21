@@ -5,10 +5,13 @@ import { AuthData } from "../type/user";
 // const UserContext = createContext<UserContextType | null>(null);
 // export default UserContext;
 
-export const UserContext = createContext<{
+// UserContext 타입 정의
+interface UserContextType {
   userInfo: AuthData | null;
   setUserInfo: React.Dispatch<React.SetStateAction<AuthData | null>>;
-}>({
+}
+
+export const UserContext = createContext<UserContextType>({
   userInfo: null,
   setUserInfo: () => {},
 });

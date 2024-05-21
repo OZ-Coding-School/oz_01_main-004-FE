@@ -114,13 +114,7 @@ export default function Nav(): JSX.Element {
               로그인
             </Button>
           )}
-          <Button
-            onClick={() => {
-              setSearchValue("");
-            }}
-            size="sm"
-            variant="primary"
-          >
+          <Button size="sm" variant="primary">
             글쓰기
           </Button>
           {/* <Link to="/postWrite"></Link> */}
