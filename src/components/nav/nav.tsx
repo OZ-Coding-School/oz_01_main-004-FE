@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/authuser";
 import { UserContextType } from "../../type/user";
 import Button from "../Button/Button";
+import NevMypage from "./loginmypage/nevmypage";
 import logoutHandler from "./logout_handler";
 import styles from "./nav.module.css";
 
@@ -50,74 +51,85 @@ export default function Nav(): JSX.Element {
 
   return (
     <div>
-      <div className={styles.navContainer}>
-        <Link
-          to="/"
-          className={styles.logo}
-          onClick={() => {
-            setSearchValue("");
-          }}
-        >
-          CookBap
-        </Link>
-        <div>
-          <div className={styles.searchBox}>
-            <form onSubmit={submitSearch}>
-              <input
-                value={searchValue}
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
+      <div className={styles.Container}>
+        <div className={styles.mainContainer}>
+          <div className={styles.navContainer}>
+            <div>
+              <Link
+                to="/"
+                className={styles.logo}
+                onClick={() => {
+                  setSearchValue("");
                 }}
-                className={styles.searchBar}
-              ></input>
-            </form>
+              >
+                CookBap
+              </Link>
+            </div>
+            <div>
+              <div className={styles.searchBox}>
+                <form onSubmit={submitSearch}>
+                  <input
+                    value={searchValue}
+                    onChange={(e) => {
+                      setSearchValue(e.target.value);
+                    }}
+                    className={styles.searchBar}
+                  ></input>
+                </form>
+              </div>
+            </div>
+            <div className={styles.rightContent}>
+              <Link
+                to="/community/"
+                onClick={() => {
+                  setSearchValue("");
+                }}
+                className={styles.community}
+              >
+                커뮤니티
+              </Link>
+              <BsChatDots
+                className={styles.chat}
+                style={{ width: "25px", height: "50px" }}
+                onClick={() => {
+                  navigate("/chat");
+                  setSearchValue("");
+                }}
+              />
+              {isLogin ? (
+                <NevMypage
+                  onClick={() => {
+                    logoutHandler(navigate, setUserInfo, isLogin);
+                    setSearchValue("");
+                  }}
+                />
+              ) : (
+                <button
+                  className={styles.login}
+                  onClick={() => {
+                    navigate("/login");
+                    setSearchValue("");
+                  }}
+                >
+                  로그인
+                </button>
+                // <Button
+                //   size="sm"
+                //   variant="secondary"
+                //   onClick={() => {
+                //     navigate("/login");
+                //     setSearchValue("");
+                //   }}
+                // >
+                //   로그인
+                // </Button>
+              )}
+              <Button size="sm" variant="primary">
+                글쓰기
+              </Button>
+              {/* <Link to="/postWrite"></Link> */}
+            </div>
           </div>
-        </div>
-        <div className={styles.rightContent}>
-          <Link
-            to="/community/1/1/1/1/1"
-            onClick={() => {
-              setSearchValue("");
-            }}
-            className={styles.community}
-          >
-            커뮤니티
-          </Link>
-          <BsChatDots
-            className={styles.chat}
-            style={{ width: "25px", height: "50px" }}
-            onClick={() => {
-              navigate("/chat");
-              setSearchValue("");
-            }}
-          />
-          {isLogin ? (
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() => {
-                logoutHandler(navigate, setUserInfo, isLogin);
-                setSearchValue("");
-              }}
-            >
-              로그아웃
-            </Button>
-          ) : (
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() => {
-                navigate("/login");
-                setSearchValue("");
-              }}
-            >
-              로그인
-            </Button>
-          )}
-          <Button size="sm" variant="primary">
-            글쓰기
-          </Button>
-          {/* <Link to="/postWrite"></Link> */}
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
-import FoodIngredient from "../../components/category/foodingredient";
-import FoodType from "../../components/category/foodtype";
+import { useEffect, useState } from "react";
 import SelectBox from "../../components/selectbox/selectbox";
+import { FoodIngredients, FoodTypes } from "./fooddata";
 import styles from "./index.module.css";
 import PostList from "./postlist/postlist";
 import QueryStringDropdown from "./querystring/querystringdropdown";
@@ -12,19 +12,36 @@ export default function Community() {
     { label: "인기순", value: "popular" },
   ];
 
+  const [foodType, setfoodType] = useState([]);
+  const [foodIngredient, setfoodIngredient] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const foodTypes = await FoodTypes();
+        setfoodType(foodTypes);
+
+        const foodIngredients = await FoodIngredients();
+        setfoodIngredient(foodIngredients);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
-    // <Router>
     <div className={styles.maincontainer}>
       <h1>찾을 음식을 선택해 보세요</h1>
       <div className={styles.categoryBox}>
         <QueryStringDropdown
           selectFood="food_type"
-          selectoption={FoodType}
+          selectoption={foodType}
           defaultLabel="종류별"
         />
         <QueryStringDropdown
           selectFood="food_ingredient"
-          selectoption={FoodIngredient}
+          selectoption={foodIngredient}
           defaultLabel="재료별"
         />
       </div>
@@ -39,6 +56,5 @@ export default function Community() {
         <PostList />
       </div>
     </div>
-    // </Router>
   );
 }

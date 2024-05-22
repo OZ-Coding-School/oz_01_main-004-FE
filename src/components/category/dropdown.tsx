@@ -26,7 +26,12 @@ const Dropdown = ({ options, defaultLabel, onSelect }: DropdownProps) => {
 
   return (
     <div className={styles.dropdown} ref={dropdownRef}>
-      <button onClick={() => setIsOpen(!isOpen)}>
+      <button
+        onClick={(e) => {
+          e.preventDefault(); // 기본 동작 막기
+          setIsOpen(!isOpen);
+        }}
+      >
         {selected}
         <BsChevronDown />
       </button>
@@ -34,7 +39,15 @@ const Dropdown = ({ options, defaultLabel, onSelect }: DropdownProps) => {
         <ul>
           {options.map((item) => (
             <li key={item.id}>
-              <button onClick={() => handleSelect(item)}>{item.name}</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault(); // 기본 동작 막기
+                  handleSelect(item);
+                }}
+              >
+                <img src={item.img} alt={item.name} />
+                {item.name}
+              </button>
             </li>
           ))}
         </ul>
