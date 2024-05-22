@@ -23,11 +23,7 @@ function App() {
           <Route path="/" element={<Main />}></Route>
           <Route path="login" element={<Login />}></Route>
           <Route path="/oauth2/redirect" element={<KakaoRedirect />}></Route>
-          <Route
-            path="/community/:search/:type/:ingredient/:level/:page"
-            // path="/community"
-            element={<Community />}
-          ></Route>
+          <Route path="/community/" element={<Community />}></Route>
           <Route path="/detailPost/:id" element={<DetailPost />}></Route>
           <Route path="/signUp" element={<SignUp />}></Route>
           <Route path="/findPassword" element={<FindPassword />}></Route>
