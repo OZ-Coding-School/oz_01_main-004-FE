@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import instance from "../../../api/axios";
+import { useChatContext } from "../../../context/chatuser";
 import styles from "../index.module.css";
-
 export default function GetMyChatList() {
-  // let result = useQuery()
   const [chatData, setChatData]: any = useState([]);
-  // const userImage = chatData.participant_data.profile_image;
+
+  const { chatUser, setChatUser } = useChatContext();
+  const [, setIsChatRoomVisible] = useState(false);
 
   useEffect(() => {
     getList();
@@ -19,21 +20,38 @@ export default function GetMyChatList() {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
       });
+      setChatData(response.data.results);
+
       // console.log(response.data);
-      setChatData(response.data);
-      console.log(chatData);
-      console.log(response.data);
     } catch (error) {
       alert("가져오기 실패");
     }
   }
+
+  const handleChatRoomToggle = (i: number) => {
+    if (chatUser === null) {
+      setChatUser(chatData[i].id);
+      console.log(chatData[i].id);
+      console.log(chatUser);
+      setIsChatRoomVisible(true);
+    } else {
+      setChatUser(null);
+      setIsChatRoomVisible(false);
+    }
+  };
 
   return (
     <div>
       {Array.isArray(chatData) &&
         chatData.map(function (e: any, i: number) {
           return (
-            <div className={styles.chatList} key={i}>
+            <div
+              className={styles.chatList}
+              key={i}
+              onClick={() => {
+                handleChatRoomToggle(i);
+              }}
+            >
               <div className={styles.chatImg}>
                 <img
                   style={{ width: "50px" }}

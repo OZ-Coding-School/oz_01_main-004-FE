@@ -41,7 +41,6 @@ instance.interceptors.response.use(
       console.error("Request setup error:", error.message);
       alert("요청 설정 중 오류가 발생했습니다.");
     }
-
     return Promise.reject(error);
   },
 );
