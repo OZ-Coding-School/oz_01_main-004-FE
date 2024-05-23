@@ -30,6 +30,13 @@
   align-items: center;
 }
 
+.likeBox {
+  width: 150px;
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .nicknameBlock {
   box-sizing: border-box;
   border-right: 1px solid gray;
@@ -46,6 +53,10 @@
   box-sizing: border-box;
   border-right: 1px solid gray;
   padding-right: 10px;
+  cursor: pointer;
+}
+.chatBox :hover {
+  color: #ff4d00;
 }
 
 .FuncBox {
@@ -62,6 +73,7 @@
   margin-top: 20px;
   width: 80vw;
   justify-content: flex-end;
+  gap: 10px;
 }
 
 .ContentsBox {
@@ -161,4 +173,16 @@
   display: flex;
   gap: 10px;
   justify-content: space-between;
+}
+
+.commentButton {
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.dateBox {
+  text-align: center;
 }

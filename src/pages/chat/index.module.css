@@ -35,9 +35,14 @@
 
 .chatList {
   box-sizing: border-box;
+  border-bottom: 1px solid black;
   display: flex;
   margin: 20px;
   padding: 5px;
+  cursor: pointer;
+}
+.chatList :hover {
+  color: red;
 }
 
 .chatNameBox {
