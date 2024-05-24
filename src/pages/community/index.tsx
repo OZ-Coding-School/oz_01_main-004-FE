@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import SearchBar from "../../components/searchbar/searchbar";
 import SelectBox from "../../components/selectbox/selectbox";
-import { FoodIngredients, FoodTypes } from "./fooddata";
+import { FoodIngredients, FoodTypes } from "./fooddata.api";
 import styles from "./index.module.css";
-import PostList from "./postlist/postlist";
+// import PostList from "./postlist/postlist";
+import RePostList from "./postlist/repostlist";
 import QueryStringDropdown from "./querystring/querystringdropdown";
 import QueryTagButton from "./querystring/querytagbutton";
 
@@ -16,7 +18,7 @@ export default function Community() {
   const [foodIngredient, setfoodIngredient] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const FoodData = async () => {
       try {
         const foodTypes = await FoodTypes();
         setfoodType(foodTypes);
@@ -27,12 +29,13 @@ export default function Community() {
         console.error("Error:", error);
       }
     };
-    fetchData();
+    FoodData();
   }, []);
 
   return (
     <div className={styles.maincontainer}>
       <h1>찾을 음식을 선택해 보세요</h1>
+      <SearchBar />
       <div className={styles.categoryBox}>
         <QueryStringDropdown
           selectFood="food_type"
@@ -52,9 +55,10 @@ export default function Community() {
           <SelectBox options={sortOptions} />
         </div>
       </div>
-      <div>
-        <PostList />
+      <div className={styles.postList}>
+        <RePostList />
       </div>
+      <div></div>
     </div>
   );
 }

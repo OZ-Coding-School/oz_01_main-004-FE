@@ -27,3 +27,7 @@ h1 {
   display: flex;
   width: 120px;
 }
+
+.postList {
+  margin-bottom: 40px;
+}
