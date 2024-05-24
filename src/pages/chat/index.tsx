@@ -11,8 +11,8 @@ import styles from "./index.module.css";
 export default function Chat() {
   // const navigate = useNavigate();
   const [message, setMessage] = useState<string>("");
+  const [getMessages, setGetMessages] = useState<string[]>([]);
   const myNickname = localStorage.getItem("nickname");
-  const [, setGetMessages]: any = useState([]);
   const { chatUser } = useChatContext();
   const webSocket = useRef<WebSocket | null>(null);
   const webSocketUrl = import.meta.env.VITE_WEBSOCKET_URL + `${chatUser}/`;
