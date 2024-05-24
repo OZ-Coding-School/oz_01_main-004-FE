@@ -4,7 +4,7 @@ interface FoodType {
   img: string;
 }
 
-const FoodType: FoodType[] = [
+export const FoodType: FoodType[] = [
   { id: 1, img: "s3/aws.com/images/밑반찬.png", name: "전체" },
   { id: 2, img: "s3/aws.com/images/밑반찬.png", name: "반찬" },
   { id: 3, img: "s3/aws.com/images/밑반찬.png", name: "국/탕/찌개" },

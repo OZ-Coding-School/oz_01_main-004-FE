@@ -43,18 +43,17 @@ export default function Myprofile() {
       };
       await instance.put("users/detail/", signBody, config);
       alert("수정완료했습니다.");
-    } catch (error) {
-      console.error("error", error);
-      // if (error.response) {
-      //   if (error.response.status >= 400 && error.response.status < 500) {
-      //     let errorMessage = error.response.data.message || "error occured";
-      //     alert(`Error ${error.response.status}: ${errorMessage}`);
-      //   } else {
-      //     alert(`Server Error: ${error.response.status}`);
-      //   }
-      // } else {
-      //   alert(`Network Error: ${error.message}`);
-      // }
+    } catch (error: any) {
+      if (error.response) {
+        if (error.response.status >= 400 && error.response.status < 500) {
+          let errorMessage = error.response.data.message || "error occured";
+          alert(`Error ${error.response.status}: ${errorMessage}`);
+        } else {
+          alert(`Server Error: ${error.response.status}`);
+        }
+      } else {
+        alert(`Network Error: ${error.message}`);
+      }
     }
   };
 
