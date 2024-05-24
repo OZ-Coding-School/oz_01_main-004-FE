@@ -1,3 +1,4 @@
+import parseHtml from "html-react-parser";
 import { useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { FaBowlRice } from "react-icons/fa6";
@@ -7,6 +8,7 @@ import instance from "../../api/axios";
 import convertToKoreanTime from "../../hooks/make_korean_date";
 import Comments from "./comments/comments";
 import styles from "./index.module.css";
+
 export default function DetailPost() {
   const [getAllData, setGetAllData]: any = useState([]);
   const [getUserData, setGetUser]: any = useState([]);
@@ -67,6 +69,25 @@ export default function DetailPost() {
     } catch (error) {
       console.error("찜하기 실패", error);
     }
+  };
+
+  const renderContent = (content: string) => {
+    if (typeof content !== "string") {
+      return <div />;
+    }
+    return parseHtml(content, {
+      replace: (domNode) => {
+        if (domNode.type === "tag" && domNode.name === "img") {
+          return (
+            <img
+              src={domNode.attribs.src}
+              alt=""
+              style={{ width: "100%", height: "auto" }}
+            />
+          );
+        }
+      },
+    });
   };
 
   return (
@@ -131,7 +152,9 @@ export default function DetailPost() {
         </div>
         <div className={styles.ContentsBox}>
           <div className={styles.postTitle}>{getAllData.title}</div>
-          <div className={styles.postContent}>{getAllData.content}</div>
+          <div className={styles.postContent}>
+            {renderContent(getAllData.content) || <div />}
+          </div>
           <div className={styles.tagSectionContainer}>
             <div>종류</div>
             <div className={styles.tagType}>
