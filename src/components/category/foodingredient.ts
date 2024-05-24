@@ -4,7 +4,7 @@ interface FoodingredientType {
   img: string;
 }
 
-const FoodIngredient: FoodingredientType[] = [
+export const FoodIngredient: FoodingredientType[] = [
   { id: 1, img: "s3/aws.com/images/밑반찬.png", name: "전체" },
   { id: 2, img: "s3/aws.com/images/밑반찬.png", name: "육류" },
   { id: 3, img: "s3/aws.com/images/밑반찬.png", name: "채소류" },

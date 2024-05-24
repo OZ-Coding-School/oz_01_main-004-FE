@@ -23,7 +23,10 @@ const TagButton = ({ tags, onSelect }: TagButtonProps) => {
           className={`${styles.button} ${
             selected === item ? styles.clickbutton : styles.basebutton
           }`}
-          onClick={() => handleClick(item)}
+          onClick={(e) => {
+            e.preventDefault();
+            handleClick(item);
+          }}
         >
           {item}
         </button>

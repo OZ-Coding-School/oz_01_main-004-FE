@@ -39,15 +39,7 @@ const Dropdown = ({ options, defaultLabel, onSelect }: DropdownProps) => {
         <ul>
           {options.map((item) => (
             <li key={item.id}>
-              <button
-                onClick={(e) => {
-                  e.preventDefault(); // 기본 동작 막기
-                  handleSelect(item);
-                }}
-              >
-                <img src={item.img} alt={item.name} />
-                {item.name}
-              </button>
+              <button onClick={() => handleSelect(item)}>{item.name}</button>
             </li>
           ))}
         </ul>
