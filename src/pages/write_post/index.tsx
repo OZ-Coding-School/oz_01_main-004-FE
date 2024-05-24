@@ -4,6 +4,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
 import { LuUpload } from "react-icons/lu";
+import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../api/axios";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -24,6 +25,8 @@ interface FormState {
 export default function WritePost() {
   const quillRef = useRef<Quill>();
   const [, setQuillHtml] = useState("");
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const [formState, setFormState] = useState<FormState>({
     thumbnail: null,
@@ -195,6 +198,8 @@ export default function WritePost() {
 
         const response = await instance.post("recipes/list/", formData, config);
         console.log("response", response.data);
+        alert("게시물을 등록하였습니다.");
+        // navigate(`/detailPost/:id`);
       } else {
         console.error("form data is missing", {
           content,
