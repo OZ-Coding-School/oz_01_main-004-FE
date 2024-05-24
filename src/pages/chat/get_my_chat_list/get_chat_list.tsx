@@ -6,7 +6,7 @@ export default function GetMyChatList() {
   const [chatData, setChatData]: any = useState([]);
 
   const { chatUser, setChatUser } = useChatContext();
-  const [IsChatRoomVisible, setIsChatRoomVisible] = useState(false);
+  const [, setIsChatRoomVisible] = useState(false);
 
   useEffect(() => {
     getList();

@@ -28,7 +28,7 @@ export default function Chat() {
             },
           });
           setGetMessages(response.data.messages);
-          console.log(response.data.messages);
+          console.log(response.data.messages, "채팅목록 불러오기");
         } catch (error) {
           console.error("이전 메시지를 불러오는 중 에러 발생:", error);
         }
@@ -57,7 +57,7 @@ export default function Chat() {
         };
 
         webSocket.current.onclose = (event) => {
-          console.log(`ebSocket 연결 종료`, event);
+          console.log(`WebSocket 연결 종료`, event);
         };
 
         webSocket.current.onerror = (error) => {
@@ -65,74 +65,72 @@ export default function Chat() {
         };
       }
     };
-    connectWebSocket();
+    console.log(setGetMessages);
+    const timeoutId = setTimeout(connectWebSocket, 2000);
+
     return () => {
+      clearTimeout(timeoutId);
       if (webSocket.current) {
         webSocket.current.close();
         console.log("WebSocket 연결 해제");
       }
     };
-  }, [chatUser]);
+  }, [chatUser, webSocketUrl]);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const content = message;
-    const sender = localStorage.getItem("id");
-    const room = chatUser;
-    const Data = { content: content, sender: sender, room: room };
-    try {
-      await instance.post("chat/chatmessages/", Data, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
+    if (webSocket.current && webSocket.current.readyState === WebSocket.OPEN) {
+      const messageData = JSON.stringify({
+        type: "text",
+        content: message,
+        sender: localStorage.getItem("id"),
+        room: chatUser,
       });
-      console.log("채팅 보내기 성공");
-    } catch (error) {
-      alert("유효하지 않은 계정입니다.");
-      console.log(Data);
+      webSocket.current.send(messageData);
+      setMessage(""); // 입력 필드를 초기화합니다.
+      console.log(`메시지 전송: ${messageData}`);
+    } else {
+      console.error("웹소켓 연결이 되어 있지 않습니다.");
     }
   };
 
   return (
-    <div>
-      <div className={styles.chatContainer}>
-        <div className={styles.listChatBox}>
-          <div className={styles.listContainer}>
-            <div className={styles.myProfile}>
-              <img src="/vite.svg" alt="" />
-              <div className={styles.myNickname}>{myNickname}</div>
-            </div>
-            <GetMyChatList />
-            <CreateChat />
+    <div className={styles.chatContainer}>
+      <div className={styles.listChatBox}>
+        <div className={styles.listContainer}>
+          <div className={styles.myProfile}>
+            <img src="/vite.svg" alt="" />
+            <div className={styles.myNickname}>{myNickname}</div>
           </div>
-          {/* <div className={styles.messageContainer}>
-            {getMessages.map((msg, index) => (
+          <GetMyChatList />
+          <CreateChat />
+        </div>
+        <div className={styles.messageContainer}>
+          {Array.isArray(getMessages) &&
+            getMessages.map((msg, index) => (
               <div key={index} className={styles.message}>
                 {msg}
               </div>
             ))}
-          </div> */}
-
-          {/* 여기서부터 채팅 입력칸 */}
-          <form className={styles.postChatContainer} onSubmit={handleSubmit}>
-            <Input
-              inputSize="sm"
-              variant="primary"
-              style={{ width: "90%" }}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            ></Input>
-            <Button
-              variant="primary"
-              type="submit"
-              size="sm"
-              style={{ width: "10%", height: "45px" }}
-            >
-              전송
-            </Button>
-          </form>
         </div>
+        <form className={styles.postChatContainer} onSubmit={handleSubmit}>
+          <Input
+            type="text"
+            inputSize="sm"
+            variant="primary"
+            style={{ width: "90%" }}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Button
+            variant="primary"
+            type="submit"
+            size="sm"
+            style={{ width: "10%", height: "45px" }}
+          >
+            전송
+          </Button>
+        </form>
       </div>
     </div>
   );

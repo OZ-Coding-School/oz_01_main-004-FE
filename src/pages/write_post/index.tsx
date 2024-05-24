@@ -4,7 +4,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
 import { LuUpload } from "react-icons/lu";
-import { useNavigate, useParams } from "react-router-dom";
+// import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../api/axios";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -25,8 +25,8 @@ interface FormState {
 export default function WritePost() {
   const quillRef = useRef<Quill>();
   const [, setQuillHtml] = useState("");
-  const navigate = useNavigate();
-  const { id } = useParams();
+  // const navigate = useNavigate();
+  // const { id } = useParams();
 
   const [formState, setFormState] = useState<FormState>({
     thumbnail: null,
