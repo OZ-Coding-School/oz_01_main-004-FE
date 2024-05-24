@@ -124,10 +124,13 @@ export default function Nav(): JSX.Element {
                 //   로그인
                 // </Button>
               )}
-              <Button size="sm" variant="primary">
+              <Button
+                size="sm"
+                variant="primary"
+                onClick={() => navigate("/writePost")}
+              >
                 글쓰기
               </Button>
-              {/* <Link to="/postWrite"></Link> */}
             </div>
           </div>
         </div>

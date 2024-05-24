@@ -5,6 +5,7 @@ import "quill/dist/quill.snow.css";
 import { useEffect, useRef, useState } from "react";
 import { LuUpload } from "react-icons/lu";
 // import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import instance from "../../api/axios";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -25,8 +26,7 @@ interface FormState {
 export default function WritePost() {
   const quillRef = useRef<Quill>();
   const [, setQuillHtml] = useState("");
-  // const navigate = useNavigate();
-  // const { id } = useParams();
+  const navigate = useNavigate();
 
   const [formState, setFormState] = useState<FormState>({
     thumbnail: null,
@@ -101,7 +101,7 @@ export default function WritePost() {
                 [{ size: ["small", false, "large", "huge"] }],
                 [{ align: [] }],
                 ["bold", "italic", "underline", "strike"],
-                [{ list: "ordered" }, { list: "bullet" }],
+                // [{ list: "ordered" }, { list: "bullet" }],
                 ["image"],
                 [{ color: [] }, { background: [] }],
               ],
@@ -300,6 +300,7 @@ export default function WritePost() {
           size="md"
           variant="secondary"
           style={{ margin: "0 20px 50px 0" }}
+          onClick={() => navigate(-1)}
         >
           취소
         </Button>
