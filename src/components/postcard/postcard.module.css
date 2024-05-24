@@ -1,0 +1,82 @@
+.postcard {
+  display: flex;
+  flex-direction: column;
+  width: 277px;
+  height: 280px;
+}
+
+.topBox {
+  width: 100%;
+  height: 75%;
+  position: relative;
+  overflow: hidden; /* 이미지 넘어가는거 숨김요 */
+}
+
+.topBox > img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.favoriteBtn {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bottomBox {
+  width: 100%;
+  height: 25%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 3px;
+  /* justify-content: space-around; */
+}
+
+.title {
+  display: flex;
+  width: 100%;
+  font-size: 16px;
+
+  color: rgb(47, 52, 56);
+  line-height: 18px;
+}
+
+.data {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.data > p {
+  font-size: 12px;
+  color: rgb(47, 52, 56);
+  font-weight: 600;
+}
+
+.dataNumber {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: rgb(33, 38, 41);
+}
+
+.pick,
+.comment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.pick > p,
+.comment > p {
+  margin-left: 2px;
+  font-size: 12px;
+}

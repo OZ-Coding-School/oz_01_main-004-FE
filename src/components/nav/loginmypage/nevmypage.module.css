@@ -15,6 +15,9 @@
   border: 1px solid #ccc;
   font-size: 14px;
   cursor: pointer;
+  white-space: nowrap; /* 텍스트를 한 줄로 유지 */
+  overflow: hidden; /* 넘치는 텍스트를 숨김 */
+  text-overflow: ellipsis; /* 줄임표(...) 표시 */
 }
 
 .dropdown > ul {
@@ -54,6 +57,7 @@
   cursor: pointer;
   height: 100%;
   color: #2b2b2b;
+  /* border-top: 1px; */
 }
 
 .dropdown li:hover {

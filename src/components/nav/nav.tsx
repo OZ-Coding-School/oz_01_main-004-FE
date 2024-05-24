@@ -80,7 +80,7 @@ export default function Nav(): JSX.Element {
             </div>
             <div className={styles.rightContent}>
               <Link
-                to="/community/"
+                to="/community"
                 onClick={() => {
                   setSearchValue("");
                 }}
