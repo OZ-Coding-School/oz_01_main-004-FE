@@ -6,7 +6,7 @@ export default function GetMyChatList() {
   const [chatData, setChatData]: any = useState([]);
 
   const { chatUser, setChatUser } = useChatContext();
-  const [, setIsChatRoomVisible] = useState(false);
+  const [IsChatRoomVisible, setIsChatRoomVisible] = useState(false);
 
   useEffect(() => {
     getList();
@@ -21,7 +21,6 @@ export default function GetMyChatList() {
         },
       });
       setChatData(response.data.results);
-
       // console.log(response.data);
     } catch (error) {
       alert("가져오기 실패");

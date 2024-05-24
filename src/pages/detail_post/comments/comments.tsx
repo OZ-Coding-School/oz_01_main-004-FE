@@ -27,41 +27,49 @@ export default function Comments() {
   }, []);
 
   const commentsSubmit = async () => {
-    try {
-      await instance.post(
-        `comments/list/${id}/`,
-        { content: comment },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-            // "Content-Type": "application/json",
+    if (comment) {
+      try {
+        await instance.post(
+          `comments/list/${id}/`,
+          { content: comment },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access")}`,
+              // "Content-Type": "application/json",
+            },
           },
-        },
-      );
-      alert("댓글이 성공적으로 등록되었습니다.");
-      fetchComments();
-    } catch (error) {
-      console.error("댓글 보내기 실패", error);
+        );
+        alert("댓글이 성공적으로 등록되었습니다.");
+        fetchComments();
+      } catch (error) {
+        console.error("댓글 보내기 실패", error);
+      }
+    } else {
+      alert("내용을 입력해주세요");
     }
   };
 
   const putComments = async (e: any) => {
     e.preventDefault();
-    try {
-      const response = await instance.put(
-        `comments/detail/${editCommentId}/`,
-        { content: editedComment },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-            // "Content-Type": "application/json",
+    if (editedComment) {
+      try {
+        const response = await instance.put(
+          `comments/detail/${editCommentId}/`,
+          { content: editedComment },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access")}`,
+              // "Content-Type": "application/json",
+            },
           },
-        },
-      );
-      alert(response.data.message);
-      setEditCommentId(null);
-    } catch (error) {
-      console.error("댓글 보내기 실패", error);
+        );
+        alert(response.data.message);
+        setEditCommentId(null);
+      } catch (error) {
+        console.error("댓글 보내기 실패", error);
+      }
+    } else {
+      alert("수정할 내용을 입력하세요");
     }
   };
 
@@ -157,7 +165,7 @@ export default function Comments() {
 
                   <form onSubmit={putComments}>
                     <button className={styles.commentButton} type="submit">
-                      수정 완료
+                      완료
                     </button>
                   </form>
                 ) : (
