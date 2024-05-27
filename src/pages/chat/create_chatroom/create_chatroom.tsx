@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import instance from "../../../api/axios";
 import styles from "../index.module.css";
-export default function CreateChat() {
+export default function CreateChatRoom() {
   const [roomName, setRoomName] = useState<string | null>(null);
   const [memberId, setMemberId] = useState<number[]>([]);
 
@@ -31,7 +31,7 @@ export default function CreateChat() {
   };
 
   return (
-    <div>
+    <div className={styles.createRoomContainer}>
       <form className={styles.createRoomForm} onSubmit={handleSubmit}>
         <div className={styles.createFormCenter}>
           <input

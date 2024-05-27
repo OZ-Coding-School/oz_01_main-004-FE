@@ -1,98 +1,61 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-import instance from "../../api/axios";
-import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
+import { useEffect, useRef, useState } from "react";
 import { useChatContext } from "../../context/chatuser";
-import CreateChat from "./create_chat/create_chat";
+import { Message } from "../../type/chat";
+import CreateChatRoom from "./create_chatroom/create_chatroom";
+import GetMessagesOfChatroom from "./get_messages_of_chatroom/get_messages_of_chatroom";
 import GetMyChatList from "./get_my_chat_list/get_chat_list";
 import styles from "./index.module.css";
+import PostChat from "./post_chat/post_chat";
 
 export default function Chat() {
-  // const navigate = useNavigate();
-  const [message, setMessage] = useState<string>("");
-  const [getMessages, setGetMessages] = useState<string[]>([]);
+  const [getMessages, setGetMessages] = useState<Message[]>([]);
   const myNickname = localStorage.getItem("nickname");
   const { chatUser } = useChatContext();
   const webSocket = useRef<WebSocket | null>(null);
   const webSocketUrl = import.meta.env.VITE_WEBSOCKET_URL + `${chatUser}/`;
+  //무한스크롤 변수
+  const [pageNum, setPageNum] = useState<number>(2);
 
+  // 웹소켓 연결
   useEffect(() => {
-    if (chatUser !== null) {
-      console.log(chatUser);
-      const fetchMessages = async () => {
-        try {
-          const response = await instance.get(`chat/chatrooms/${chatUser}/`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access")}`,
-            },
-          });
-          setGetMessages(response.data.messages);
-          console.log(response.data.messages, "채팅목록 불러오기");
-        } catch (error) {
-          console.error("이전 메시지를 불러오는 중 에러 발생:", error);
+    if (
+      !webSocket.current ||
+      webSocket.current.readyState === WebSocket.CLOSED
+    ) {
+      webSocket.current = new WebSocket(webSocketUrl);
+      webSocket.current.onopen = () => {
+        console.log(`WebSocket 연결! 방번호 : ${chatUser}`);
+
+        if (webSocket.current) {
+          webSocket.current.onmessage = (event: MessageEvent) => {
+            console.log("메시지 수신:", event.data, `방아이디 ${chatUser}`);
+            const messageData = JSON.parse(event.data);
+            const newMessage = {
+              content: messageData.content,
+              sender: messageData.sender,
+              senderNickname: messageData.sender.nickname,
+              createdAt: messageData.created_at,
+            };
+            setGetMessages((prev) => [...prev, newMessage]);
+          };
         }
       };
-
-      fetchMessages();
+      webSocket.current.onclose = (event) => {
+        console.log(`WebSocket 연결 종료`, event);
+      };
+      webSocket.current.onerror = (error) => {
+        console.log("WebSocket 에러", error);
+      };
     }
-  }, [chatUser]);
-
-  useEffect(() => {
-    const connectWebSocket = () => {
-      if (
-        !webSocket.current ||
-        webSocket.current.readyState === WebSocket.CLOSED
-      ) {
-        webSocket.current = new WebSocket(webSocketUrl);
-        webSocket.current.onopen = () => {
-          console.log(`WebSocket 연결! 방번호 : ${chatUser}`);
-
-          if (webSocket.current) {
-            webSocket.current.onmessage = (event: MessageEvent) => {
-              console.log("WebSocket 메시지 수신:", event.data);
-              setGetMessages((prev: string[]) => [...prev, event.data]);
-            };
-          }
-        };
-
-        webSocket.current.onclose = (event) => {
-          console.log(`WebSocket 연결 종료`, event);
-        };
-
-        webSocket.current.onerror = (error) => {
-          console.log("WebSocket 에러", error);
-        };
-      }
-    };
-    console.log(setGetMessages);
-    const timeoutId = setTimeout(connectWebSocket, 2000);
 
     return () => {
-      clearTimeout(timeoutId);
+      // clearTimeout(timeoutId);
       if (webSocket.current) {
         webSocket.current.close();
         console.log("WebSocket 연결 해제");
       }
     };
   }, [chatUser, webSocketUrl]);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (webSocket.current && webSocket.current.readyState === WebSocket.OPEN) {
-      const messageData = JSON.stringify({
-        type: "text",
-        content: message,
-        sender: localStorage.getItem("id"),
-        room: chatUser,
-      });
-      webSocket.current.send(messageData);
-      setMessage(""); // 입력 필드를 초기화합니다.
-      console.log(`메시지 전송: ${messageData}`);
-    } else {
-      console.error("웹소켓 연결이 되어 있지 않습니다.");
-    }
-  };
 
   return (
     <div className={styles.chatContainer}>
@@ -102,35 +65,22 @@ export default function Chat() {
             <img src="/vite.svg" alt="" />
             <div className={styles.myNickname}>{myNickname}</div>
           </div>
-          <GetMyChatList />
-          <CreateChat />
+          <div className={styles.leftContainer}>
+            <GetMyChatList />
+            <CreateChatRoom />
+          </div>
         </div>
-        <div className={styles.messageContainer}>
-          {Array.isArray(getMessages) &&
-            getMessages.map((msg, index) => (
-              <div key={index} className={styles.message}>
-                {msg}
-              </div>
-            ))}
-        </div>
-        <form className={styles.postChatContainer} onSubmit={handleSubmit}>
-          <Input
-            type="text"
-            inputSize="sm"
-            variant="primary"
-            style={{ width: "90%" }}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
+
+        {/* 채팅내역 , 채팅 보내기 */}
+        <div className={styles.rightContainer}>
+          <GetMessagesOfChatroom
+            getMessages={getMessages}
+            setGetMessages={setGetMessages}
+            pageNum={pageNum}
+            setPageNum={setPageNum}
           />
-          <Button
-            variant="primary"
-            type="submit"
-            size="sm"
-            style={{ width: "10%", height: "45px" }}
-          >
-            전송
-          </Button>
-        </form>
+          <PostChat webSocket={webSocket} />
+        </div>
       </div>
     </div>
   );

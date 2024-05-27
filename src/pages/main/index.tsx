@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 // import MealGrid from "../../components/mealgrid/mealgrid";
 import { Link } from "react-router-dom";
+import instance from "../../api/axios";
 import { Recipe } from "../../components/mealgrid/type";
+import Postcard from "../../components/postcard/postcard";
 import mainpage_1 from "/images/mainpage_1.png";
 import mainpage_2 from "/images/mainpage_2.png";
 import mainpage_3 from "/images/mainpage_3.png";
 import mainpage_4 from "/images/mainpage_4.jpeg";
 import mainpage_5 from "/images/mainpage_5.jpeg";
-import instance from "../../api/axios";
-import Postcard from "../../components/postcard/postcard";
 // import { Recipe } from "../community/postlist/recipelist.type";
 
 interface SlideImageProps {
