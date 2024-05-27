@@ -1,44 +1,67 @@
 import { useEffect, useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
 import instance from "../../../api/axios";
 import Postcard from "../../../components/postcard/postcard";
+import useFavoriteStatus from "../../../hooks/usefavoriestatus";
 import styles from "./postlist.module.css";
 import { Recipe } from "./recipelist.type";
 
 const PostList = () => {
   const [searchParams] = useSearchParams();
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
+  const [displayedRecipes, setDisplayedRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const { favoriteStates } = useFavoriteStatus();
 
   const foodTypeId = searchParams.get("food_type");
   const foodIngredientId = searchParams.get("food_ingredient");
   const Level = searchParams.get("level");
   const searchQuery = searchParams.get("search");
 
-  const RecipeData = async () => {
+  const fetchAllRecipes = async () => {
+    let fetchedRecipes: Recipe[] = [];
+    let currentPage = 1;
+    let hasNextPage = true;
+
     try {
-      // const response = await instance.get("recipes/list/?page=2");
-      const response = await instance.get(`recipes/list/?page=${page}`);
-      console.log(response.data);
-      setRecipes(response.data.results);
+      while (hasNextPage) {
+        const response = await instance.get(
+          `recipes/list/?page=${currentPage}`,
+        );
+        const data = response.data.results;
+        fetchedRecipes = [...fetchedRecipes, ...data];
+        hasNextPage = response.data.next !== null;
+        currentPage++;
+      }
+      setAllRecipes(fetchedRecipes);
+      setTotalPages(Math.ceil(fetchedRecipes.length / 16));
+      filterRecipes(fetchedRecipes, page);
     } catch (error) {
       console.error("error", error);
     }
   };
 
   useEffect(() => {
-    RecipeData();
-  }, [page]);
+    fetchAllRecipes();
+  }, []);
 
-  const handleNextPage = () => {
-    setPage((prevPage) => prevPage + 1);
+  useEffect(() => {
+    filterRecipes(allRecipes, page);
+  }, [page, foodTypeId, foodIngredientId, Level, searchQuery]);
+
+  const filterRecipes = (recipes: Recipe[], page: number) => {
+    const filtered = recipes.filter(
+      (recipe) =>
+        matchFoodType(recipe) &&
+        matchFoodIngredient(recipe) &&
+        matchDifficulty(recipe) &&
+        matchSearchQuery(recipe),
+    );
+    setDisplayedRecipes(filtered.slice((page - 1) * 16, page * 16));
   };
 
-  const handlePreviousPage = () => {
-    setPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  // 필터링 함수들
   const matchFoodType = (recipe: any) =>
     !foodTypeId || recipe.food_type.id.toString() === foodTypeId;
   const matchFoodIngredient = (recipe: any) =>
@@ -54,33 +77,65 @@ const PostList = () => {
     );
   };
 
-  const filteredRecipes = recipes.filter(
-    (recipe) =>
-      matchFoodType(recipe) &&
-      matchFoodIngredient(recipe) &&
-      matchDifficulty(recipe) &&
-      matchSearchQuery(recipe),
-  );
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handlePageClick = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
 
   return (
     <>
       <div className={styles.listContainer}>
-        {filteredRecipes.length > 0 ? (
-          filteredRecipes.map((recipe) => (
-            <Postcard key={recipe.id} recipe={recipe} />
+        {displayedRecipes.length > 0 ? (
+          displayedRecipes.map((recipe) => (
+            <Postcard
+              key={recipe.id}
+              recipe={recipe}
+              isFavorite={favoriteStates[recipe.id] || false}
+            />
           ))
         ) : (
           <>
-            <p>레시피 없으니까 너가 등록해!</p>
+            <p>배고픈 현지 : 레시피 없으니까 너가 등록해!</p>
           </>
         )}
       </div>
-      <div>
-        <button onClick={handlePreviousPage} disabled={page <= 1}>
-          Previous
+      <div className={styles.ButtonContainer}>
+        <button
+          className={styles.MoveBtn}
+          onClick={handlePreviousPage}
+          disabled={page <= 1}
+        >
+          <IoIosArrowBack color="#fff" />
         </button>
-        <span>Page {page}</span>
-        <button onClick={handleNextPage}>Next</button>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageClick(index + 1)}
+            className={
+              index + 1 === page ? styles.activePageButton : styles.Button
+            }
+          >
+            {index + 1}
+          </button>
+        ))}
+        <button
+          className={styles.MoveBtn}
+          onClick={handleNextPage}
+          disabled={page >= totalPages}
+        >
+          <IoIosArrowForward color="#fff" />
+        </button>
       </div>
     </>
   );

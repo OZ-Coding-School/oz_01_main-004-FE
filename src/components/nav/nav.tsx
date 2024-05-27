@@ -1,9 +1,10 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/authuser";
 import { UserContextType } from "../../type/user";
 import Button from "../Button/Button";
+import SearchBar from "../searchbar/searchbar";
 import NevMypage from "./loginmypage/nevmypage";
 import logoutHandler from "./logout_handler";
 import styles from "./nav.module.css";
@@ -14,12 +15,12 @@ export default function Nav(): JSX.Element {
     userInfo?.access ? true : false,
   );
   const navigate = useNavigate();
-  const [searchValue, setSearchValue] = useState("");
+  const [, setSearchValue] = useState("");
   //검색제출
-  function submitSearch(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    navigate(`community/${searchValue}/1/1/1/1`);
-  }
+  // function submitSearch(e: FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   navigate(`community/${searchValue}/1/1/1/1`);
+  // }
 
   useEffect(() => {
     userInfo == null ? setIsLogin(false) : setIsLogin(true);
@@ -67,15 +68,7 @@ export default function Nav(): JSX.Element {
             </div>
             <div>
               <div className={styles.searchBox}>
-                <form onSubmit={submitSearch}>
-                  <input
-                    value={searchValue}
-                    onChange={(e) => {
-                      setSearchValue(e.target.value);
-                    }}
-                    className={styles.searchBar}
-                  ></input>
-                </form>
+                <SearchBar />
               </div>
             </div>
             <div className={styles.rightContent}>

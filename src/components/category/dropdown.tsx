@@ -39,7 +39,10 @@ const Dropdown = ({ options, defaultLabel, onSelect }: DropdownProps) => {
         <ul>
           {options.map((item) => (
             <li key={item.id}>
-              <button onClick={() => handleSelect(item)}>{item.name}</button>
+              <button onClick={() => handleSelect(item)}>
+                <img src={item.img} alt={item.name} />
+                {item.name}
+              </button>
             </li>
           ))}
         </ul>

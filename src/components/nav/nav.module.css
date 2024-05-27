@@ -31,15 +31,7 @@
   /* padding-left: 20px; */
 }
 .searchBox {
-  /* padding-left: 200px; */
-}
-.searchBar {
-  /* width: 30vw;
-  height: 35px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  background: #faf7f7;
-  margin: 0 5%; */
+  padding-left: 200px;
 }
 
 .community {

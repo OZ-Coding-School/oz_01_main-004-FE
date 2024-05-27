@@ -21,13 +21,32 @@ h1 {
   flex-direction: row;
   justify-content: space-between;
   margin-top: 60px;
+  margin-bottom: 10px;
+}
+
+.count {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 15px;
 }
 
 .selectBox {
   display: flex;
   width: 120px;
+  margin-left: 20px;
 }
 
 .postList {
-  margin-bottom: 40px;
+  margin-bottom: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+span {
+  color: #f97066;
+  font-weight: bold;
+  margin: 0 3px;
+  font-size: 20px;
 }

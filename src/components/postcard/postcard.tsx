@@ -5,13 +5,16 @@ import Favorite from "./favorite/favorite";
 import styles from "./postcard.module.css";
 // import { Recipe } from "../../pages/community/postlist/recipelist.type";
 
-const Postcard = ({ recipe }: any) => {
+const Postcard = ({ recipe, isFavorite }: any) => {
   const defaultImg = "../public/defaultimg/defaultimg.png";
 
   const handleFavoriteClick = (isFavorite: boolean) => {
-    console.log(`Favorite status: ${isFavorite}`);
+    console.log(`Favorite: ${isFavorite}`);
     // 추가적으로 로직 구현가능
   };
+
+  const userImage = recipe.user.profile_image;
+  const profileImg = "../public/mypage/basicProfile.jpg";
 
   return (
     <div>
@@ -24,13 +27,24 @@ const Postcard = ({ recipe }: any) => {
             />
           </Link>
           <div className={styles.favoriteBtn}>
-            <Favorite onClick={handleFavoriteClick} />
+            <Favorite
+              id={recipe.id}
+              isFavoriteInitially={isFavorite}
+              onClick={handleFavoriteClick}
+            />
           </div>
         </div>
         <div className={styles.bottomBox}>
           <div className={styles.title}>{recipe.title}</div>
           <div className={styles.data}>
-            <p>{recipe.user.nickname}</p>
+            <div className={styles.ingredient}>
+              <img
+                className={styles.profile}
+                src={userImage ? userImage : profileImg}
+                alt="profile"
+              />
+              <p>{recipe.user.nickname}</p>
+            </div>
             <div className={styles.dataNumber}>
               <div className={styles.pick}>
                 <BiBowlRice />
