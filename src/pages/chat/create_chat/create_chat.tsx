@@ -8,19 +8,10 @@ export default function CreateChat() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await instance.post(
-        "chat/chatrooms/",
-        {
-          name: roomName,
-          participant: memberId,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        },
-      );
+      const response = await instance.post("chat/chatrooms/", {
+        name: roomName,
+        participant: memberId,
+      });
       console.log("룸생성 성공", response.data);
       alert("채팅방이 개설되었습니다.");
       window.location.reload();

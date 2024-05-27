@@ -14,7 +14,7 @@ const { setIsLoading } = useLoadingStore.getState(); // 상태 가져오기
 instance.interceptors.request.use((config) => {
   // 요청을 보내기 전에 로딩 상태를 true로 변경
   setIsLoading(true);
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("access");
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     config.withCredentials = true;
