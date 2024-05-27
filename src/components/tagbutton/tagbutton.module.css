@@ -12,8 +12,9 @@
 }
 .basebutton {
   background-color: #efefef;
-  color: #101828;
+  color: #616161;
   border: none;
+  font-weight: 600;
 }
 
 .clickbutton {

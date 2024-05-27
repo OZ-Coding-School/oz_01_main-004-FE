@@ -33,3 +33,8 @@ export interface Recipe {
   favorites: number;
   comment_count: number;
 }
+
+export interface RecipeResponse {
+  count: number;
+  results: Recipe[];
+}
