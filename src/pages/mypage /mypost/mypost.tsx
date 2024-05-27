@@ -1,9 +1,11 @@
 import styles from "./mypost.module.css";
-import MealGrid from "../../../components/mealgrid/mealgrid";
+// import MealGrid from "../../../components/mealgrid/mealgrid";
 import { useEffect, useState } from "react";
 import instance from "../../../api/axios";
 import { Recipe } from "../../../components/mealgrid/type";
 import Button from "../../../components/Button/Button";
+import Postcard from "../../../components/postcard/postcard";
+import styled from "styled-components";
 
 const MyPost: React.FC = () => {
   const [posts, setPosts] = useState<Recipe[]>([]);
@@ -82,7 +84,11 @@ const MyPost: React.FC = () => {
       <div className={styles.grid}>
         {posts.map((post) => (
           <div key={post.id} className={styles.post}>
-            <MealGrid meals={[post]} />
+            <PostGrid>
+              {posts.map((recipe) => (
+                <Postcard key={recipe.id} recipe={recipe} />
+              ))}
+            </PostGrid>
             <div className={styles.buttonGroup}>
               <Button
                 size="sm"
@@ -105,5 +111,12 @@ const MyPost: React.FC = () => {
     </div>
   );
 };
+
+const PostGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+`;
 
 export default MyPost;
