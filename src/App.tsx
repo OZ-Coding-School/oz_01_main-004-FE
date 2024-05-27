@@ -7,6 +7,7 @@ import Chat from "./pages/chat";
 import Community from "./pages/community";
 import DetailPost from "./pages/detail_post";
 import FindPassword from "./pages/find_password/find_password";
+import Loading from "./pages/loading/loading";
 import Login from "./pages/login";
 import KakaoRedirect from "./pages/login/kakao/kakao";
 import Main from "./pages/main";
@@ -21,6 +22,7 @@ function App() {
       <ChatProvider>
         <AuthProvider>
           <Nav />
+          <Loading />
           <Routes>
             <Route path="/" element={<Main />}></Route>
             <Route path="login" element={<Login />}></Route>
