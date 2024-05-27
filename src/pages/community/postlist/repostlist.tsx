@@ -22,6 +22,7 @@ const RePostList = () => {
       const response = await instance.get(`recipes/list/?page=${page}`);
       const data = response.data;
       setRecipes(data.results);
+      console.log(data.results, "여기여기");
       setNextPage(data.next);
       setPreviousPage(data.previous);
     } catch (error) {

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Mealgrid from "../../components/mealgrid/mealgrid";
+// import MealGrid from "../../components/mealgrid/mealgrid";
 import { Link } from "react-router-dom";
-
+import { Recipe } from "../../components/mealgrid/type";
 import mainpage_1 from "/images/mainpage_1.png";
 import mainpage_2 from "/images/mainpage_2.png";
 import mainpage_3 from "/images/mainpage_3.png";
 import mainpage_4 from "/images/mainpage_4.jpeg";
 import mainpage_5 from "/images/mainpage_5.jpeg";
+import instance from "../../api/axios";
+import Postcard from "../../components/postcard/postcard";
+// import { Recipe } from "../community/postlist/recipelist.type";
 
 interface SlideImageProps {
   active: string;
@@ -20,16 +23,95 @@ const images = [
   { image: mainpage_4, alt: "스마일 간장국수" },
   { image: mainpage_5, alt: "스파게티" },
 ];
-
 const Main: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
+  const [recentMeals, setRecentMeals] = useState<Recipe[]>([]);
+  const [popularMeals, setPopularMeals] = useState<Recipe[]>([]);
   useEffect(() => {
+    const fetchLatestMeals = async () => {
+      try {
+        let headers = {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+        };
+
+        const response = await instance.get("recipes/main/", { headers });
+        console.log(response.data, "응답확인");
+
+        if (response.data && response.data.recently_recipe_list) {
+          const recentRecipes = response.data.recently_recipe_list;
+          let recipes = recentRecipes;
+
+          // favorite_recipes
+          if (response.data.favorite_recipes) {
+            const favoriteRecipesIds: number[] =
+              response.data.favorite_recipes.map(
+                (recipe: { id: number }) => recipe.id,
+              );
+
+            recipes = recentRecipes.map((recipe: Recipe) => ({
+              ...recipe,
+              is_favorite: favoriteRecipesIds.includes(recipe.id),
+            }));
+          }
+
+          setRecentMeals(recipes);
+        } else {
+          console.error(
+            "Unexpected response structure for latest meals:",
+            response.data,
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching latest recipes:", error);
+      }
+    };
+
+    const fetchAndSetPopularMeals = async () => {
+      try {
+        const response = await instance.get("recipes/main/", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        });
+        console.log(response.data, "응답확인");
+
+        if (response.data && response.data.popular_recipe_list) {
+          const popularRecipes = response.data.popular_recipe_list;
+          let recipes: Recipe[] = popularRecipes;
+
+          // favorite_recipes
+          if (response.data.favorite_recipes) {
+            const favoriteRecipesIds: number[] =
+              response.data.favorite_recipes.map(
+                (recipe: { id: number }) => recipe.id,
+              );
+
+            recipes = popularRecipes.map((recipe: Recipe) => ({
+              ...recipe,
+              is_favorite: favoriteRecipesIds.includes(recipe.id),
+            }));
+          }
+
+          setPopularMeals(recipes);
+        } else {
+          console.error(
+            "Unexpected response structure for popular meals:",
+            response.data,
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching popular recipes:", error);
+      }
+    };
+
+    fetchLatestMeals();
+    fetchAndSetPopularMeals();
+
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) =>
         prevIndex < images.length - 1 ? prevIndex + 1 : 0,
       );
-    }, 5000); // 5초마다 이미지 바꾸기
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -71,7 +153,11 @@ const Main: React.FC = () => {
             <PopularRecipe>인기 많은 레시피</PopularRecipe>
             <MoreLink to="/community">더보기</MoreLink>
           </Textinfo>
-          <Mealgrid sortBy="favorites" columns={4} row={1} limit={4} />
+          <PostGrid>
+            {popularMeals.map((recipe) => (
+              <Postcard key={recipe.id} recipe={recipe} />
+            ))}
+          </PostGrid>
         </FamousArticle>
 
         <RecentArticle>
@@ -79,12 +165,79 @@ const Main: React.FC = () => {
             <RecentRecipe>최근 올라온 레시피</RecentRecipe>
             <RecentMoreLink to="/community">더보기</RecentMoreLink>
           </Textinfo>
-          <Mealgrid sortBy="recent" columns={4} row={1} limit={4} />
+          <PostGrid>
+            {recentMeals.map((recipe) => (
+              <Postcard key={recipe.id} recipe={recipe} />
+            ))}
+          </PostGrid>
         </RecentArticle>
       </Section>
+
+      {/* <Section>
+        <FamousArticle>
+          <Textinfo>
+            <PopularRecipe>인기 많은 레시피</PopularRecipe>
+            <MoreLink to="/community">더보기</MoreLink>
+          </Textinfo>
+
+          <MealGrid meals={popularMeals} />
+          <Postcard />
+        </FamousArticle>
+
+        <RecentArticle>
+          <Textinfo>
+            <RecentRecipe>최근 올라온 레시피</RecentRecipe>
+            <RecentMoreLink to="/community">더보기</RecentMoreLink>
+          </Textinfo>
+          <MealGrid meals={recentMeals} />
+        </RecentArticle>
+      </Section> */}
+      {/* 
+      <Section>
+        <FamousArticle>
+          <Textinfo>
+            <PopularRecipe>인기 많은 레시피</PopularRecipe>
+            <MoreLink to="/community">더보기</MoreLink>
+          </Textinfo>
+          <MealGridContainer>
+            {popularMeals.map((meal) => (
+              <MealGrid key={meal.id} recipe={meal} />
+            ))}
+          </MealGridContainer>
+        </FamousArticle>
+
+        <RecentArticle>
+          <Textinfo>
+            <RecentRecipe>최근 올라온 레시피</RecentRecipe>
+            <RecentMoreLink to="/community">더보기</RecentMoreLink>
+          </Textinfo>
+          <MealGridContainer>
+            {.map((meal) => (
+              <MealGrid key={meal.id} recipe={meal} />
+            ))}
+          </MealGridContainer>
+        </RecentArticle>
+      </Section> */}
     </>
   );
 };
+// const MealGridContainer = styled.div`
+//   display: flex;
+//   justify-content: flex-start;
+//   flex-wrap: wrap;
+//   max-width: 1280px;
+//   margin-bottom: 20px;
+//   padding: 0;
+//   gap: 10px;
+//   border: 0;
+// `;
+
+const PostGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+`;
 
 const Header = styled.header`
   display: flex;
@@ -110,21 +263,13 @@ const Title = styled.h1`
   z-index: 1;
 `;
 
-interface SlideImageProps {
-  active: string;
-}
-
 const SlideImage = styled.img<SlideImageProps>`
   width: 100%;
   height: auto;
-  display: ${({ active }) => (active ? "block" : "none")};
+  display: ${({ active }) => (active === "true" ? "block" : "none")};
 `;
 
-interface ButtonProps {
-  left?: string;
-}
-
-const Button = styled.button<ButtonProps>`
+const Button = styled.button<{ left?: string }>`
   cursor: pointer;
   position: absolute;
   top: 50%;
@@ -139,14 +284,7 @@ const Button = styled.button<ButtonProps>`
   background-color: transparent;
   border: none;
   z-index: 2;
-  ${({ left }) =>
-    left
-      ? `
-    left: 50px;
-  `
-      : `
-    right: 50px;
-  `}
+  ${({ left }) => (left ? "left:  50px;" : "right:  50px;")}
 `;
 
 const Section = styled.div`
