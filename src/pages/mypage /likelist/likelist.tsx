@@ -1,8 +1,10 @@
 import styles from "./likelist.module.css";
-import MealGrid from "../../../components/mealgrid/mealgrid";
+// import MealGrid from "../../../components/mealgrid/mealgrid";
 import { useEffect, useState } from "react";
 import instance from "../../../api/axios";
 import { Recipe } from "../../../components/mealgrid/type";
+import Postcard from "../../../components/postcard/postcard";
+import styled from "styled-components";
 
 const LikeList: React.FC = () => {
   const [likeList, setLikeList] = useState<Recipe[]>([]);
@@ -37,22 +39,23 @@ const LikeList: React.FC = () => {
   }, []);
 
   return (
-    // <div className={styles.container}>
-    //   {likeList.map((item) => (
-    //     <StyledLink key={item.id} to={`/detailPost/${item.id}`}>
-    //       <div className={styles.grid}>
-    //         <MealGrid meals={likeList} />
-    //       </div>
-    //     </StyledLink>
-    //   ))}
-    // </div>
-
     <div className={styles.container}>
       <div className={styles.grid}>
-        <MealGrid meals={likeList} />
+        <PostGrid>
+          {likeList.map((recipe) => (
+            <Postcard key={recipe.id} recipe={recipe} />
+          ))}
+        </PostGrid>
       </div>
     </div>
   );
 };
+
+const PostGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+`;
 
 export default LikeList;
