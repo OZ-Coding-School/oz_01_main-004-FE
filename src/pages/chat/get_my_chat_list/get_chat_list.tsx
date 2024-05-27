@@ -23,7 +23,7 @@ export default function GetMyChatList() {
       setChatData(response.data.results);
       // console.log(response.data);
     } catch (error) {
-      alert("가져오기 실패");
+      // alert("가져오기 실패");
     }
   }
 
@@ -40,7 +40,7 @@ export default function GetMyChatList() {
   };
 
   return (
-    <div>
+    <div className={styles.chatListContainer}>
       {Array.isArray(chatData) &&
         chatData.map(function (e: any, i: number) {
           return (
@@ -53,11 +53,17 @@ export default function GetMyChatList() {
             >
               <div className={styles.chatImg}>
                 <img
-                  style={{ width: "50px" }}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    boxSizing: "border-box",
+                    borderRadius: "50%",
+                  }}
                   src={
-                    e.participant_data[1].profile_image !== null
+                    e.participant_data[0].profile_image !== null &&
+                    e.participant_data[0].profile_image !== undefined
                       ? e.participant_data[1].profile_image
-                      : "/mypage/basicprofile.png"
+                      : "/mypage/basicProfile.jpg"
                   }
                   alt=""
                 />

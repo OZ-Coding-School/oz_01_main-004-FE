@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useLoadingStore } from "../../store/loading_store";
+import { getNewAccessToken } from "./get_new_access";
 
 // Axios 인스턴스 생성
 const instance = axios.create({
@@ -43,7 +44,7 @@ instance.interceptors.response.use(
       // 서버가 응답을 반환했지만 상태 코드가 2xx 범위에 있지 않음
       const status = error.response.status;
       if (status === 401) {
-        // getNewAccessToken();
+        getNewAccessToken();
         // console.error("401 Unauthorized error:", error.response.data);
       } else if (status === 403) {
         console.error("403 Forbidden error:", error.response.data);
