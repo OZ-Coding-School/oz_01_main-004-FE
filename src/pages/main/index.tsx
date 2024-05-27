@@ -30,19 +30,23 @@ const Main: React.FC = () => {
   useEffect(() => {
     const fetchLatestMeals = async () => {
       try {
-        // let headers = {
-        //   Authorization: `Bearer ${localStorage.getItem("access")}`,
-        // };
+        const token = localStorage.getItem("access");
+        let headers = {};
 
-        const response = await instance.get("recipes/main/");
+        if (token) {
+          headers = {
+            Authorization: `Bearer ${token}`,
+          };
+        }
+
+        const response = await instance.get("/recipes/main/", { headers });
         console.log(response.data, "응답확인");
 
         if (response.data && response.data.recently_recipe_list) {
           const recentRecipes = response.data.recently_recipe_list;
           let recipes = recentRecipes;
 
-          // favorite_recipes
-          if (response.data.favorite_recipes) {
+          if (token && response.data.favorite_recipes) {
             const favoriteRecipesIds: number[] =
               response.data.favorite_recipes.map(
                 (recipe: { id: number }) => recipe.id,
@@ -68,19 +72,23 @@ const Main: React.FC = () => {
 
     const fetchAndSetPopularMeals = async () => {
       try {
-        const response = await instance.get("recipes/main/", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        });
+        const token = localStorage.getItem("access");
+        let headers = {};
+
+        if (token) {
+          headers = {
+            Authorization: `Bearer ${token}`,
+          };
+        }
+
+        const response = await instance.get("/recipes/main/", { headers });
         console.log(response.data, "응답확인");
 
         if (response.data && response.data.popular_recipe_list) {
           const popularRecipes = response.data.popular_recipe_list;
           let recipes: Recipe[] = popularRecipes;
 
-          // favorite_recipes
-          if (response.data.favorite_recipes) {
+          if (token && response.data.favorite_recipes) {
             const favoriteRecipesIds: number[] =
               response.data.favorite_recipes.map(
                 (recipe: { id: number }) => recipe.id,
@@ -172,65 +180,9 @@ const Main: React.FC = () => {
           </PostGrid>
         </RecentArticle>
       </Section>
-
-      {/* <Section>
-        <FamousArticle>
-          <Textinfo>
-            <PopularRecipe>인기 많은 레시피</PopularRecipe>
-            <MoreLink to="/community">더보기</MoreLink>
-          </Textinfo>
-
-          <MealGrid meals={popularMeals} />
-          <Postcard />
-        </FamousArticle>
-
-        <RecentArticle>
-          <Textinfo>
-            <RecentRecipe>최근 올라온 레시피</RecentRecipe>
-            <RecentMoreLink to="/community">더보기</RecentMoreLink>
-          </Textinfo>
-          <MealGrid meals={recentMeals} />
-        </RecentArticle>
-      </Section> */}
-      {/* 
-      <Section>
-        <FamousArticle>
-          <Textinfo>
-            <PopularRecipe>인기 많은 레시피</PopularRecipe>
-            <MoreLink to="/community">더보기</MoreLink>
-          </Textinfo>
-          <MealGridContainer>
-            {popularMeals.map((meal) => (
-              <MealGrid key={meal.id} recipe={meal} />
-            ))}
-          </MealGridContainer>
-        </FamousArticle>
-
-        <RecentArticle>
-          <Textinfo>
-            <RecentRecipe>최근 올라온 레시피</RecentRecipe>
-            <RecentMoreLink to="/community">더보기</RecentMoreLink>
-          </Textinfo>
-          <MealGridContainer>
-            {.map((meal) => (
-              <MealGrid key={meal.id} recipe={meal} />
-            ))}
-          </MealGridContainer>
-        </RecentArticle>
-      </Section> */}
     </>
   );
 };
-// const MealGridContainer = styled.div`
-//   display: flex;
-//   justify-content: flex-start;
-//   flex-wrap: wrap;
-//   max-width: 1280px;
-//   margin-bottom: 20px;
-//   padding: 0;
-//   gap: 10px;
-//   border: 0;
-// `;
 
 const PostGrid = styled.div`
   display: flex;
