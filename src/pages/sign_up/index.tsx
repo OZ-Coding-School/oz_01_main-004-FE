@@ -34,7 +34,7 @@ const SignUp: React.FC = () => {
   });
 
   const [, setEmailValid] = useState<boolean | null>(null);
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [eyeIcon, setEyeIcon] = useState(false);
@@ -51,6 +51,7 @@ const SignUp: React.FC = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const email = getValues("email"); // Get the email value directly
       if (email) {
@@ -58,15 +59,26 @@ const SignUp: React.FC = () => {
           email,
         });
         setEmailValid(response.data.is_valid);
-        alert("사용가능한 이메일 입니다.");
+        if (response.data.is_valid) {
+          setError("email", {
+            type: "manual",
+            message: "사용가능한 이메일 입니다.",
+          });
+        }
+        // alert("사용가능한 이메일 입니다.");
       }
+      setLoading(true);
     } catch (error: any) {
       if (error.response && error.response.status === 409) {
         setEmailValid(false);
         setError("email", {
           type: "manual",
-          message: "이메일이 이미 사용 중입니다.",
+          message: "이미 사용중인 이메일 입니다.",
         });
+        setLoading(false);
+      } else {
+        console.error("checking email", error);
+        setLoading(false);
       }
     }
   };
@@ -115,8 +127,13 @@ const SignUp: React.FC = () => {
                   onChange: (e) => handleEmailChange(e.target.value),
                 })}
               />
-              <Button size="md" variant="primary" onClick={checkEmailDuplicate}>
-                중복확인
+              <Button
+                size="md"
+                variant="primary"
+                onClick={checkEmailDuplicate}
+                disabled={loading}
+              >
+                {loading ? "확인완료" : "중복확인"}
               </Button>
             </div>
             <ErrorMessage

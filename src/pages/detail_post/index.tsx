@@ -99,7 +99,7 @@ export default function DetailPost() {
           <img
             src={getAllData.thumbnail}
             alt=""
-            style={{ width: "80vw", height: "30vh" }}
+            style={{ width: "80vw", height: "30vh", objectFit: "cover" }}
           />
         </div>
         <div className={styles.funcSection}>
