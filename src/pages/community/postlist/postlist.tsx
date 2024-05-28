@@ -1,15 +1,15 @@
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useSearchParams } from "react-router-dom";
 import instance from "../../../api/axios";
 import Postcard from "../../../components/postcard/postcard";
-import useFavoriteStatus from "../../../hooks/usefavoriestatus";
+import useFavoriteStatus from "../../../hooks/use_favoriestatus";
 import styles from "./postlist.module.css";
 import { Recipe } from "./recipelist.type";
 
-const PostList = () => {
+const PostList = ({ setFilteredCount }: any) => {
   const [searchParams] = useSearchParams();
-  const [allRecipes, setAllRecipes] = useState<Recipe[]>([]);
   const [displayedRecipes, setDisplayedRecipes] = useState<Recipe[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -20,62 +20,45 @@ const PostList = () => {
   const Level = searchParams.get("level");
   const searchQuery = searchParams.get("search");
 
-  const fetchAllRecipes = async () => {
-    let fetchedRecipes: Recipe[] = [];
-    let currentPage = 1;
-    let hasNextPage = true;
-
+  const AllRecipes = async (page: number) => {
     try {
-      while (hasNextPage) {
-        const response = await instance.get(
-          `recipes/list/?page=${currentPage}`,
-        );
-        const data = response.data.results;
-        fetchedRecipes = [...fetchedRecipes, ...data];
-        hasNextPage = response.data.next !== null;
-        currentPage++;
+      const response = await instance.get(`recipes/list/`, {
+        params: {
+          page: page,
+          search: searchQuery,
+          food_type: foodTypeId,
+          food_ingredient: foodIngredientId,
+          level: Level,
+        },
+      });
+
+      const data = response.data?.results || [];
+      if (data.length === 0 && page > 1) {
+        // 현재 페이지에 데이터가 없는 경우 첫 페이지로 이동
+        setPage(1);
+      } else {
+        setDisplayedRecipes(data);
+        setTotalPages(Math.ceil(response.data.count / 16));
+        setFilteredCount(response.data.count);
+        console.log("response.data.count", response.data.count);
+        console.log("response", response);
       }
-      setAllRecipes(fetchedRecipes);
-      setTotalPages(Math.ceil(fetchedRecipes.length / 16));
-      filterRecipes(fetchedRecipes, page);
     } catch (error) {
-      console.error("error", error);
+      const axiosError = error as AxiosError;
+      if (axiosError.response && axiosError.response.status === 404) {
+        // 404 오류가 발생하면 첫페이지 이동
+        setPage(1);
+      } else {
+        console.error("error", error);
+      }
     }
   };
 
   useEffect(() => {
-    fetchAllRecipes();
-  }, []);
+    AllRecipes(page);
+  }, [searchQuery, foodTypeId, foodIngredientId, Level, page]);
 
-  useEffect(() => {
-    filterRecipes(allRecipes, page);
-  }, [page, foodTypeId, foodIngredientId, Level, searchQuery]);
-
-  const filterRecipes = (recipes: Recipe[], page: number) => {
-    const filtered = recipes.filter(
-      (recipe) =>
-        matchFoodType(recipe) &&
-        matchFoodIngredient(recipe) &&
-        matchDifficulty(recipe) &&
-        matchSearchQuery(recipe),
-    );
-    setDisplayedRecipes(filtered.slice((page - 1) * 16, page * 16));
-  };
-
-  const matchFoodType = (recipe: any) =>
-    !foodTypeId || recipe.food_type.id.toString() === foodTypeId;
-  const matchFoodIngredient = (recipe: any) =>
-    !foodIngredientId ||
-    recipe.food_ingredient.id.toString() === foodIngredientId;
-  const matchDifficulty = (recipe: any) => !Level || recipe.level === Level;
-  const matchSearchQuery = (recipe: any) => {
-    const query = searchQuery ? searchQuery.toLowerCase() : "";
-    return (
-      !searchQuery ||
-      recipe.title.toLowerCase().includes(query) ||
-      recipe.content.toLowerCase().includes(query)
-    );
-  };
+  useEffect(() => {}, [searchParams]);
 
   const handleNextPage = () => {
     if (page < totalPages) {

@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import instance from "../../api/axios";
 import SelectBox from "../../components/selectbox/selectbox";
 import { FoodIngredients, FoodTypes } from "./fooddata.api";
 import styles from "./index.module.css";
 import PostList from "./postlist/postlist";
-import { RecipeResponse } from "./postlist/recipelist.type";
+// import RePostList from "./postlist/postlist";
 import QueryStringDropdown from "./querystring/querystringdropdown";
 import QueryTagButton from "./querystring/querytagbutton";
 
@@ -13,29 +12,18 @@ export default function Community() {
 
   const [foodType, setfoodType] = useState([]);
   const [foodIngredient, setfoodIngredient] = useState([]);
-  const [recipes, setRecipes] = useState<RecipeResponse | null>(null);
-
-  const count = recipes?.count || 0;
-
-  const RecipeData = async () => {
-    try {
-      const response = await instance.get("recipes/list/");
-
-      setRecipes(response.data);
-    } catch (error) {
-      console.error("error", error);
-    }
-  };
+  const [filteredCount, setFilteredCount] = useState(0); // 필터링된 레시피 개수 상태
 
   useEffect(() => {
     const FoodData = async () => {
       try {
-        const foodTypes = await FoodTypes();
+        // 병렬로 데이터를 가져옴
+        const [foodTypes, foodIngredients] = await Promise.all([
+          FoodTypes(),
+          FoodIngredients(),
+        ]);
         setfoodType(foodTypes);
-        const foodIngredients = await FoodIngredients();
         setfoodIngredient(foodIngredients);
-
-        RecipeData();
       } catch (error) {
         console.error("Error:", error);
       }
@@ -66,11 +54,11 @@ export default function Community() {
       </div>
       <div>
         <p>
-          총 <span>{count}</span>개의 레시피가 있습니다.
+          총 <span>{filteredCount}</span>개의 레시피가 있습니다.
         </p>
       </div>
       <div className={styles.postList}>
-        <PostList />
+        <PostList setFilteredCount={setFilteredCount} />
       </div>
       <div></div>
     </div>

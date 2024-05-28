@@ -53,78 +53,74 @@ export default function Nav(): JSX.Element {
   return (
     <div>
       <div className={styles.Container}>
-        <div className={styles.mainContainer}>
-          <div className={styles.navContainer}>
-            <div>
-              <Link
-                to="/"
-                className={styles.logo}
+        <div className={styles.navContainer}>
+          <div className={styles.logoContainer}>
+            <Link
+              to="/"
+              className={styles.logo}
+              onClick={() => {
+                setSearchValue("");
+              }}
+            >
+              CookBap
+            </Link>
+          </div>
+          <div className={styles.searchBox}>
+            <SearchBar />
+          </div>
+          <div className={styles.rightContent}>
+            <Link
+              to="/community"
+              onClick={() => {
+                setSearchValue("");
+              }}
+              className={styles.community}
+            >
+              커뮤니티
+            </Link>
+            <BsChatDots
+              className={styles.chat}
+              style={{ width: "25px", height: "50px" }}
+              onClick={() => {
+                navigate("/chat");
+                setSearchValue("");
+              }}
+            />
+            {isLogin ? (
+              <NevMypage
                 onClick={() => {
-                  setSearchValue("");
-                }}
-              >
-                CookBap
-              </Link>
-            </div>
-            <div>
-              <div className={styles.searchBox}>
-                <SearchBar />
-              </div>
-            </div>
-            <div className={styles.rightContent}>
-              <Link
-                to="/community"
-                onClick={() => {
-                  setSearchValue("");
-                }}
-                className={styles.community}
-              >
-                커뮤니티
-              </Link>
-              <BsChatDots
-                className={styles.chat}
-                style={{ width: "25px", height: "50px" }}
-                onClick={() => {
-                  navigate("/chat");
+                  logoutHandler(navigate, setUserInfo, isLogin);
                   setSearchValue("");
                 }}
               />
-              {isLogin ? (
-                <NevMypage
-                  onClick={() => {
-                    logoutHandler(navigate, setUserInfo, isLogin);
-                    setSearchValue("");
-                  }}
-                />
-              ) : (
-                <button
-                  className={styles.login}
-                  onClick={() => {
-                    navigate("/login");
-                    setSearchValue("");
-                  }}
-                >
-                  로그인
-                </button>
-                // <Button
-                //   size="sm"
-                //   variant="secondary"
-                //   onClick={() => {
-                //     navigate("/login");
-                //     setSearchValue("");
-                //   }}
-                // >
-                //   로그인
-                // </Button>
-              )}
-              <Button
-                size="sm"
-                variant="primary"
-                onClick={() => navigate("/writePost")}
+            ) : (
+              <button
+                className={styles.login}
+                onClick={() => {
+                  navigate("/login");
+                  setSearchValue("");
+                }}
               >
-                글쓰기
-              </Button>
-            </div>
+                로그인
+              </button>
+              // <Button
+              //   size="sm"
+              //   variant="secondary"
+              //   onClick={() => {
+              //     navigate("/login");
+              //     setSearchValue("");
+              //   }}
+              // >
+              //   로그인
+              // </Button>
+            )}
+            <Button
+              size="sm"
+              variant="primary"
+              onClick={() => navigate("/writePost")}
+            >
+              글쓰기
+            </Button>
           </div>
         </div>
       </div>

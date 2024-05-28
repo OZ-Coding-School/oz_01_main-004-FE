@@ -1,16 +1,22 @@
 import { BiBowlRice } from "react-icons/bi";
 import { PiChatTextBold } from "react-icons/pi";
-import { Link } from "react-router-dom";
-import Favorite from "./favorite/favorite";
+import { Link, useNavigate } from "react-router-dom";
+import Favorite from "./favorite/favorite_toggle";
 import styles from "./postcard.module.css";
 // import { Recipe } from "../../pages/community/postlist/recipelist.type";
 
 const Postcard = ({ recipe, isFavorite }: any) => {
   const defaultImg = "../public/defaultimg/defaultimg.png";
+  const navigate = useNavigate();
 
   const handleFavoriteClick = (isFavorite: boolean) => {
-    console.log(`Favorite: ${isFavorite}`);
-    // 추가적으로 로직 구현가능
+    const userId = localStorage.getItem("id");
+    if (!userId) {
+      alert("로그인하고 오세요~");
+      navigate("/login");
+    } else {
+      console.log(`Favorite: ${isFavorite}`);
+    }
   };
 
   const userImage = recipe.user.profile_image;

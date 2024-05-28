@@ -21,6 +21,7 @@ export default function DetailPost() {
 
   useEffect(() => {
     fetchData();
+    ``;
   }, []);
   //처음 데이터 받기
   const fetchData = async () => {

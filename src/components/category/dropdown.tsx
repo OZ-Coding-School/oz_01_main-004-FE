@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
-import useOutsideRef from "../../hooks/useoutsideref";
+import useOutsideRef from "../../hooks/use_outsideref";
 import styles from "./dropdown.module.css";
 
 interface DropdownProps {
