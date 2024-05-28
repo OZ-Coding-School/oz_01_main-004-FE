@@ -2,16 +2,17 @@ import Quill from "quill";
 import "quill/dist/quill.bubble.css";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { LuUpload } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
-import instance from "../../api/axios";
-import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
-import Dropdown from "../../components/category/dropdown";
-import TagButton from "../../components/tagbutton/tagbutton";
-import { FoodIngredients, FoodTypes } from "../community/fooddata.api";
-import styles from "./index.module.css";
+import { useNavigate, useParams } from "react-router-dom";
+
+import instance from "../../../api/axios";
+import Button from "../../../components/Button/Button";
+import Input from "../../../components/Input/Input";
+import Dropdown from "../../../components/category/dropdown";
+import TagButton from "../../../components/tagbutton/tagbutton";
+import { FoodIngredients, FoodTypes } from "../../community/fooddata.api";
+import styles from "./modifypost.module.css";
 
 interface FormState {
   thumbnail: File | null;
@@ -21,11 +22,17 @@ interface FormState {
   food_ingredient: number | null;
   level: string | null;
 }
-export default function WritePost() {
+
+export default function ModifyPost() {
+  const { id } = useParams();
   const quillRef = useRef<Quill>();
   const [, setQuillHtml] = useState("");
   const navigate = useNavigate();
   const [uuid_list, setUuid_list] = useState<string[]>([]);
+  const [defaultFoodTypeLabel, setDefaultFoodTypeLabel] =
+    useState<string>("종류별");
+  const [defaultFoodIngredientLabel, setDefaultFoodIngredientLabel] =
+    useState<string>("재료별");
 
   const [formState, setFormState] = useState<FormState>({
     thumbnail: null,
@@ -35,6 +42,49 @@ export default function WritePost() {
     food_ingredient: null,
     level: null,
   });
+
+  const [foodType, setfoodType] = useState([]);
+  const [foodIngredient, setfoodIngredient] = useState([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+
+  //정보 가져오기
+  useEffect(() => {
+    async function getPostData() {
+      try {
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        };
+        const response = await instance.get(`recipes/detail/${id}/`, config);
+        console.log(response.data);
+        setFormState({
+          ...formState,
+          title: response.data.recipe.title,
+          content: response.data.recipe.content,
+          food_type: response.data.recipe.food_type.id,
+
+          food_ingredient: response.data.recipe.food_ingredient.id,
+          level: response.data.recipe.level,
+        });
+        if (quillRef.current) {
+          quillRef.current.clipboard.dangerouslyPasteHTML(
+            response.data.recipe.content,
+          );
+        }
+        setImagePreviewUrl(response.data.recipe.thumbnail);
+        setDefaultFoodTypeLabel(response.data.recipe.food_type.food_name);
+        setDefaultFoodIngredientLabel(
+          response.data.recipe.food_ingredient.food_name,
+        );
+      } catch (error) {
+        console.error("getDataError", error);
+        return {};
+      }
+    }
+    getPostData();
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -65,9 +115,6 @@ export default function WritePost() {
       level: selectedTag,
     }));
   };
-
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.stopPropagation();
@@ -150,23 +197,19 @@ export default function WritePost() {
               "Content-Type": "multipart/form-data",
             },
           });
-          if (res.data && res.data.image_info) {
-            const image_url = res.data.image_info.image;
-            const image_id = res.data.image_info.image_uuid;
-            setUuid_list((prevUuid_list) => [...prevUuid_list, image_id]);
+          const image_url = res.data.image_info.image;
+          const image_id = res.data.image_info.image_uuid;
+          setUuid_list((prevUuid_list) => [...prevUuid_list, image_id]);
 
-            console.log("데이터", image_url);
-            console.log("id", image_id);
+          console.log("데이터", image_url);
+          console.log("id", image_id);
 
-            if (quillRef.current) {
-              const quill = quillRef.current;
-              const range = quill.getSelection(true);
-              const index = range ? range.index : quill.getLength();
-              quill.insertEmbed(index, "image", image_url);
-              quill.setSelection(index + 1, 0);
-            }
-          } else {
-            console.error("invalid data", res.data);
+          if (quillRef.current) {
+            const quill = quillRef.current;
+            const range = quill.getSelection(true);
+            const index = range ? range.index : quill.getLength();
+            quill.insertEmbed(index, "image", image_url);
+            quill.setSelection(index + 1, 0);
           }
         } catch (error) {
           console.error("err", error);
@@ -174,6 +217,8 @@ export default function WritePost() {
       }
     };
   }
+
+  //수정해서 보내기......
   async function onsubmit(e: React.FormEvent) {
     e.preventDefault();
     console.log("Form State:", formState);
@@ -205,11 +250,15 @@ export default function WritePost() {
           },
         };
 
-        const response = await instance.post("recipes/list/", formData, config);
+        const response = await instance.put(
+          `recipes/detail/${id}/`,
+          formData,
+          config,
+        );
         const recipeId = response.data.recipe.id;
         // console.log("response", response.data);
 
-        alert("게시물을 등록하였습니다.");
+        alert("게시물을 수정하였습니다.");
         navigate(`/detailPost/${recipeId}/`);
       } else {
         console.error("form data is missing", {
@@ -226,9 +275,6 @@ export default function WritePost() {
       console.error("form err", error);
     }
   }
-
-  const [foodType, setfoodType] = useState([]);
-  const [foodIngredient, setfoodIngredient] = useState([]);
 
   useEffect(() => {
     const FoodData = async () => {
@@ -283,7 +329,7 @@ export default function WritePost() {
             className="coverImgInput"
             ref={fileInputRef}
             onChange={handleImgChange}
-            name="thumnail"
+            name="thumbnail"
           />
         </div>
         <div>
@@ -292,7 +338,10 @@ export default function WritePost() {
             inputSize="md"
             variant="primary"
             name="title"
-            onChange={(e) => handleInputChange(e, "title")}
+            value={formState.title || ""}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              handleInputChange(e, "title")
+            }
           />
         </div>
       </div>
@@ -307,14 +356,22 @@ export default function WritePost() {
           </div>
           <div className={styles.dropdownDiv}>
             <Dropdown
-              onSelect={(item) => handleSelect(item, "food_type")}
+              onSelect={(item: {
+                id: any;
+                name?: string | undefined;
+                img?: string | undefined;
+              }) => handleSelect(item, "food_type")}
               options={foodType}
-              defaultLabel="종류별"
+              defaultLabel={defaultFoodTypeLabel}
             />
             <Dropdown
-              onSelect={(item) => handleSelect(item, "food_ingredient")}
+              onSelect={(item: {
+                id: any;
+                name?: string | undefined;
+                img?: string | undefined;
+              }) => handleSelect(item, "food_ingredient")}
               options={foodIngredient}
-              defaultLabel="재료별"
+              defaultLabel={defaultFoodIngredientLabel}
             />
           </div>
         </div>
@@ -322,7 +379,11 @@ export default function WritePost() {
           <div style={{ marginBottom: "15px" }}>
             요리 난이도를 선택해주세요.
           </div>
-          <TagButton tags={tags} onSelect={handleTagSelect} />
+          <TagButton
+            tags={tags}
+            onSelect={handleTagSelect}
+            // selectedTag={formState.level}
+          />
         </div>
       </div>
       <div className={styles.writeBtn}>

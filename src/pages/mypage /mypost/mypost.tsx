@@ -1,14 +1,15 @@
-import styles from "./mypost.module.css";
-// import MealGrid from "../../../components/mealgrid/mealgrid";
 import { useEffect, useState } from "react";
-import instance from "../../../api/axios";
-import { Recipe } from "../../../components/mealgrid/type";
-import Button from "../../../components/Button/Button";
-import Postcard from "../../../components/postcard/postcard";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import instance from "../../../api/axios";
+import Button from "../../../components/Button/Button";
+import { Recipe } from "../../../components/mealgrid/type";
+import Postcard from "../../../components/postcard/postcard";
+import styles from "./mypost.module.css";
 
 const MyPost: React.FC = () => {
   const [posts, setPosts] = useState<Recipe[]>([]);
+  const navigate = useNavigate();
 
   const fetchMyPostList = async () => {
     try {
@@ -33,6 +34,10 @@ const MyPost: React.FC = () => {
       console.error("Error fetching posts:", error);
     }
   };
+
+  // const handleModifyClick = async (id: number) => {
+  //   navigate(`/detailPost/modify/${id}/`);
+  // };
   const handleEdit = async (id: number) => {
     const confirmEdit = window.confirm("수정하시겠습니까?");
     if (confirmEdit) {
@@ -42,16 +47,17 @@ const MyPost: React.FC = () => {
         return;
       }
       try {
-        const response = await instance.put(
-          `/recipes/detail/${id}/`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-        console.log(response.data.recipe, "수정 API 응답 확인");
+        navigate(`/detailPost/modify/${id}/`);
+        // const response = await instance.put(
+        //   `/recipes/detail/${id}/`,
+        //   {},
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${token}`,
+        //     },
+        //   },
+        // );
+        // console.log(response.data.recipe, "수정 API 응답 확인");
       } catch (error) {
         console.error("Error editing recipe:", error);
       }

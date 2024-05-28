@@ -1,11 +1,13 @@
-import parseHtml from "html-react-parser";
+import parse from "html-react-parser";
 import { useEffect, useState } from "react";
 import { BsChatDots } from "react-icons/bs";
 import { FaBowlRice } from "react-icons/fa6";
 import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../api/axios";
 import convertToKoreanTime from "../../hooks/make_korean_date";
+import ActionNav from "./actionnav";
 import Comments from "./comments/comments";
 import styles from "./index.module.css";
 
@@ -71,23 +73,23 @@ export default function DetailPost() {
     }
   };
 
+  //html 게시물 react로 변환하기
   const renderContent = (content: string) => {
-    if (typeof content !== "string") {
-      return <div />;
+    if (content) {
+      return parse(content, {
+        replace: (domNode) => {
+          if (domNode.type === "tag" && domNode.name === "img") {
+            return (
+              <img
+                src={domNode.attribs.src}
+                alt=""
+                style={{ width: "100%", height: "auto" }}
+              />
+            );
+          }
+        },
+      });
     }
-    return parseHtml(content, {
-      replace: (domNode) => {
-        if (domNode.type === "tag" && domNode.name === "img") {
-          return (
-            <img
-              src={domNode.attribs.src}
-              alt=""
-              style={{ width: "100%", height: "auto" }}
-            />
-          );
-        }
-      },
-    });
   };
 
   return (
@@ -126,7 +128,9 @@ export default function DetailPost() {
               <div>채팅하기</div>
             </div>
             <div>{convertToKoreanTime(getAllData.created_at)}</div>
-            <div>Icons</div>
+            <div>
+              <ActionNav />
+            </div>
           </div>
           <div className={styles.likeBox}>
             {/* <BiSolidBowlRice style={{ width: "30px", height: "35px" }} /> */}
@@ -153,7 +157,7 @@ export default function DetailPost() {
         <div className={styles.ContentsBox}>
           <div className={styles.postTitle}>{getAllData.title}</div>
           <div className={styles.postContent}>
-            {renderContent(getAllData.content) || <div />}
+            {renderContent(getAllData.content)}
           </div>
           <div className={styles.tagSectionContainer}>
             <div>종류</div>
