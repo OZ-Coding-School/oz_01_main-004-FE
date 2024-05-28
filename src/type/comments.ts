@@ -14,4 +14,5 @@ export interface commentUser {
   nickname: string;
   profile_image: string | null;
   updated_at: string;
+  id: number | string;
 }
