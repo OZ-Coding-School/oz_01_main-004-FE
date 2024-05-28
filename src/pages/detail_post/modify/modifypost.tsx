@@ -275,7 +275,7 @@ export default function ModifyPost() {
       console.error("form err", error);
     }
   }
-
+  //같은것이 실행되서 이게 덮임
   useEffect(() => {
     const FoodData = async () => {
       try {
