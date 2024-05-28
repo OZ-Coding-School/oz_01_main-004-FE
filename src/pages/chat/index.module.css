@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: row;
   padding-left: 10px;
-  gap: 50px;
+  gap: 20px;
   justify-content: center;
 }
 
@@ -101,6 +101,12 @@
   flex-direction: column;
   /* padding-bottom: 100px; */
   overflow-y: auto;
+}
+
+.scrollButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .smallChatBox {
