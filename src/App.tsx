@@ -6,6 +6,7 @@ import ChatProvider from "./context/chatuser";
 import Chat from "./pages/chat";
 import Community from "./pages/community";
 import DetailPost from "./pages/detail_post";
+import ModifyPost from "./pages/detail_post/modify/modifypost";
 import FindPassword from "./pages/find_password/find_password";
 import Loading from "./pages/loading/loading";
 import Login from "./pages/login";
@@ -35,6 +36,10 @@ function App() {
               <Route path="/chat" element={<Chat />}></Route>
               <Route path="/myPage" element={<MyPage />}></Route>
               <Route path="/writePost" element={<WritePost />}></Route>
+              <Route
+                path="/detailPost/modify/:id"
+                element={<ModifyPost />}
+              ></Route>
             </Route>
           </Routes>
         </AuthProvider>

@@ -6,10 +6,14 @@ import styles from "./dropdown.module.css";
 interface DropdownProps {
   options: { id: number; name: string; img: string }[];
   defaultLabel: string;
-  onSelect: (item: { id: number; name: string; img: string }) => void;
+  onSelect?: (item: { id: number; name: string; img: string }) => void;
 }
 
-const Dropdown = ({ options, defaultLabel, onSelect }: DropdownProps) => {
+const Dropdown = ({
+  options,
+  defaultLabel,
+  onSelect = () => {},
+}: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string>(defaultLabel);
 
