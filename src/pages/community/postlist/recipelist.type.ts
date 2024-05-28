@@ -20,6 +20,7 @@ export interface FoodIngredient {
 }
 
 export interface Recipe {
+  is_favorite: any;
   id: number;
   user: User;
   food_type: FoodType;
