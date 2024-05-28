@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { AiFillCaretUp } from "react-icons/ai";
 import instance from "../../../api/axios";
 import Button from "../../../components/Button/Button";
 import { useChatContext } from "../../../context/chatuser";
@@ -53,7 +54,7 @@ export default function GetMessagesOfChatroom({
     setLoading(true);
     try {
       const response = await instance.get(
-        `chat/chatrooms/${30}/?page=${pageNum}`,
+        `chat/chatrooms/${chatUser}/?page=${pageNum}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access")}`,
@@ -101,9 +102,16 @@ export default function GetMessagesOfChatroom({
 
   return (
     <div className={styles.messageContainer}>
-      <Button size="md" variant="primary" onClick={fetchPreviousMessages}>
-        버튼
-      </Button>
+      <div className={styles.scrollButtonContainer}>
+        <Button
+          style={{ width: "50px", height: "30px" }}
+          size="sm"
+          variant="secondary"
+          onClick={fetchPreviousMessages}
+        >
+          <AiFillCaretUp style={{ width: "30px", height: "40px" }} />
+        </Button>
+      </div>
       {Array.isArray(getMessages) &&
         getMessages
           .slice()

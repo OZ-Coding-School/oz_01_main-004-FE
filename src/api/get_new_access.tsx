@@ -1,17 +1,20 @@
 import instance from "./axios";
 
 export const getNewAccessToken = async () => {
-  const refreshToken = localStorage.getItem("refresh");
   try {
     const response = await instance.post("users/token-refresh/", {
-      refresh: refreshToken,
+      refresh: localStorage.getItem("refresh"),
     });
-    localStorage.setItem("access", response.data.access);
+    const newAccessToken = response.data.access;
+    localStorage.setItem("access", newAccessToken);
+    return newAccessToken;
   } catch (error) {
     console.error("Refresh token error:", error);
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
-    alert("토큰 삭제합니다.");
+    localStorage.removeItem("id");
+    localStorage.removeItem("nickname");
+    // alert("토큰 삭제합니다.");
     throw error;
   }
 };
