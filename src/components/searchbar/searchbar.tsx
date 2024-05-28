@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styles from "./searchbar.module.css";
 
 const SearchBar = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [inputValue, setInputValue] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setInputValue(searchParams.get("search") || "");
@@ -19,11 +22,11 @@ const SearchBar = () => {
     e.preventDefault();
     // 입력 값이 비어있지 않으면 쿼리 스트링 업데이트
     // trim -> 공백 제거
-    if (inputValue.trim()) {
-      setSearchParams({ search: inputValue });
-      setInputValue("");
+    const trimmedInput = inputValue.trim();
+    if (trimmedInput) {
+      navigate(`/community?search=${trimmedInput}`);
     } else {
-      setSearchParams({});
+      navigate("/community");
     }
   };
 

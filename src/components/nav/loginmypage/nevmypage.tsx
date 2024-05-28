@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { Link } from "react-router-dom";
-import useOutsideRef from "../../../hooks/useoutsideref";
+import useOutsideRef from "../../../hooks/use_outsideref";
 import styles from "./nevmypage.module.css";
 
 const NevMypage = (props: any) => {
