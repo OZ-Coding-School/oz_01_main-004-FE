@@ -8,7 +8,7 @@ import instance from "../../api/axios";
 import Button from "../../components/Button/Button";
 import styles from "./index.module.css";
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
   interface IFormInput {
     email: string;
     password: string;
@@ -19,6 +19,9 @@ const SignUp = () => {
     register,
     handleSubmit,
     watch,
+    setError,
+    setValue,
+    getValues,
     formState: { errors },
   } = useForm<IFormInput>({
     mode: "onBlur",
@@ -29,11 +32,43 @@ const SignUp = () => {
       nickname: "",
     },
   });
+
+  const [, setEmailValid] = useState<boolean | null>(null);
+  // const [loading, setLoading] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [eyeIcon, setEyeIcon] = useState(false);
   const navigate = useNavigate();
   const handleSignUpSuccess = () => {
     navigate("/login");
+  };
+  const handleEmailChange = (value: string) => {
+    setEmailValid(null);
+    setValue("email", value);
+  };
+
+  const checkEmailDuplicate = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    try {
+      const email = getValues("email"); // Get the email value directly
+      if (email) {
+        const response = await instance.post("users/email-check/", {
+          email,
+        });
+        setEmailValid(response.data.is_valid);
+        alert("사용가능한 이메일 입니다.");
+      }
+    } catch (error: any) {
+      if (error.response && error.response.status === 409) {
+        setEmailValid(false);
+        setError("email", {
+          type: "manual",
+          message: "이메일이 이미 사용 중입니다.",
+        });
+      }
+    }
   };
 
   //등록하기 함수
@@ -77,9 +112,10 @@ const SignUp = () => {
                       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/,
                     message: "이메일의 형식이 올바르지 않습니다.",
                   },
+                  onChange: (e) => handleEmailChange(e.target.value),
                 })}
               />
-              <Button size="md" variant="primary">
+              <Button size="md" variant="primary" onClick={checkEmailDuplicate}>
                 중복확인
               </Button>
             </div>
