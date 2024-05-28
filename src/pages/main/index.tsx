@@ -1,3 +1,4 @@
+// postcard;
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 // import MealGrid from "../../components/mealgrid/mealgrid";
@@ -13,7 +14,11 @@ import mainpage_5 from "/images/mainpage_5.jpeg";
 // import { Recipe } from "../community/postlist/recipelist.type";
 
 interface SlideImageProps {
-  active: string;
+  $active: string;
+}
+
+interface ButtonProps {
+  $left?: string;
 }
 
 const images = [
@@ -145,10 +150,10 @@ const Main: React.FC = () => {
               key={index}
               src={image.image}
               alt={image.alt}
-              active={index === currentImageIndex ? "true" : "false"}
+              $active={index === currentImageIndex ? "true" : "false"}
             />
           ))}
-          <Button left={"true"} onClick={prevSlide}>
+          <Button $left={"true"} onClick={prevSlide}>
             &#10094;
           </Button>
           <Button onClick={nextSlide}>&#10095;</Button>
@@ -218,10 +223,10 @@ const Title = styled.h1`
 const SlideImage = styled.img<SlideImageProps>`
   width: 100%;
   height: auto;
-  display: ${({ active }) => (active === "true" ? "block" : "none")};
+  display: ${({ $active }) => ($active === "true" ? "block" : "none")};
 `;
 
-const Button = styled.button<{ left?: string }>`
+const Button = styled.button<ButtonProps>`
   cursor: pointer;
   position: absolute;
   top: 50%;
@@ -236,7 +241,7 @@ const Button = styled.button<{ left?: string }>`
   background-color: transparent;
   border: none;
   z-index: 2;
-  ${({ left }) => (left ? "left:  50px;" : "right:  50px;")}
+  ${({ $left }) => ($left ? "left:  50px;" : "right:  50px;")}// 수정된 부분
 `;
 
 const Section = styled.div`

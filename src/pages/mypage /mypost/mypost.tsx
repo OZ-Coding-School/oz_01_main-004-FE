@@ -88,31 +88,29 @@ const MyPost: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.grid}>
-        {posts.map((post) => (
-          <div key={post.id} className={styles.post}>
-            <PostGrid>
-              {posts.map((recipe) => (
-                <Postcard key={recipe.id} recipe={recipe} />
-              ))}
-            </PostGrid>
-            <div className={styles.buttonGroup}>
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={() => handleEdit(post.id)}
-              >
-                수정
-              </Button>
-              <Button
-                size="sm"
-                variant="primary"
-                onClick={() => handleDelete(post.id)}
-              >
-                삭제
-              </Button>
+        <PostGrid>
+          {posts.map((post) => (
+            <div key={post.id} className={styles.post}>
+              <Postcard key={post.id} recipe={post} />
+              <div className={styles.buttonGroup}>
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => handleEdit(post.id)}
+                >
+                  수정
+                </Button>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  onClick={() => handleDelete(post.id)}
+                >
+                  삭제
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </PostGrid>
       </div>
     </div>
   );
