@@ -12,12 +12,15 @@ export default function Comments() {
   const [getComments, setGetComments] = useState<allCommentData | null>(null);
   const [editedComment, setEditedComment] = useState("");
   const [editCommentId, setEditCommentId] = useState<number | null>(null);
+  const nickName = localStorage.getItem("nickname");
+  // const myId: string | null = localStorage.getItem("id");
 
   const fetchComments = async () => {
     try {
       const response = await instance.get(`comments/list/${id}/`);
       //   console.log(response.data, "댓글수임");
       setGetComments(response.data.comment_list);
+      // console.log(response.data.comment_list);
     } catch (error) {
       console.error("받기 실패", error);
     }
@@ -26,10 +29,11 @@ export default function Comments() {
     fetchComments();
   }, []);
 
-  const commentsSubmit = async () => {
+  const commentsSubmit = async (e: any) => {
+    e.preventDefault();
     if (comment) {
       try {
-        await instance.post(
+        const response = await instance.post(
           `comments/list/${id}/`,
           { content: comment },
           {
@@ -39,8 +43,13 @@ export default function Comments() {
             },
           },
         );
+        setGetComments((prevComments) => [
+          response.data.comment,
+          ...(prevComments || []),
+        ]);
         alert("댓글이 성공적으로 등록되었습니다.");
-        fetchComments();
+        // console.log(response.data.comment.user);
+        setComment("");
       } catch (error) {
         console.error("댓글 보내기 실패", error);
       }
@@ -53,7 +62,7 @@ export default function Comments() {
     e.preventDefault();
     if (editedComment) {
       try {
-        const response = await instance.put(
+        await instance.put(
           `comments/detail/${editCommentId}/`,
           { content: editedComment },
           {
@@ -63,8 +72,19 @@ export default function Comments() {
             },
           },
         );
-        alert(response.data.message);
+        // alert(response.data.message);
         setEditCommentId(null);
+
+        // 상태에서 댓글을 업데이트
+        setGetComments(
+          (prevComments) =>
+            prevComments?.map((comment) =>
+              comment.id === editCommentId
+                ? { ...comment, content: editedComment }
+                : comment,
+            ) || null,
+        );
+        setEditedComment("");
       } catch (error) {
         console.error("댓글 보내기 실패", error);
       }
@@ -90,7 +110,7 @@ export default function Comments() {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
       });
-      // 삭제 후 실행할 콜백 함수를 호출합니다.
+      fetchComments();
       alert(response.data.message);
     } catch (error) {
       console.error("댓글 삭제 실패", error);
@@ -140,6 +160,7 @@ export default function Comments() {
                 <div className={styles.userNick}>
                   {getComment.user.nickname}
                 </div>
+
                 {editCommentId === getComment.id ? (
                   // 수정 모드일 때는 입력 상자를 보여줌
                   <Input
@@ -159,46 +180,48 @@ export default function Comments() {
               <div className={styles.dateBox}>
                 {noneYearToKorean(getComment.updated_at)}
               </div>
-              <div className={styles.rightFuncBox}>
-                {editCommentId === getComment.id ? (
-                  // 수정 모드일 때는 수정 완료 버튼을 보여줌
+              {getComment.user.nickname === nickName ? (
+                <div className={styles.rightFuncBox}>
+                  {editCommentId === getComment.id ? (
+                    // 수정 모드일 때는 수정 완료 버튼을 보여줌
 
-                  <form onSubmit={putComments}>
-                    <button className={styles.commentButton} type="submit">
-                      완료
+                    <form onSubmit={putComments}>
+                      <button className={styles.commentButton} type="submit">
+                        완료
+                      </button>
+                    </form>
+                  ) : (
+                    // 수정 모드가 아닐 때는 수정 버튼을 보여줌
+
+                    <button
+                      className={styles.commentButton}
+                      onClick={() => setEditCommentId(getComment.id)}
+                    >
+                      수정
                     </button>
-                  </form>
-                ) : (
-                  // 수정 모드가 아닐 때는 수정 버튼을 보여줌
-
-                  <button
-                    className={styles.commentButton}
-                    onClick={() => setEditCommentId(getComment.id)}
-                  >
-                    수정
-                  </button>
-                )}
-                {editCommentId === getComment.id ? (
-                  <button
-                    className={styles.commentButton}
-                    onClick={() => {
-                      setEditCommentId(null);
-                      setEditedComment("");
-                    }}
-                  >
-                    취소
-                  </button>
-                ) : (
-                  <button
-                    className={styles.commentButton}
-                    onClick={() => {
-                      confirmDelete(getComment.id);
-                    }}
-                  >
-                    삭제
-                  </button>
-                )}
-              </div>
+                  )}
+                  {editCommentId === getComment.id ? (
+                    <button
+                      className={styles.commentButton}
+                      onClick={() => {
+                        setEditCommentId(null);
+                        setEditedComment("");
+                      }}
+                    >
+                      취소
+                    </button>
+                  ) : (
+                    <button
+                      className={styles.commentButton}
+                      onClick={() => {
+                        confirmDelete(getComment.id);
+                      }}
+                    >
+                      삭제
+                    </button>
+                  )}
+                </div>
+              ) : null}
             </div>
           </div>
         ))}
