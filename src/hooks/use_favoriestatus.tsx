@@ -10,9 +10,15 @@ const useFavoriteStatus = () => {
   useEffect(() => {
     const FavoriteStatus = async () => {
       try {
+        const accessToken = localStorage.getItem("access");
+        if (!accessToken) {
+          setLoading(false);
+          return;
+        }
+
         const response = await instance.get("/favorite/list/", {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
 
@@ -25,7 +31,6 @@ const useFavoriteStatus = () => {
             {},
           );
           setFavoriteStates(favoriteStates);
-          console.log(favoriteStates);
         }
       } catch (error) {
         console.error("찜 상태 가져오기 실패", error);

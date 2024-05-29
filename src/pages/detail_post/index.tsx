@@ -38,8 +38,6 @@ export default function DetailPost() {
       );
       setFoodType(response.data.recipe.food_type.food_type_name);
       setuserId(String(response.data.recipe.user.id));
-      console.log("Fetched user ID:", response.data.recipe.user.id);
-      console.log("Local user ID:", MyUserId);
     } catch (error) {
       console.error("받기 실패", error);
     }

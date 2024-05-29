@@ -24,6 +24,8 @@
 }
 
 .logo {
+  display: flex;
+  align-items: center;
   text-decoration: none;
   color: black;
   font-weight: bold;
@@ -32,6 +34,10 @@
   /* padding-right: 2px; */
   /* padding-left: 20px; */
 }
+
+.logoImg {
+  width: 150px;
+}
 .searchBox {
   flex: 1;
 }
@@ -39,11 +45,14 @@
 .rightContent {
   flex: 1;
   display: flex;
+  justify-content: flex-end;
+}
+
+.rightbox {
+  display: flex;
   justify-content: space-evenly;
-  width: 30vw;
-  /* gap: 10px; */
+  width: 85%;
   align-items: center;
-  /* padding-left: 30px; */
 }
 
 .community {
