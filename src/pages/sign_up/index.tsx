@@ -65,7 +65,6 @@ const SignUp: React.FC = () => {
             message: "사용가능한 이메일 입니다.",
           });
         }
-        // alert("사용가능한 이메일 입니다.");
       }
       setLoading(true);
     } catch (error: any) {
