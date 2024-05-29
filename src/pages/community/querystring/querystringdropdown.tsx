@@ -28,10 +28,6 @@ const QueryStringDropdown = ({
     setSearchParams(newParams); // 수정된 거 적용해줌
   };
 
-  // useEffect(() => {
-  //   setSearchParams({});
-  // }, []); // 새로고침하면 쿼리스트링 초기화
-
   return (
     <Dropdown
       options={selectoption}
