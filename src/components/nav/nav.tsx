@@ -26,30 +26,6 @@ export default function Nav(): JSX.Element {
     userInfo == null ? setIsLogin(false) : setIsLogin(true);
   }, [userInfo]);
 
-  //자동 로그아웃 구현
-  useEffect(() => {
-    let timeoutId: number;
-    function resetTimeout() {
-      clearTimeout(timeoutId);
-      if (isLogin) {
-        // isLogin이 true인 경우에만 타임아웃 설정
-        timeoutId = setTimeout(() => {
-          setIsLogin(false);
-          logoutHandler(navigate, setUserInfo, isLogin);
-        }, 13 * 24 * 60 * 60 * 1000); // 13일 뒤에 로그아웃됩니다.
-      }
-    }
-    resetTimeout();
-    window.addEventListener("mousemove", resetTimeout);
-    window.addEventListener("keydown", resetTimeout);
-
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener("mousemove", resetTimeout);
-      window.removeEventListener("keydown", resetTimeout);
-    };
-  }, [isLogin]);
-
   return (
     <div>
       <div className={styles.Container}>

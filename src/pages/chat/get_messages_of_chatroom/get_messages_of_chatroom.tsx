@@ -39,8 +39,6 @@ export default function GetMessagesOfChatroom({
         }),
       );
       setGetMessages(fetchedMessages);
-
-      // alert(`${response.data.name}방에 입장하셨습니다.`);
     } catch (error) {
       console.error("이전 메시지를 불러오는 중 에러 발생:", error);
     }

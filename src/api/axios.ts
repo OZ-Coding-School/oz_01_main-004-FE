@@ -13,8 +13,6 @@ const { setIsLoading } = useLoadingStore.getState(); // 상태 가져오기
 // 요청 인터셉터
 instance.interceptors.request.use((config) => {
   setIsLoading(true);
-  //getNewAccessToken 리프레쉬토큰을 받아올 떄 헤더에 실어줘야하는데, 그로직이 안된다.
-  //getNewAccessToken에서 진행한 것을 헤더에 담아줘야 한다.
   // 폼 데이터를 보낼 때만 Content-Type을 "multipart/form-data"로 설정
   if (config.data instanceof FormData) {
     config.headers["Content-Type"] = "multipart/form-data";
@@ -23,7 +21,7 @@ instance.interceptors.request.use((config) => {
   }
 
   // 액세스 토큰을 헤더에 추가
-  const accessToken = localStorage.getItem("access");
+  const accessToken = localStorage.getItem("accessToken");
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken}`;
   }

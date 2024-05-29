@@ -47,7 +47,7 @@ export default function Login(): JSX.Element {
         id: id,
       });
       setUserInfo(userData);
-      alert(response.data.message);
+      alert("로그인 되었습니다.");
       navigate(from);
       setTimeout(function () {
         sessionStorage.removeItem("beforeLogin");
