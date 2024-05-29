@@ -21,7 +21,7 @@ instance.interceptors.request.use((config) => {
   }
 
   // 액세스 토큰을 헤더에 추가
-  const accessToken = localStorage.getItem("accessToken");
+  const accessToken = localStorage.getItem("access");
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken}`;
   }

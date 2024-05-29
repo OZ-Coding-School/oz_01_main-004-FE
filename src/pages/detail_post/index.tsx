@@ -47,9 +47,8 @@ export default function DetailPost() {
   };
 
   function handleGoToChatFromDetailPost() {
-    window.confirm("채팅을 시작해시겠습니까?");
+    window.confirm("채팅을 시작 하시겠습니까?");
     memberId && goToChat(memberId, writerNickName);
-    alert("채팅방이 생성되었습니다.");
     navigate("/chat");
   }
   //찜하기 보내기
