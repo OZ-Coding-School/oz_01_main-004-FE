@@ -14,14 +14,14 @@ export default async function logoutHandler(
       if (!refresh) {
         throw new Error("리프레쉬 토큰 없음");
       }
-      const response = await instance.post("users/sign-out/", {
+      await instance.post("users/sign-out/", {
         refresh,
       });
       localStorage.removeItem("access");
       localStorage.removeItem("refresh");
       localStorage.removeItem("nickname");
       localStorage.removeItem("id");
-      alert(response.data.message);
+      alert("로그아웃 되었습니다.");
       setUserInfo(null);
       navigate("/login");
     } catch (error) {
