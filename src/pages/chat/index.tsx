@@ -21,6 +21,9 @@ export default function Chat() {
 
   // 웹소켓 연결
   useEffect(() => {
+    if (chatUser === null) {
+      return; // chatUser가 null이면 useEffect 내부 코드를 실행하지 않음
+    }
     if (webSocket.current) {
       webSocket.current.close();
     }

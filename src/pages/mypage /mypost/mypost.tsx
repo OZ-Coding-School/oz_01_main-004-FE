@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../../api/axios";
@@ -6,7 +7,6 @@ import Button from "../../../components/Button/Button";
 import { Recipe } from "../../../components/mealgrid/type";
 import Postcard from "../../../components/postcard/postcard";
 import styles from "./mypost.module.css";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const MyPost: React.FC = () => {
   const [posts, setPosts] = useState<Recipe[]>([]);
@@ -30,11 +30,10 @@ const MyPost: React.FC = () => {
           page: page,
         },
       });
-      console.log(response.data, "응답확인");
 
       if (response.data && response.data.results) {
         setPosts(response.data.results);
-        console.log(response.data.results, "여기 list");
+
         setTotalPages(Math.ceil(response.data.count / 12));
       }
     } catch (error) {
@@ -68,7 +67,7 @@ const MyPost: React.FC = () => {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
       });
-      console.log("Recipe deleted successfully");
+
       fetchMyPostList(page);
     } catch (error) {
       console.error("Error deleting recipe:", error);
