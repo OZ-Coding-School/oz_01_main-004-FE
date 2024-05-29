@@ -62,55 +62,61 @@ export default function Nav(): JSX.Element {
                 setSearchValue("");
               }}
             >
-              CookBap
+              <img
+                className={styles.logoImg}
+                src="https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/cookbap_main_logo.png"
+                alt="logo"
+              />
             </Link>
           </div>
           <div className={styles.searchBox}>
             <SearchBar />
           </div>
           <div className={styles.rightContent}>
-            <Link
-              to="/community"
-              onClick={() => {
-                setSearchValue("");
-              }}
-              className={styles.community}
-            >
-              커뮤니티
-            </Link>
-            <BsChatDots
-              className={styles.chat}
-              style={{ width: "25px", height: "50px" }}
-              onClick={() => {
-                navigate("/chat");
-                setSearchValue("");
-              }}
-            />
-            {isLogin ? (
-              <NevMypage
+            <div className={styles.rightbox}>
+              <Link
+                to="/community"
                 onClick={() => {
-                  logoutHandler(navigate, setUserInfo, isLogin);
+                  setSearchValue("");
+                }}
+                className={styles.community}
+              >
+                커뮤니티
+              </Link>
+              <BsChatDots
+                className={styles.chat}
+                style={{ width: "25px", height: "50px" }}
+                onClick={() => {
+                  navigate("/chat");
                   setSearchValue("");
                 }}
               />
-            ) : (
-              <button
-                className={styles.login}
-                onClick={() => {
-                  navigate("/login");
-                  setSearchValue("");
-                }}
+              {isLogin ? (
+                <NevMypage
+                  onClick={() => {
+                    logoutHandler(navigate, setUserInfo, isLogin);
+                    setSearchValue("");
+                  }}
+                />
+              ) : (
+                <button
+                  className={styles.login}
+                  onClick={() => {
+                    navigate("/login");
+                    setSearchValue("");
+                  }}
+                >
+                  로그인
+                </button>
+              )}
+              <Button
+                size="sm"
+                variant="primary"
+                onClick={() => navigate("/writePost")}
               >
-                로그인
-              </button>
-            )}
-            <Button
-              size="sm"
-              variant="primary"
-              onClick={() => navigate("/writePost")}
-            >
-              글쓰기
-            </Button>
+                글쓰기
+              </Button>
+            </div>
           </div>
         </div>
       </div>

@@ -9,13 +9,11 @@ const Postcard = ({ recipe, isFavorite }: any) => {
   const defaultImg = "../public/defaultimg/defaultimg.png";
   const navigate = useNavigate();
 
-  const handleFavoriteClick = (isFavorite: boolean) => {
+  const handleFavoriteClick = () => {
     const userId = localStorage.getItem("id");
     if (!userId) {
       alert("로그인하고 오세요~");
       navigate("/login");
-    } else {
-      console.log(`Favorite: ${isFavorite}`);
     }
   };
 

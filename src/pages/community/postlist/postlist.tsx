@@ -40,8 +40,6 @@ const PostList = ({ setFilteredCount }: any) => {
         setDisplayedRecipes(data);
         setTotalPages(Math.ceil(response.data.count / 16));
         setFilteredCount(response.data.count);
-        console.log("response.data.count", response.data.count);
-        console.log("response", response);
       }
     } catch (error) {
       const axiosError = error as AxiosError;
