@@ -14,15 +14,9 @@ export default function KakaoRedirect() {
 
   const loginWithKakao = async () => {
     try {
-      const response = await instance.post(
-        "users/kakao/sign-in/",
-        { code: code },
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        },
-      );
+      const response = await instance.post("users/kakao/sign-in/", {
+        code: code,
+      });
       const { access, refresh } = response.data;
       const { nickname, id } = response.data.user;
       setAuthDataToLocalStorage;

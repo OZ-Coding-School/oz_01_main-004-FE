@@ -16,14 +16,8 @@ export default function GetMyChatList() {
 
   async function getList() {
     try {
-      const response = await instance.get("chat/chatrooms/", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      });
+      const response = await instance.get("chat/chatrooms/");
       setChatData(response.data.results);
-      // console.log(response.data);
     } catch (error) {
       // alert("가져오기 실패");
     }
@@ -32,8 +26,7 @@ export default function GetMyChatList() {
   const handleSelectChatRoomToggle = (i: number) => {
     if (chatUser === null) {
       setChatUser(chatData[i].id);
-      console.log(chatData[i].id);
-      console.log(chatUser);
+
       setIsChatRoomVisible(true);
     } else {
       setChatUser(null);
@@ -51,13 +44,12 @@ export default function GetMyChatList() {
     }
   }
 
-  console.log(chatData, ` 챗데이타`);
   return (
     <div className={styles.chatListContainer}>
       {Array.isArray(chatData) &&
         chatData.map(function (e: any, i: number) {
           return (
-            <div className={styles.chatListBox}>
+            <div className={styles.chatListBox} key={i}>
               <div
                 className={
                   chatUser == e.id ? styles.checkedRoom : styles.chatList

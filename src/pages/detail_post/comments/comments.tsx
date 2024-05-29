@@ -18,9 +18,8 @@ export default function Comments() {
   const fetchComments = async () => {
     try {
       const response = await instance.get(`comments/list/${id}/`);
-      //   console.log(response.data, "댓글수임");
+
       setGetComments(response.data.comment_list);
-      // console.log(response.data.comment_list);
     } catch (error) {
       console.error("받기 실패", error);
     }
@@ -33,22 +32,15 @@ export default function Comments() {
     e.preventDefault();
     if (comment) {
       try {
-        const response = await instance.post(
-          `comments/list/${id}/`,
-          { content: comment },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access")}`,
-              // "Content-Type": "application/json",
-            },
-          },
-        );
+        const response = await instance.post(`comments/list/${id}/`, {
+          content: comment,
+        });
         setGetComments((prevComments) => [
           response.data.comment,
           ...(prevComments || []),
         ]);
         alert("댓글이 성공적으로 등록되었습니다.");
-        // console.log(response.data.comment.user);
+
         setComment("");
       } catch (error) {
         console.error("댓글 보내기 실패", error);
@@ -62,16 +54,9 @@ export default function Comments() {
     e.preventDefault();
     if (editedComment) {
       try {
-        await instance.put(
-          `comments/detail/${editCommentId}/`,
-          { content: editedComment },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access")}`,
-              // "Content-Type": "application/json",
-            },
-          },
-        );
+        await instance.put(`comments/detail/${editCommentId}/`, {
+          content: editedComment,
+        });
         // alert(response.data.message);
         setEditCommentId(null);
 
@@ -105,11 +90,7 @@ export default function Comments() {
   const handleDelete = async (e: number) => {
     try {
       // 삭제 요청을 보냅니다.
-      const response = await instance.delete(`comments/detail/${e}/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      });
+      const response = await instance.delete(`comments/detail/${e}/`);
       fetchComments();
       alert(response.data.message);
     } catch (error) {
