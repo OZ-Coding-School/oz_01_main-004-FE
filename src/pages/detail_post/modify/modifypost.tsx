@@ -224,17 +224,19 @@ export default function ModifyPost() {
       if (file) {
         try {
           const res = await instance.post("recipes/image-upload/", formData);
-          const image_url = res.data.image_info.image;
-          const image_id = res.data.image_info.image_uuid;
-          setImgAddList((prevImgAddlist) => [...prevImgAddlist, image_url]);
-          setUuid_list((prevUuid_list) => [...prevUuid_list, image_id]);
+          if (res && res.data && res.data.image_info) {
+            const image_url = res.data.image_info.image;
+            const image_id = res.data.image_info.image_uuid;
+            setImgAddList((prevImgAddlist) => [...prevImgAddlist, image_url]);
+            setUuid_list((prevUuid_list) => [...prevUuid_list, image_id]);
 
-          if (quillRef.current) {
-            const quill = quillRef.current;
-            const range = quill.getSelection(true);
-            const index = range ? range.index : quill.getLength();
-            quill.insertEmbed(index, "image", image_url);
-            quill.setSelection(index + 1, 0);
+            if (quillRef.current) {
+              const quill = quillRef.current;
+              const range = quill.getSelection(true);
+              const index = range ? range.index : quill.getLength();
+              quill.insertEmbed(index, "image", image_url);
+              quill.setSelection(index + 1, 0);
+            }
           }
         } catch (error) {
           console.error("err", error);
