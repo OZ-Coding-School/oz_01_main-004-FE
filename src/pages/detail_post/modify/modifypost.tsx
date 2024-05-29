@@ -15,7 +15,7 @@ import { FoodIngredients, FoodTypes } from "../../community/fooddata.api";
 import styles from "./modifypost.module.css";
 
 interface FormState {
-  thumbnail: File | null;
+  thumbnail: File | string | null;
   title: string | "";
   content: string | "";
   food_type: number | null;
@@ -57,7 +57,6 @@ export default function ModifyPost() {
   const [uuid_list, setUuid_list] = useState<string[]>([]);
 
   const handleTagSelect = (selectedTag: string | null) => {
-    console.log(selectedTag);
     setFormState((prevState) => ({
       ...prevState,
       level: selectedTag,
@@ -99,9 +98,10 @@ export default function ModifyPost() {
           },
         };
         const response = await instance.get(`recipes/detail/${id}/`, config);
-        console.log(response.data);
+        const thumbnail_url = response.data.recipe.thumbnail;
         setFormState({
           ...formState,
+          thumbnail: thumbnail_url,
           title: response.data.recipe.title,
           content: response.data.recipe.content,
           food_type: response.data.recipe.food_type.id,
@@ -114,7 +114,7 @@ export default function ModifyPost() {
             response.data.recipe.content,
           );
         }
-        setImagePreviewUrl(response.data.recipe.thumbnail);
+        setImagePreviewUrl(thumbnail_url);
         setDefaultFoodTypeLabel(response.data.recipe.food_type.food_name);
         setDefaultFoodIngredientLabel(
           response.data.recipe.food_ingredient.food_name,
@@ -122,7 +122,7 @@ export default function ModifyPost() {
         setDefaultTag(response.data.recipe.level);
         // content에서 이미지 URL 추출 및 설정
         const extractedImages = extractImageUrls(response.data.recipe.content);
-        console.log(extractedImages);
+
         setImgAddList(extractedImages);
       } catch (error) {
         console.error("getDataError", error);
@@ -233,8 +233,6 @@ export default function ModifyPost() {
           setImgAddList((prevImgAddlist) => [...prevImgAddlist, image_url]);
           setUuid_list((prevUuid_list) => [...prevUuid_list, image_id]);
 
-          console.log("데이터", image_url);
-
           if (quillRef.current) {
             const quill = quillRef.current;
             const range = quill.getSelection(true);
@@ -252,7 +250,6 @@ export default function ModifyPost() {
   //수정해서 보내기......
   async function onsubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Form State:", formState);
     const { thumbnail, title, food_type, food_ingredient, level, content } =
       formState;
     try {
@@ -265,7 +262,11 @@ export default function ModifyPost() {
         level
       ) {
         const formData = new FormData();
-        formData.append("thumbnail", thumbnail);
+        if (thumbnail instanceof File) {
+          formData.append("thumbnail", thumbnail);
+        } else if (typeof thumbnail === "string") {
+          formData.append("thumbnail_url", thumbnail);
+        }
         formData.append("title", title);
         formData.append("content", quillRef.current.root.innerHTML);
         formData.append("food_type", food_type.toString());
@@ -273,7 +274,6 @@ export default function ModifyPost() {
         formData.append("level", level);
         formData.append("image_url_list", JSON.stringify(imgAddList));
         formData.append("uuid_list", JSON.stringify(uuid_list));
-        console.log("이미지 배열 배열", imgAddList);
 
         const config = {
           headers: {
@@ -288,7 +288,6 @@ export default function ModifyPost() {
           config,
         );
         const recipeId = response.data.recipe.id;
-        // console.log("response", response.data);
 
         alert("게시물을 수정하였습니다.");
         navigate(`/detailPost/${recipeId}/`);

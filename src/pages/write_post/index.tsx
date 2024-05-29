@@ -51,7 +51,6 @@ export default function WritePost() {
     item: { id: any; name?: string; img?: string },
     type: string,
   ) => {
-    console.log("selected", item);
     setFormState((prevState) => ({
       ...prevState,
       [type]: item.id,
@@ -60,7 +59,6 @@ export default function WritePost() {
 
   const tags = ["하수", "중수", "고수"];
   const handleTagSelect = (selectedTag: string | null) => {
-    console.log(selectedTag);
     setSelectedTag(selectedTag);
     setFormState((prevState) => ({
       ...prevState,
@@ -157,9 +155,6 @@ export default function WritePost() {
             const image_id = res.data.image_info.image_uuid;
             setUuid_list((prevUuid_list) => [...prevUuid_list, image_id]);
 
-            console.log("데이터", image_url);
-            console.log("id", image_id);
-
             if (quillRef.current) {
               const quill = quillRef.current;
               const range = quill.getSelection(true);
@@ -178,7 +173,6 @@ export default function WritePost() {
   }
   async function onsubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Form State:", formState);
     const { thumbnail, title, food_type, food_ingredient, level, content } =
       formState;
     try {
@@ -198,7 +192,6 @@ export default function WritePost() {
         formData.append("food_ingredient", food_ingredient.toString());
         formData.append("level", level);
         formData.append("uuid_list", JSON.stringify(uuid_list));
-        console.log("이미지 배열", uuid_list);
 
         const config = {
           headers: {
@@ -209,7 +202,6 @@ export default function WritePost() {
 
         const response = await instance.post("recipes/list/", formData, config);
         const recipeId = response.data.recipe.id;
-        // console.log("response", response.data);
 
         alert("게시물을 등록하였습니다.");
         navigate(`/detailPost/${recipeId}/`);

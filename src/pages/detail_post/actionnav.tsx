@@ -44,7 +44,6 @@ export default function ActionNav() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Recipe deleted successfully");
       navigate("/");
     } catch (error) {
       console.error("delete error", error);
