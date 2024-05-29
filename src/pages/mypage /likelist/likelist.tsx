@@ -18,7 +18,6 @@ const LikeList: React.FC = () => {
         },
       });
 
-      console.log(response.data, "응답확인");
       const data = response.data;
 
       if (data && data.favorite_list) {
@@ -28,7 +27,6 @@ const LikeList: React.FC = () => {
         }));
 
         setLikeList(updatedLikeList);
-        console.log(data.favorite_list, "여기favorite_list");
       }
     } catch (error) {
       console.error("Error fetching like list:", error);

@@ -47,7 +47,6 @@ const Main: React.FC = () => {
         }
 
         const response = await instance.get("recipes/main/", { headers });
-        console.log(response.data, "응답확인");
 
         if (response.data && response.data.recently_recipe_list) {
           const recentRecipes = response.data.recently_recipe_list;
@@ -89,7 +88,6 @@ const Main: React.FC = () => {
         }
 
         const response = await instance.get("/recipes/main/", { headers });
-        console.log(response.data, "응답확인");
 
         if (response.data && response.data.popular_recipe_list) {
           const popularRecipes = response.data.popular_recipe_list;
