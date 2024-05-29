@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaSignOutAlt } from "react-icons/fa";
 import instance from "../../../api/axios";
 import { useChatContext } from "../../../context/chatuser";
 import styles from "../index.module.css";
@@ -7,6 +8,7 @@ export default function GetMyChatList() {
 
   const { chatUser, setChatUser } = useChatContext();
   const [, setIsChatRoomVisible] = useState(false);
+  const myId = localStorage.getItem("id");
 
   useEffect(() => {
     getList();
@@ -27,7 +29,7 @@ export default function GetMyChatList() {
     }
   }
 
-  const handleChatRoomToggle = (i: number) => {
+  const handleSelectChatRoomToggle = (i: number) => {
     if (chatUser === null) {
       setChatUser(chatData[i].id);
       console.log(chatData[i].id);
@@ -38,41 +40,66 @@ export default function GetMyChatList() {
       setIsChatRoomVisible(false);
     }
   };
+  async function handleLeaveChatRoom() {
+    try {
+      await instance.delete(`chat/chatrooms/${chatUser}/leave/${myId}/`);
+      window.confirm("정말 채팅방을 나가시겠습니까?");
+      alert("채팅방을 나갔습니다");
+      getList();
+    } catch (error) {
+      alert("채팅방을 누르고 삭제해주세요");
+    }
+  }
 
+  console.log(chatData, ` 챗데이타`);
   return (
     <div className={styles.chatListContainer}>
       {Array.isArray(chatData) &&
         chatData.map(function (e: any, i: number) {
           return (
-            <div
-              className={styles.chatList}
-              key={i}
-              onClick={() => {
-                handleChatRoomToggle(i);
-              }}
-            >
-              <div className={styles.chatImg}>
-                <img
-                  style={{
-                    width: "50px",
-                    height: "50px",
-                    boxSizing: "border-box",
-                    borderRadius: "50%",
-                  }}
-                  src={
-                    e.participant_data[0].profile_image !== null &&
-                    e.participant_data[0].profile_image !== undefined
-                      ? e.participant_data[1].profile_image
-                      : "/mypage/basicProfile.jpg"
-                  }
-                  alt=""
-                />
-              </div>
-              <div className={styles.chatNameBox}>
-                <div className={styles.chatContent}>{e.name}</div>
-                <div className={styles.chatUser}>
-                  {e.participant_data[0].nickname}
+            <div className={styles.chatListBox}>
+              <div
+                className={
+                  chatUser == e.id ? styles.checkedRoom : styles.chatList
+                }
+                key={e.id}
+                onClick={() => {
+                  handleSelectChatRoomToggle(i);
+                }}
+              >
+                <div className={styles.chatImg}>
+                  <img
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      boxSizing: "border-box",
+                      borderRadius: "50%",
+                    }}
+                    src={
+                      e.participant_data[0].profile_image !== null &&
+                      e.participant_data[0].profile_image !== undefined
+                        ? e.participant_data[1].profile_image
+                        : "/mypage/basicProfile.jpg"
+                    }
+                    alt=""
+                  />
                 </div>
+                <div className={styles.chatNameBox}>
+                  <div className={styles.chatContent}>{e.name}</div>
+                  <div className={styles.chatUser}>
+                    {e.participant_data[0].nickname}
+                  </div>
+                </div>
+                {/* 나가기버튼 */}
+                <FaSignOutAlt
+                  onClick={() => {
+                    handleLeaveChatRoom();
+                  }}
+                  style={{
+                    width: "20px",
+                    height: "auto",
+                  }}
+                />
               </div>
             </div>
           );

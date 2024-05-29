@@ -44,25 +44,45 @@
 }
 
 .chatListContainer {
-  height: 70vh;
+  height: 60vh;
   overflow: scroll;
   margin: 0;
   padding: 0;
 }
 
+.chatListBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .chatList {
   box-sizing: border-box;
   display: flex;
-  margin: 20px;
+  margin: 20px 10px;
   padding: 5px;
   cursor: pointer;
+  align-items: center;
+  width: 100%;
 }
 .chatList :hover {
   color: red;
 }
 
+.checkedRoom {
+  color: #f97066;
+  box-sizing: border-box;
+  display: flex;
+  margin: 20px 10px;
+  padding: 5px;
+  cursor: pointer;
+  align-items: center;
+  width: 100%;
+}
+
 .chatNameBox {
-  padding-left: 10px;
+  padding-left: 20px;
+  width: 80%;
 }
 
 .chatUser {
@@ -70,7 +90,7 @@
 }
 .chatContent {
   box-sizing: border-box;
-  width: 16vw;
+  width: 10vw;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -169,7 +189,7 @@
   /* position: fixed; */
   width: 75%;
   background-color: white;
-  /* padding-bottom: 100px; */
+  margin-top: 10px;
   bottom: 0;
 }
 
@@ -190,6 +210,7 @@
   color: white;
   outline: none;
   border: 4px solid #f97066;
-  border-radius: 2px;
+  border-radius: 8px;
   width: 208px;
+  height: 32px;
 }

@@ -14,9 +14,8 @@ export default function Chat() {
   const { chatUser } = useChatContext();
   const webSocket = useRef<WebSocket | null>(null);
   const webSocketUrl = import.meta.env.VITE_WEBSOCKET_URL + `${chatUser}/`;
-  //무한스크롤 변수
+
   const [pageNum, setPageNum] = useState<number>(2);
-  const [roomNum, setRoomNum] = useState<number | null>();
   const [message, setMessage] = useState<string>("");
   const myId = localStorage.getItem("id");
 
