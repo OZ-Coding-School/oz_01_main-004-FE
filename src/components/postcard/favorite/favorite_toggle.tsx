@@ -22,7 +22,7 @@ const Favorite = ({
 
   const mountLike = async () => {
     try {
-      const response = await instance.post(
+      await instance.post(
         `favorite/detail/${id}/`,
         {},
         {
@@ -31,23 +31,25 @@ const Favorite = ({
           },
         },
       );
-      alert(response.data.message);
+      alert("냠냠 찜하기 완료!");
     } catch (error) {
       console.error("찜하기 실패", error);
+      setIsFavorite(false);
     }
   };
 
   //찜하기 삭제
   const unMountLike = async () => {
     try {
-      const response = await instance.delete(`favorite/detail/${id}/`, {
+      await instance.delete(`favorite/detail/${id}/`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access")}`,
         },
       });
-      alert(response.data.message);
+      alert("찜 삭제 완료!");
     } catch (error) {
       console.error("찜하기 실패", error);
+      setIsFavorite(true);
     }
   };
 

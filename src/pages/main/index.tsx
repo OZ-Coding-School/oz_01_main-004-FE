@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import instance from "../../api/axios";
 import { Recipe } from "../../components/mealgrid/type";
 import Postcard from "../../components/postcard/postcard";
+import useFavoriteStatus from "../../hooks/use_favoriestatus";
 import mainpage_1 from "/images/mainpage_1.png";
 import mainpage_2 from "/images/mainpage_2.png";
 import mainpage_3 from "/images/mainpage_3.png";
@@ -32,6 +33,7 @@ const Main: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [recentMeals, setRecentMeals] = useState<Recipe[]>([]);
   const [popularMeals, setPopularMeals] = useState<Recipe[]>([]);
+  const { favoriteStates } = useFavoriteStatus();
   useEffect(() => {
     const fetchLatestMeals = async () => {
       try {
@@ -168,7 +170,11 @@ const Main: React.FC = () => {
           </Textinfo>
           <PostGrid>
             {popularMeals.map((recipe) => (
-              <Postcard key={recipe.id} recipe={recipe} />
+              <Postcard
+                key={recipe.id}
+                recipe={recipe}
+                isFavorite={favoriteStates[recipe.id] || false}
+              />
             ))}
           </PostGrid>
         </FamousArticle>
@@ -180,7 +186,11 @@ const Main: React.FC = () => {
           </Textinfo>
           <PostGrid>
             {recentMeals.map((recipe) => (
-              <Postcard key={recipe.id} recipe={recipe} />
+              <Postcard
+                key={recipe.id}
+                recipe={recipe}
+                isFavorite={favoriteStates[recipe.id] || false}
+              />
             ))}
           </PostGrid>
         </RecentArticle>

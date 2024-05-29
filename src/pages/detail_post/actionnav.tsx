@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { CgMoreVerticalO } from "react-icons/cg";
+import { IoEllipsisVerticalCircle } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
+import styled from "styled-components";
 import instance from "../../api/axios";
+import useOutsideRef from "../../hooks/use_outsideref";
 import styles from "./actionnav.module.css";
 
 export default function ActionNav() {
@@ -9,9 +11,10 @@ export default function ActionNav() {
   const [isOpen, setIsOpen] = useState(false);
   const { id } = useParams();
 
-  //   const closeDropdown = () => setIsOpen(false);
+  const closeDropdown = () => setIsOpen(false);
 
-  //   const dropdownRef = useOutsideRef(closeDropdown);
+  const dropdownRef = useOutsideRef(closeDropdown);
+
   const handleModifyClick = async () => {
     navigate(`/writePost/modify/${id}/`);
   };
@@ -34,12 +37,12 @@ export default function ActionNav() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.dropdown} ref={dropdownRef}>
       <button
         style={{ border: "none", background: "none" }}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <CgMoreVerticalO size={18} />
+        <OptionIcon />
       </button>
       {isOpen && (
         <ul>
@@ -50,3 +53,9 @@ export default function ActionNav() {
     </div>
   );
 }
+
+const OptionIcon = styled(IoEllipsisVerticalCircle)`
+  width: 24px;
+  height: 24px;
+  color: rgb(33, 38, 41);
+`;

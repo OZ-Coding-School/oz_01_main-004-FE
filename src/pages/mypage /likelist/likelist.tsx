@@ -1,14 +1,15 @@
 import styles from "./likelist.module.css";
 // import MealGrid from "../../../components/mealgrid/mealgrid";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 import instance from "../../../api/axios";
 import { Recipe } from "../../../components/mealgrid/type";
 import Postcard from "../../../components/postcard/postcard";
-import styled from "styled-components";
+import useFavoriteStatus from "../../../hooks/use_favoriestatus";
 
 const LikeList: React.FC = () => {
   const [likeList, setLikeList] = useState<Recipe[]>([]);
-
+  const { favoriteStates } = useFavoriteStatus();
   const fetchLikeList = async () => {
     try {
       const response = await instance.get("/favorite/list/", {
@@ -43,7 +44,11 @@ const LikeList: React.FC = () => {
       <div className={styles.grid}>
         <PostGrid>
           {likeList.map((recipe) => (
-            <Postcard key={recipe.id} recipe={recipe} />
+            <Postcard
+              key={recipe.id}
+              recipe={recipe}
+              isFavorite={favoriteStates[recipe.id] || false}
+            />
           ))}
         </PostGrid>
       </div>
