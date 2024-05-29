@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiFillCaretUp } from "react-icons/ai";
 import instance from "../../../api/axios";
 import Button from "../../../components/Button/Button";
@@ -14,7 +14,6 @@ export default function GetMessagesOfChatroom({
 }: GetMessagesOfChatroomProps) {
   const { chatUser } = useChatContext();
   const myNickname = localStorage.getItem("nickname");
-  const messageContainerRef = useRef<HTMLDivElement | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -78,27 +77,6 @@ export default function GetMessagesOfChatroom({
       setLoading(false);
     }
   };
-
-  //스크롤 Top이 0이 되면
-  const handleScroll = () => {
-    if (messageContainerRef.current) {
-      if (messageContainerRef.current.scrollTop === 0) {
-        fetchPreviousMessages();
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (messageContainerRef.current) {
-      messageContainerRef.current.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (messageContainerRef.current) {
-        messageContainerRef.current.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
 
   return (
     <div className={styles.messageContainer}>

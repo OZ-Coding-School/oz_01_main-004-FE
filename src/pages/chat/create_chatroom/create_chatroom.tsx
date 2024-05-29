@@ -35,7 +35,12 @@ export default function CreateChatRoom() {
       <form className={styles.createRoomForm} onSubmit={handleSubmit}>
         <div className={styles.createFormCenter}>
           <input
-            style={{ width: "200px", height: "30px" }}
+            style={{
+              width: "200px",
+              height: "30px",
+              borderRadius: "8px",
+              border: "1px solid gray",
+            }}
             type="text"
             placeholder="채팅방 이름"
             value={roomName == null ? "" : roomName}
@@ -43,7 +48,12 @@ export default function CreateChatRoom() {
           />
           <div>
             <input
-              style={{ width: "200px", height: "30px" }}
+              style={{
+                width: "200px",
+                height: "30px",
+                borderRadius: "8px",
+                border: "1px solid gray",
+              }}
               type="text"
               placeholder="유저ID ex)1,2,3"
               onChange={handleMemberId}
