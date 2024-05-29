@@ -37,6 +37,7 @@ const QueryStringDropdown = ({
       options={selectoption}
       defaultLabel={defaultLabel}
       onSelect={handleSelect}
+      selectedOption={null}
     />
   );
 };

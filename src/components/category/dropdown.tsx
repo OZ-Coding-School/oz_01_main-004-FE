@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import useOutsideRef from "../../hooks/use_outsideref";
 import styles from "./dropdown.module.css";
@@ -6,16 +6,25 @@ import styles from "./dropdown.module.css";
 interface DropdownProps {
   options: { id: number; name: string; img: string }[];
   defaultLabel: string;
+  selectedOption: number | null;
   onSelect?: (item: { id: number; name: string; img: string }) => void;
 }
 
 const Dropdown = ({
   options,
   defaultLabel,
+  selectedOption,
   onSelect = () => {},
 }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<string>(defaultLabel);
+
+  useEffect(() => {
+    const selectedOptionName = options.find(
+      (option) => option.id === selectedOption,
+    )?.name;
+    setSelected(selectedOptionName || defaultLabel);
+  }, [defaultLabel, selectedOption, options]);
 
   const handleSelect = (item: { id: number; name: string; img: string }) => {
     setSelected(item.name);

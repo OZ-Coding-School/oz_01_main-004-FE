@@ -35,9 +35,6 @@ const MyPost: React.FC = () => {
     }
   };
 
-  // const handleModifyClick = async (id: number) => {
-  //   navigate(`/detailPost/modify/${id}/`);
-  // };
   const handleEdit = async (id: number) => {
     const confirmEdit = window.confirm("수정하시겠습니까?");
     if (confirmEdit) {
@@ -48,16 +45,6 @@ const MyPost: React.FC = () => {
       }
       try {
         navigate(`/detailPost/modify/${id}/`);
-        // const response = await instance.put(
-        //   `/recipes/detail/${id}/`,
-        //   {},
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   },
-        // );
-        // console.log(response.data.recipe, "수정 API 응답 확인");
       } catch (error) {
         console.error("Error editing recipe:", error);
       }

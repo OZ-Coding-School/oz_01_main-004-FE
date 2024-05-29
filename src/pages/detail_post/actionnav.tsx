@@ -15,18 +15,33 @@ export default function ActionNav() {
 
   const dropdownRef = useOutsideRef(closeDropdown);
 
-  const handleModifyClick = async () => {
-    navigate(`/writePost/modify/${id}/`);
+  const handleModifyClick = () => {
+    const token = localStorage.getItem("access");
+    if (!token) {
+      console.error("not logged");
+      return;
+    }
+    try {
+      navigate(`/detailPost/modify/${id}/`);
+    } catch (error) {
+      console.error("error", error);
+    }
   };
 
   const handleDeleteClick = async () => {
+    const token = localStorage.getItem("access");
+    if (!token) {
+      console.error("not logged");
+      return;
+    }
+
     try {
       const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
       if (!confirmDelete) return;
 
       await instance.delete(`recipes/detail/${id}/`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       console.log("Recipe deleted successfully");
@@ -46,8 +61,12 @@ export default function ActionNav() {
       </button>
       {isOpen && (
         <ul>
-          <li onClick={() => handleModifyClick}>수정</li>
-          <li onClick={() => handleDeleteClick}>삭제</li>
+          <li>
+            <button onClick={handleModifyClick}>수정</button>
+          </li>
+          <li>
+            <button onClick={handleDeleteClick}>삭제</button>
+          </li>
         </ul>
       )}
     </div>

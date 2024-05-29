@@ -26,6 +26,7 @@ export default function WritePost() {
   const [, setQuillHtml] = useState("");
   const navigate = useNavigate();
   const [uuid_list, setUuid_list] = useState<string[]>([]);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const [formState, setFormState] = useState<FormState>({
     thumbnail: null,
@@ -60,6 +61,7 @@ export default function WritePost() {
   const tags = ["하수", "중수", "고수"];
   const handleTagSelect = (selectedTag: string | null) => {
     console.log(selectedTag);
+    setSelectedTag(selectedTag);
     setFormState((prevState) => ({
       ...prevState,
       level: selectedTag,
@@ -310,11 +312,13 @@ export default function WritePost() {
               onSelect={(item) => handleSelect(item, "food_type")}
               options={foodType}
               defaultLabel="종류별"
+              selectedOption={null}
             />
             <Dropdown
               onSelect={(item) => handleSelect(item, "food_ingredient")}
               options={foodIngredient}
               defaultLabel="재료별"
+              selectedOption={null}
             />
           </div>
         </div>
@@ -322,7 +326,11 @@ export default function WritePost() {
           <div style={{ marginBottom: "15px" }}>
             요리 난이도를 선택해주세요.
           </div>
-          <TagButton tags={tags} onSelect={handleTagSelect} />
+          <TagButton
+            tags={tags}
+            onSelect={handleTagSelect}
+            selectedTag={selectedTag}
+          />
         </div>
       </div>
       <div className={styles.writeBtn}>

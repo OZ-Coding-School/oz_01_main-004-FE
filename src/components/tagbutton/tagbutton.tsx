@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./tagbutton.module.css";
 
 interface TagButtonProps {
   tags: string[];
   onSelect: (tag: string | null) => void; // 선택된 태그를 처리하는 함수
+  selectedTag: string | null;
 }
 
-const TagButton = ({ tags, onSelect }: TagButtonProps) => {
+const TagButton = ({ tags, onSelect, selectedTag }: TagButtonProps) => {
   const [selected, setSelected] = useState<string | null>(null);
+
+  useEffect(() => {
+    setSelected(selectedTag);
+  }, [selectedTag]);
 
   const handleClick = (value: string) => {
     const newValue = selected === value ? null : value;

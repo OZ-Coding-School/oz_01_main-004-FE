@@ -22,13 +22,19 @@ interface FormState {
   food_ingredient: number | null;
   level: string | null;
 }
+const tags = ["하수", "중수", "고수"];
+interface FoodType {
+  id: number;
+  name: string;
+  img: string;
+}
 
 export default function ModifyPost() {
   const { id } = useParams();
   const quillRef = useRef<Quill>();
   const [, setQuillHtml] = useState("");
   const navigate = useNavigate();
-  const [uuid_list, setUuid_list] = useState<string[]>([]);
+  const [imgAddList, setImgAddList] = useState<string[]>([]);
   const [defaultFoodTypeLabel, setDefaultFoodTypeLabel] =
     useState<string>("종류별");
   const [defaultFoodIngredientLabel, setDefaultFoodIngredientLabel] =
@@ -43,10 +49,45 @@ export default function ModifyPost() {
     level: null,
   });
 
-  const [foodType, setfoodType] = useState([]);
-  const [foodIngredient, setfoodIngredient] = useState([]);
+  const [foodType, setfoodType] = useState<FoodType[]>([]);
+  const [foodIngredient, setfoodIngredient] = useState<FoodType[]>([]);
+  const [defaultTag, setDefaultTag] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
+  const [uuid_list, setUuid_list] = useState<string[]>([]);
+
+  const handleTagSelect = (selectedTag: string | null) => {
+    console.log(selectedTag);
+    setFormState((prevState) => ({
+      ...prevState,
+      level: selectedTag,
+    }));
+  };
+
+  //같은것이 실행되서 이게 덮임
+  useEffect(() => {
+    const FoodData = async () => {
+      try {
+        const foodTypes = await FoodTypes();
+        setfoodType(foodTypes);
+        const foodIngredients = await FoodIngredients();
+        setfoodIngredient(foodIngredients);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    FoodData();
+  }, []);
+
+  function extractImageUrls(content: string): string[] {
+    const imgTagRegex = /<img\s+src="([^"]+)"\s*\/?>/g;
+    const urls: string[] = [];
+    let match;
+    while ((match = imgTagRegex.exec(content)) !== null) {
+      urls.push(match[1]);
+    }
+    return urls;
+  }
 
   //정보 가져오기
   useEffect(() => {
@@ -78,6 +119,11 @@ export default function ModifyPost() {
         setDefaultFoodIngredientLabel(
           response.data.recipe.food_ingredient.food_name,
         );
+        setDefaultTag(response.data.recipe.level);
+        // content에서 이미지 URL 추출 및 설정
+        const extractedImages = extractImageUrls(response.data.recipe.content);
+        console.log(extractedImages);
+        setImgAddList(extractedImages);
       } catch (error) {
         console.error("getDataError", error);
         return {};
@@ -93,26 +139,6 @@ export default function ModifyPost() {
     setFormState((prevState) => ({
       ...prevState,
       [field]: e.target.value,
-    }));
-  };
-
-  const handleSelect = (
-    item: { id: any; name?: string; img?: string },
-    type: string,
-  ) => {
-    console.log("selected", item);
-    setFormState((prevState) => ({
-      ...prevState,
-      [type]: item.id,
-    }));
-  };
-
-  const tags = ["하수", "중수", "고수"];
-  const handleTagSelect = (selectedTag: string | null) => {
-    console.log(selectedTag);
-    setFormState((prevState) => ({
-      ...prevState,
-      level: selectedTag,
     }));
   };
 
@@ -167,11 +193,16 @@ export default function ModifyPost() {
   useEffect(() => {
     if (quillRef.current) {
       quillRef.current.on("text-change", () => {
-        setQuillHtml(quillRef.current?.root.innerHTML || "");
+        const newContent = quillRef.current?.root.innerHTML || "";
+        setQuillHtml(newContent);
         setFormState((prevState) => ({
           ...prevState,
-          content: quillRef.current?.root.innerHTML || "",
+          content: newContent,
         }));
+
+        // content가 변경될 때마다 이미지 URL을 추출하여 imgAddList를 업데이트
+        const extractedImages = extractImageUrls(newContent);
+        setImgAddList(extractedImages);
       });
     }
   }, []);
@@ -199,10 +230,10 @@ export default function ModifyPost() {
           });
           const image_url = res.data.image_info.image;
           const image_id = res.data.image_info.image_uuid;
+          setImgAddList((prevImgAddlist) => [...prevImgAddlist, image_url]);
           setUuid_list((prevUuid_list) => [...prevUuid_list, image_id]);
 
           console.log("데이터", image_url);
-          console.log("id", image_id);
 
           if (quillRef.current) {
             const quill = quillRef.current;
@@ -240,8 +271,9 @@ export default function ModifyPost() {
         formData.append("food_type", food_type.toString());
         formData.append("food_ingredient", food_ingredient.toString());
         formData.append("level", level);
+        formData.append("image_url_list", JSON.stringify(imgAddList));
         formData.append("uuid_list", JSON.stringify(uuid_list));
-        console.log("이미지 배열", uuid_list);
+        console.log("이미지 배열 배열", imgAddList);
 
         const config = {
           headers: {
@@ -268,6 +300,7 @@ export default function ModifyPost() {
           food_type,
           food_ingredient,
           level,
+          imgAddList,
           uuid_list,
         });
       }
@@ -275,20 +308,6 @@ export default function ModifyPost() {
       console.error("form err", error);
     }
   }
-  //같은것이 실행되서 이게 덮임
-  useEffect(() => {
-    const FoodData = async () => {
-      try {
-        const foodTypes = await FoodTypes();
-        setfoodType(foodTypes);
-        const foodIngredients = await FoodIngredients();
-        setfoodIngredient(foodIngredients);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-    FoodData();
-  }, []);
 
   return (
     <form
@@ -355,24 +374,32 @@ export default function ModifyPost() {
             주요 카테고리를 선택해주세요.
           </div>
           <div className={styles.dropdownDiv}>
-            <Dropdown
-              onSelect={(item: {
-                id: any;
-                name?: string | undefined;
-                img?: string | undefined;
-              }) => handleSelect(item, "food_type")}
-              options={foodType}
-              defaultLabel={defaultFoodTypeLabel}
-            />
-            <Dropdown
-              onSelect={(item: {
-                id: any;
-                name?: string | undefined;
-                img?: string | undefined;
-              }) => handleSelect(item, "food_ingredient")}
-              options={foodIngredient}
-              defaultLabel={defaultFoodIngredientLabel}
-            />
+            {foodType.length > 0 && (
+              <Dropdown
+                options={foodType}
+                defaultLabel={defaultFoodTypeLabel}
+                selectedOption={formState.food_type}
+                onSelect={(item: { id: number; name: string; img: string }) =>
+                  setFormState((prevState) => ({
+                    ...prevState,
+                    food_type: item.id,
+                  }))
+                }
+              />
+            )}
+            {foodIngredient.length > 0 && (
+              <Dropdown
+                options={foodIngredient}
+                defaultLabel={defaultFoodIngredientLabel}
+                selectedOption={formState.food_ingredient}
+                onSelect={(item: { id: number; name: string; img: string }) =>
+                  setFormState((prevState) => ({
+                    ...prevState,
+                    food_ingredient: item.id,
+                  }))
+                }
+              />
+            )}
           </div>
         </div>
         <div className={styles.tagDiv}>
@@ -382,7 +409,7 @@ export default function ModifyPost() {
           <TagButton
             tags={tags}
             onSelect={handleTagSelect}
-            // selectedTag={formState.level}
+            selectedTag={defaultTag}
           />
         </div>
       </div>
