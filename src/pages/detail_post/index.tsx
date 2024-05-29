@@ -17,7 +17,10 @@ export default function DetailPost() {
   const [foodIngredient, setFoodIngredient] = useState("");
   const navigate = useNavigate();
   const [foodType, setFoodType] = useState("");
+  const [userId, setuserId] = useState("");
   const { id } = useParams();
+
+  const MyUserId = localStorage.getItem("id");
 
   useEffect(() => {
     fetchData();
@@ -33,6 +36,9 @@ export default function DetailPost() {
         response.data.recipe.food_ingredient.food_ingredient_name,
       );
       setFoodType(response.data.recipe.food_type.food_type_name);
+      setuserId(String(response.data.recipe.user.id));
+      console.log("Fetched user ID:", response.data.recipe.user.id);
+      console.log("Local user ID:", MyUserId);
     } catch (error) {
       console.error("받기 실패", error);
     }
@@ -129,9 +135,11 @@ export default function DetailPost() {
               <div>채팅하기</div>
             </div>
             <div>{convertToKoreanTime(getAllData.created_at)}</div>
-            <div>
-              <ActionNav />
-            </div>
+            {userId === MyUserId ? (
+              <div>
+                <ActionNav />
+              </div>
+            ) : null}
           </div>
           <div className={styles.likeBox}>
             {/* <BiSolidBowlRice style={{ width: "30px", height: "35px" }} /> */}
