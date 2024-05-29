@@ -85,8 +85,9 @@ instance.interceptors.response.use(
           alert("결제가 필요합니다.");
           break;
         case 400:
+          console.error(`Error ${status}:`, error.response.data);
           // alert("내가 작성할 게시물을 찜할 수 없습니다.");
-          alert(error.response.data.message);
+          // alert(error.response.data.message);
           break;
         default:
           console.error(`Error ${status}:`, error.response.data);

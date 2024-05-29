@@ -103,16 +103,6 @@ export default function Nav(): JSX.Element {
               >
                 로그인
               </button>
-              // <Button
-              //   size="sm"
-              //   variant="secondary"
-              //   onClick={() => {
-              //     navigate("/login");
-              //     setSearchValue("");
-              //   }}
-              // >
-              //   로그인
-              // </Button>
             )}
             <Button
               size="sm"
