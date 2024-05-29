@@ -6,12 +6,15 @@ import Button from "../../../components/Button/Button";
 import { Recipe } from "../../../components/mealgrid/type";
 import Postcard from "../../../components/postcard/postcard";
 import styles from "./mypost.module.css";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const MyPost: React.FC = () => {
   const [posts, setPosts] = useState<Recipe[]>([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
 
-  const fetchMyPostList = async () => {
+  const fetchMyPostList = async (page: number) => {
     try {
       const token = localStorage.getItem("access");
       if (!token) {
@@ -23,12 +26,16 @@ const MyPost: React.FC = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          page: page,
+        },
       });
       console.log(response.data, "응답확인");
 
       if (response.data && response.data.results) {
         setPosts(response.data.results);
         console.log(response.data.results, "여기 list");
+        setTotalPages(Math.ceil(response.data.count / 12));
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -62,15 +69,31 @@ const MyPost: React.FC = () => {
         },
       });
       console.log("Recipe deleted successfully");
-
-      fetchMyPostList();
+      fetchMyPostList(page);
     } catch (error) {
       console.error("Error deleting recipe:", error);
     }
   };
+
   useEffect(() => {
-    fetchMyPostList();
-  }, []);
+    fetchMyPostList(page);
+  }, [page]);
+
+  const handleNextPage = () => {
+    if (page < totalPages) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (page > 1) {
+      setPage((prevPage) => prevPage - 1);
+    }
+  };
+
+  const handlePageClick = (pageNumber: number) => {
+    setPage(pageNumber);
+  };
 
   return (
     <div className={styles.container}>
@@ -98,6 +121,33 @@ const MyPost: React.FC = () => {
             </div>
           ))}
         </PostGrid>
+        <div className={styles.ButtonContainer}>
+          <button
+            className={styles.MoveBtn}
+            onClick={handlePreviousPage}
+            disabled={page <= 1}
+          >
+            <IoIosArrowBack color="#fff" />
+          </button>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => handlePageClick(index + 1)}
+              className={
+                index + 1 === page ? styles.activePageButton : styles.Button
+              }
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            className={styles.MoveBtn}
+            onClick={handleNextPage}
+            disabled={page >= totalPages}
+          >
+            <IoIosArrowForward color="#fff" />
+          </button>
+        </div>
       </div>
     </div>
   );
