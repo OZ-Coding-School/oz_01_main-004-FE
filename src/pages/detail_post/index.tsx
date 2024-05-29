@@ -9,6 +9,7 @@ import instance from "../../api/axios";
 import convertToKoreanTime from "../../hooks/make_korean_date";
 import ActionNav from "./actionnav";
 import Comments from "./comments/comments";
+import { goToChat } from "./go_to_chat/go_chat";
 import styles from "./index.module.css";
 
 export default function DetailPost() {
@@ -17,10 +18,11 @@ export default function DetailPost() {
   const [foodIngredient, setFoodIngredient] = useState("");
   const navigate = useNavigate();
   const [foodType, setFoodType] = useState("");
-  const [userId, setuserId] = useState("");
+  const [writerUserId, setWriterUserId] = useState("");
+  const [writerNickName, setWriterNickName] = useState("");
+  const myUserId = localStorage.getItem("id") ? localStorage.getItem("id") : "";
+  const memberId = [myUserId, writerUserId];
   const { id } = useParams();
-
-  const MyUserId = localStorage.getItem("id");
 
   useEffect(() => {
     fetchData();
@@ -37,45 +39,36 @@ export default function DetailPost() {
         response.data.recipe.food_ingredient.food_ingredient_name,
       );
       setFoodType(response.data.recipe.food_type.food_type_name);
-      setuserId(String(response.data.recipe.user.id));
+      setWriterUserId(String(response.data.recipe.user.id));
+      setWriterNickName(response.data.recipe.user.nickname);
     } catch (error) {
       console.error("받기 실패", error);
     }
   };
 
-  function GoToChat() {
-    alert(`채팅방 생성 시 ${getUserData.id}를 입력해주세요`);
+  function handleGoToChatFromDetailPost() {
+    window.confirm("채팅을 시작해시겠습니까?");
+    memberId && goToChat(memberId, writerNickName);
+    alert("채팅방이 생성되었습니다.");
     navigate("/chat");
   }
   //찜하기 보내기
   const mountLike = async () => {
     try {
-      const response = await instance.post(
-        `favorite/detail/${id}/`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        },
-      );
-      alert(response.data.message);
+      await instance.post(`favorite/detail/${id}/`);
+      alert("냠냠 찜하기 완료!");
     } catch (error) {
-      console.error("찜하기 실패", error);
+      alert("이미 찜했습니다!");
     }
   };
 
   //찜하기 삭제
   const unMountLike = async () => {
     try {
-      const response = await instance.delete(`favorite/detail/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      });
-      alert(response.data.message);
+      await instance.delete(`favorite/detail/${id}/`);
+      alert("찜하기 삭제 완료!");
     } catch (error) {
-      console.error("찜하기 실패", error);
+      console.error("찜하기삭제 실패!", error);
     }
   };
 
@@ -127,14 +120,17 @@ export default function DetailPost() {
               <div>{getUserData.nickname}</div>
             </div>
 
-            <div className={styles.chatBox} onClick={GoToChat}>
+            <div
+              className={styles.chatBox}
+              onClick={handleGoToChatFromDetailPost}
+            >
               <BsChatDots
                 style={{ width: "24px", height: "28px", paddingBottom: "3px" }}
               ></BsChatDots>
               <div>채팅하기</div>
             </div>
             <div>{convertToKoreanTime(getAllData.created_at)}</div>
-            {userId === MyUserId ? (
+            {writerUserId === myUserId ? (
               <div>
                 <ActionNav />
               </div>

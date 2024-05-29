@@ -18,7 +18,6 @@ export default function GetMessagesOfChatroom({
 
   useEffect(() => {
     if (chatUser !== null) {
-      console.log(chatUser);
       fetchMessages();
     }
   }, [chatUser]);
@@ -40,8 +39,7 @@ export default function GetMessagesOfChatroom({
         }),
       );
       setGetMessages(fetchedMessages);
-      console.log(fetchedMessages, "채팅목록 불러오기");
-      console.log(response.data);
+
       // alert(`${response.data.name}방에 입장하셨습니다.`);
     } catch (error) {
       console.error("이전 메시지를 불러오는 중 에러 발생:", error);
@@ -70,7 +68,6 @@ export default function GetMessagesOfChatroom({
       );
       setGetMessages((prevMessages) => [...fetchedMessages, ...prevMessages]);
       setPageNum((prevPageNum) => prevPageNum + 1);
-      console.log(response.data, "이전 메세지 불러오기");
     } catch (error) {
       console.error("이전 메시지를 불러오는 중 에러 발생:", error);
     } finally {

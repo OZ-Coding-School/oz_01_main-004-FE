@@ -39,11 +39,7 @@ export default function ActionNav() {
       const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
       if (!confirmDelete) return;
 
-      await instance.delete(`recipes/detail/${id}/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await instance.delete(`recipes/detail/${id}/`);
       navigate("/");
     } catch (error) {
       console.error("delete error", error);

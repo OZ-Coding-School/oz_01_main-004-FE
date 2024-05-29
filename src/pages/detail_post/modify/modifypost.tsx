@@ -92,12 +92,12 @@ export default function ModifyPost() {
   useEffect(() => {
     async function getPostData() {
       try {
-        const config = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        };
-        const response = await instance.get(`recipes/detail/${id}/`, config);
+        // const config = {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("access")}`,
+        //   },
+        // };
+        const response = await instance.get(`recipes/detail/${id}/`);
         const thumbnail_url = response.data.recipe.thumbnail;
         setFormState({
           ...formState,
@@ -223,11 +223,7 @@ export default function ModifyPost() {
       formData.append("image", file, file.name);
       if (file) {
         try {
-          const res = await instance.post("recipes/image-upload/", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
+          const res = await instance.post("recipes/image-upload/", formData);
           const image_url = res.data.image_info.image;
           const image_id = res.data.image_info.image_uuid;
           setImgAddList((prevImgAddlist) => [...prevImgAddlist, image_url]);
@@ -275,18 +271,14 @@ export default function ModifyPost() {
         formData.append("image_url_list", JSON.stringify(imgAddList));
         formData.append("uuid_list", JSON.stringify(uuid_list));
 
-        const config = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        };
+        // const config = {
+        //   headers: {
+        //     Authorization: `Bearer ${localStorage.getItem("access")}`,
+        //     "Content-Type": "multipart/form-data",
+        //   },
+        // };
 
-        const response = await instance.put(
-          `recipes/detail/${id}/`,
-          formData,
-          config,
-        );
+        const response = await instance.put(`recipes/detail/${id}/`, formData);
         const recipeId = response.data.recipe.id;
 
         alert("게시물을 수정하였습니다.");

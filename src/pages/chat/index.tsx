@@ -33,7 +33,6 @@ export default function Chat() {
     };
 
     newWebSocket.onmessage = (event: MessageEvent) => {
-      console.log("메시지 수신:", event.data, `방아이디 ${chatUser}`);
       const messageData = JSON.parse(event.data);
       const newMessage = {
         content: messageData.message.content,
@@ -54,7 +53,6 @@ export default function Chat() {
         // 중복이면 이전 상태를 그대로 반환합니다.
         return prev;
       });
-      console.log(getMessages);
     };
 
     newWebSocket.onclose = (event) => {
@@ -85,7 +83,6 @@ export default function Chat() {
       });
       webSocket.current.send(messageData);
       setMessage(""); // 입력 필드를 초기화합니다.
-      console.log(`메시지 전송: ${messageData}`);
     } else {
       console.error("웹소켓 연결이 되어 있지 않습니다.");
     }
