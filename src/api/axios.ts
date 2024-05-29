@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useLoadingStore } from "../../store/loading_store";
-import { getNewAccessToken } from "./get_new_access";
 
 // Axios 인스턴스 생성
 const instance = axios.create({
@@ -25,7 +24,6 @@ instance.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers["Authorization"] = `Bearer ${accessToken}`;
   }
-
   return config;
 });
 
@@ -37,40 +35,26 @@ instance.interceptors.response.use(
   },
   async (error) => {
     setIsLoading(false);
-
-    const originalRequest = error.config;
-
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-
-      try {
-        const newAccessToken = await getNewAccessToken();
-
-        // 새로운 액세스 토큰으로 헤더를 업데이트
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-
-        // 원래 요청을 새로운 토큰으로 재시도
-        return instance(originalRequest);
-      } catch (tokenRefreshError) {
-        // 토큰 갱신 에러 처리
-        const refresh = localStorage.getItem("refresh");
-        await instance.post("users/sign-out/", {
-          refresh,
-        });
-        localStorage.removeItem("access");
-        localStorage.removeItem("refresh");
-        localStorage.removeItem("nickname");
-        localStorage.removeItem("id");
-        alert("오류로 인해 로그아웃 되었습니다. 다시 입장해주세요");
-        console.error("Token refresh error:", tokenRefreshError);
-        return Promise.reject(tokenRefreshError);
-      }
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("access");
+      const response = await instance.post("users/token-refresh/", {
+        refresh: localStorage.getItem("refresh"),
+      });
+      const newAccessToken = response.data.access;
+      localStorage.setItem("access", newAccessToken);
     }
+  },
+);
+
+instance.interceptors.response.use(
+  (response) => {
+    setIsLoading(false);
+    return response;
+  },
+  async (error) => {
+    setIsLoading(false);
     //에러처리
+
     if (error.response) {
       const status = error.response.status;
       switch (status) {
@@ -84,8 +68,6 @@ instance.interceptors.response.use(
           break;
         case 400:
           console.error(`Error ${status}:`, error.response.data);
-          // alert("내가 작성할 게시물을 찜할 수 없습니다.");
-          // alert(error.response.data.message);
           break;
         default:
           console.error(`Error ${status}:`, error.response.data);
