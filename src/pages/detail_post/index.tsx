@@ -4,11 +4,12 @@ import { BiBowlRice } from "react-icons/bi";
 import { BsChatDots } from "react-icons/bs";
 import { PiChatTextBold } from "react-icons/pi";
 import "react-quill/dist/quill.snow.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import instance from "../../api/axios";
 import convertToKoreanTime from "../../hooks/make_korean_date";
 import ActionNav from "./actionnav";
 import Comments from "./comments/comments";
+import FavoriteButton from "./favorite_button";
 import { goToChat } from "./go_to_chat/go_chat";
 import styles from "./index.module.css";
 
@@ -16,22 +17,22 @@ export default function DetailPost() {
   const [getAllData, setGetAllData]: any = useState([]);
   const [getUserData, setGetUser]: any = useState([]);
   const [foodIngredient, setFoodIngredient] = useState("");
-  const [isFavorite, setIsFavorite] = useState(false);
-  const navigate = useNavigate();
   const [foodType, setFoodType] = useState("");
   const [writerUserId, setWriterUserId] = useState("");
   const [writerNickName, setWriterNickName] = useState("");
-  const myUserId = localStorage.getItem("id") ? localStorage.getItem("id") : "";
+  const myUserId = localStorage.getItem("id");
   const memberId = [myUserId, writerUserId];
   const { id } = useParams();
+  const numericId = Number(id);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [id]);
 
   //처음 데이터 받기
 
   const fetchData = async () => {
+    if (!id) return;
     try {
       const response = await instance.get(`recipes/detail/${id}`);
       setGetAllData(response.data.recipe);
@@ -42,50 +43,17 @@ export default function DetailPost() {
       setFoodType(response.data.recipe.food_type.food_type_name);
       setWriterUserId(String(response.data.recipe.user.id));
       setWriterNickName(response.data.recipe.user.nickname);
-      setIsFavorite(response.data.recipe.is_favorite);
     } catch (error) {
       console.error("받기 실패", error);
     }
   };
 
   function handleGoToChatFromDetailPost() {
-    window.confirm("채팅을 시작 하시겠습니까?");
-    memberId && goToChat(memberId, writerNickName);
-    navigate("/chat");
+    if (window.confirm("채팅을 시작 하시겠습니까?")) {
+      memberId && goToChat(memberId, writerNickName);
+      window.location.href = "/chat";
+    }
   }
-  //찜하기 보내기
-  const mountLike = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    try {
-      await instance.post(`favorite/detail/${id}/`, config);
-      alert("냠냠 찜하기 완료!");
-      window.location.reload();
-    } catch (error) {
-      alert("이미 찜했습니다!");
-    }
-  };
-
-  //찜하기 삭제
-  const unMountLike = async () => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("access")}`,
-        "Content-Type": "application/json",
-      },
-    };
-    try {
-      await instance.delete(`favorite/detail/${id}/`, config);
-      alert("찜하기 삭제 완료!");
-      window.location.reload();
-    } catch (error) {
-      console.error("찜하기삭제 실패!", error);
-    }
-  };
 
   //html 게시물 react로 변환하기
   const renderContent = (content: string) => {
@@ -155,16 +123,12 @@ export default function DetailPost() {
           </div>
           <div className={styles.likeBox}>
             {/* <BiSolidBowlRice style={{ width: "30px", height: "35px" }} /> */}
-            <BiBowlRice style={{ width: "16px", height: "16px" }} />
-            {isFavorite ? (
-              <button className={styles.pickButton} onClick={unMountLike}>
-                찜하기 취소
-              </button>
-            ) : (
-              <button className={styles.pickButton} onClick={mountLike}>
-                찜하기
-              </button>
-            )}
+
+            <FavoriteButton
+              recipeId={numericId}
+              writerUserId={writerUserId}
+              myUserId={myUserId}
+            />
           </div>
         </div>
         <div className={styles.chatNumbers}>
