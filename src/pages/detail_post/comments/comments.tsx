@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../../api/axios";
+import { onlyAccessHeaders } from "../../../api/header";
 import Input from "../../../components/Input/Input";
 import { noneYearToKorean } from "../../../hooks/make_korean_date";
 import { allCommentData, commentData } from "../../../type/comments";
@@ -13,6 +14,7 @@ export default function Comments() {
   const [editedComment, setEditedComment] = useState("");
   const [editCommentId, setEditCommentId] = useState<number | null>(null);
   const nickName = localStorage.getItem("nickname");
+  const navigate = useNavigate();
   // const myId: string | null = localStorage.getItem("id");
 
   const fetchComments = async () => {
@@ -32,18 +34,22 @@ export default function Comments() {
     e.preventDefault();
     if (comment) {
       try {
-        const response = await instance.post(`comments/list/${id}/`, {
-          content: comment,
-        });
+        const response = await instance.post(
+          `comments/list/${id}/`,
+          {
+            content: comment,
+          },
+          onlyAccessHeaders,
+        );
         setGetComments((prevComments) => [
           response.data.comment,
           ...(prevComments || []),
         ]);
         alert("댓글이 성공적으로 등록되었습니다.");
-
         setComment("");
       } catch (error) {
-        console.error("댓글 보내기 실패", error);
+        alert("로그인 해주세요");
+        navigate("/login");
       }
     } else {
       alert("내용을 입력해주세요");
@@ -54,9 +60,13 @@ export default function Comments() {
     e.preventDefault();
     if (editedComment) {
       try {
-        await instance.put(`comments/detail/${editCommentId}/`, {
-          content: editedComment,
-        });
+        await instance.put(
+          `comments/detail/${editCommentId}/`,
+          {
+            content: editedComment,
+          },
+          onlyAccessHeaders,
+        );
         // alert(response.data.message);
         setEditCommentId(null);
 
@@ -90,9 +100,9 @@ export default function Comments() {
   const handleDelete = async (e: number) => {
     try {
       // 삭제 요청을 보냅니다.
-      const response = await instance.delete(`comments/detail/${e}/`);
+      await instance.delete(`comments/detail/${e}/`, onlyAccessHeaders);
       fetchComments();
-      alert(response.data.message);
+      alert("댓글이 삭제되었습니다.");
     } catch (error) {
       console.error("댓글 삭제 실패", error);
     }

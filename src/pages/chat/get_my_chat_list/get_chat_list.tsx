@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import instance from "../../../api/axios";
+import { headers } from "../../../api/header";
 import { useChatContext } from "../../../context/chatuser";
 import styles from "../index.module.css";
 export default function GetMyChatList() {
@@ -16,7 +17,7 @@ export default function GetMyChatList() {
 
   async function getList() {
     try {
-      const response = await instance.get("chat/chatrooms/");
+      const response = await instance.get("chat/chatrooms/", headers);
       setChatData(response.data.results);
     } catch (error) {
       // alert("가져오기 실패");
@@ -34,13 +35,23 @@ export default function GetMyChatList() {
     }
   };
   async function handleLeaveChatRoom() {
-    try {
-      await instance.delete(`chat/chatrooms/${chatUser}/leave/${myId}/`);
-      window.confirm("정말 채팅방을 나가시겠습니까?");
-      alert("채팅방을 나갔습니다");
-      getList();
-    } catch (error) {
-      alert("채팅방을 누르고 삭제해주세요");
+    if (chatUser !== null) {
+      try {
+        await instance.delete(
+          `chat/chatrooms/${chatUser}/leave/${myId}/`,
+          headers,
+        );
+        window.confirm("정말 채팅방을 나가시겠습니까?");
+        alert("채팅방을 나갔습니다");
+        getList();
+      } catch (error) {
+        alert("채팅방 나가기 오류");
+        setChatUser(null);
+      }
+    } else {
+      setChatUser(null);
+      alert("채팅방을 눌러야 삭제됩니다.");
+      alert("채팅방이 연결했습니다.");
     }
   }
 

@@ -193,14 +193,14 @@ export default function WritePost() {
         formData.append("level", level);
         formData.append("uuid_list", JSON.stringify(uuid_list));
 
-        // const config = {
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("access")}`,
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // };
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        };
 
-        const response = await instance.post("recipes/list/", formData);
+        const response = await instance.post("recipes/list/", formData, config);
         const recipeId = response.data.recipe.id;
 
         alert("게시물을 등록하였습니다.");
