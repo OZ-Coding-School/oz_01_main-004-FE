@@ -23,6 +23,9 @@
   flex-direction: column;
   gap: 20px;
 }
+.logoImg {
+  width: 200px;
+}
 
 .etcContainer {
   width: 491.67px;
