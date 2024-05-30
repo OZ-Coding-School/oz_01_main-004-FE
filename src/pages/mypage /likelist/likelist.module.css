@@ -10,3 +10,66 @@
 .grid {
   padding: 45px;
 }
+
+.buttonGroup {
+  display: flex;
+
+  padding: 0 40px;
+}
+
+.buttonGroup button {
+  margin-right: 15px; /* 버튼 사이의 간격 추가 */
+}
+
+.ButtonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+}
+
+.MoveBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  background-color: #f97066;
+  border: 0.1px solid #e6e6e6;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  margin: 0 15px;
+}
+
+.Button {
+  width: 28px;
+  height: 28px;
+  margin: 0 10px;
+  background-color: #ffffff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.Button:focus {
+  outline: none; /* 포커스 시 outline 제거 */
+}
+
+.activePageButton {
+  /* font-weight: bold; */
+  font-size: 14px;
+  color: #f97066;
+  border: none;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f97066;
+  box-sizing: border-box;
+  outline: none;
+  margin: 0 10px;
+  padding: 5px 10px;
+}
+
+.ButtonContainer button:disabled {
+  opacity: 0.4;
+}
