@@ -1,5 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import instance from "../../../api/axios";
+import { headers } from "../../../api/header";
 import styles from "../index.module.css";
 export default function CreateChatRoom() {
   const [roomName, setRoomName] = useState<string | null>(null);
@@ -8,10 +9,14 @@ export default function CreateChatRoom() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await instance.post("chat/chatrooms/", {
-        name: roomName,
-        participant: memberId,
-      });
+      await instance.post(
+        "chat/chatrooms/",
+        {
+          name: roomName,
+          participant: memberId,
+        },
+        headers,
+      );
       alert("채팅방이 개설되었습니다.");
       window.location.reload();
     } catch (error) {

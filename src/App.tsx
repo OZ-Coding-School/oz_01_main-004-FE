@@ -13,6 +13,7 @@ import Login from "./pages/login";
 import KakaoRedirect from "./pages/login/kakao/kakao";
 import Main from "./pages/main";
 import MyPage from "./pages/mypage ";
+import NotFound from "./pages/not_found/not_found";
 import SignUp from "./pages/sign_up";
 import WritePost from "./pages/write_post";
 import PrivateRoute from "./privateroute/privateroute";
@@ -32,6 +33,8 @@ function App() {
             <Route path="/detailPost/:id" element={<DetailPost />}></Route>
             <Route path="/signUp" element={<SignUp />}></Route>
             <Route path="/findPassword" element={<FindPassword />}></Route>
+            <Route path="*" element={<NotFound />}></Route>
+
             <Route element={<PrivateRoute />}>
               <Route path="/chat" element={<Chat />}></Route>
               <Route path="/myPage" element={<MyPage />}></Route>

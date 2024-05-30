@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AiFillCaretUp } from "react-icons/ai";
 import instance from "../../../api/axios";
+import { onlyAccessHeaders } from "../../../api/header";
 import Button from "../../../components/Button/Button";
 import { useChatContext } from "../../../context/chatuser";
 import { GetMessagesOfChatroomProps } from "../../../type/chat";
@@ -25,11 +26,10 @@ export default function GetMessagesOfChatroom({
   //현재 채팅목록 받기
   const fetchMessages = async () => {
     try {
-      const response = await instance.get(`chat/chatrooms/${chatUser}/`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-        },
-      });
+      const response = await instance.get(
+        `chat/chatrooms/${chatUser}/`,
+        onlyAccessHeaders,
+      );
       const fetchedMessages = response.data.messages.results.map(
         (msg: any) => ({
           content: msg.content,
@@ -50,11 +50,7 @@ export default function GetMessagesOfChatroom({
     try {
       const response = await instance.get(
         `chat/chatrooms/${chatUser}/?page=${pageNum}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-          },
-        },
+        onlyAccessHeaders,
       );
       const fetchedMessages = response.data.messages.results.map(
         (msg: any) => ({
@@ -85,7 +81,8 @@ export default function GetMessagesOfChatroom({
           <AiFillCaretUp style={{ width: "30px", height: "40px" }} />
         </Button>
       </div>
-      {Array.isArray(getMessages) &&
+
+      {Array.isArray(getMessages) && getMessages.length > 0 ? (
         getMessages
           .slice()
           .sort(
@@ -122,7 +119,18 @@ export default function GetMessagesOfChatroom({
                 )}
               </div>
             </div>
-          ))}
+          ))
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            paddingTop: "4vh",
+          }}
+        >
+          아직 채팅내역이 없습니다
+        </div>
+      )}
     </div>
   );
 }

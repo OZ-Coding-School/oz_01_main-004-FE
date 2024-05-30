@@ -51,7 +51,7 @@ const Main: React.FC = () => {
           };
         }
 
-        const response = await instance.get("recipes/main/", { headers });
+        const response = await instance.get("recipes/main/", headers);
 
         if (response.data && response.data.recently_recipe_list) {
           const recentRecipes = response.data.recently_recipe_list;

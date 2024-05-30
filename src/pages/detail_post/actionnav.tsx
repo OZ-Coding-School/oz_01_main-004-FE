@@ -34,12 +34,11 @@ export default function ActionNav() {
       console.error("not logged");
       return;
     }
-
     try {
       const confirmDelete = window.confirm("정말로 삭제하시겠습니까?");
       if (!confirmDelete) return;
-
       await instance.delete(`recipes/detail/${id}/`);
+      alert("게시글이 삭제되었습니다.");
       navigate("/");
     } catch (error) {
       console.error("delete error", error);
