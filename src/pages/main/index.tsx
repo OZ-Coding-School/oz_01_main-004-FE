@@ -92,7 +92,7 @@ const Main: React.FC = () => {
           };
         }
 
-        const response = await instance.get("/recipes/main/", { headers });
+        const response = await instance.get("/recipes/main/", headers);
 
         if (response.data && response.data.popular_recipe_list) {
           const popularRecipes = response.data.popular_recipe_list;

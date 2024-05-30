@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import instance from "../../../api/axios";
-import { headers } from "../../../api/header";
+import { headers, onlyAccessHeaders } from "../../../api/header";
 import { useChatContext } from "../../../context/chatuser";
 import styles from "../index.module.css";
 export default function GetMyChatList() {
@@ -17,7 +17,7 @@ export default function GetMyChatList() {
 
   async function getList() {
     try {
-      const response = await instance.get("chat/chatrooms/", headers);
+      const response = await instance.get("chat/chatrooms/", onlyAccessHeaders);
       setChatData(response.data.results);
     } catch (error) {
       // alert("가져오기 실패");

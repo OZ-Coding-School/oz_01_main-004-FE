@@ -55,8 +55,14 @@ export default function DetailPost() {
   }
   //찜하기 보내기
   const mountLike = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+        "Content-Type": "application/json",
+      },
+    };
     try {
-      await instance.post(`favorite/detail/${id}/`);
+      await instance.post(`favorite/detail/${id}/`, config);
       alert("냠냠 찜하기 완료!");
       window.location.reload();
     } catch (error) {
@@ -66,8 +72,14 @@ export default function DetailPost() {
 
   //찜하기 삭제
   const unMountLike = async () => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access")}`,
+        "Content-Type": "application/json",
+      },
+    };
     try {
-      await instance.delete(`favorite/detail/${id}/`);
+      await instance.delete(`favorite/detail/${id}/`, config);
       alert("찜하기 삭제 완료!");
       window.location.reload();
     } catch (error) {
