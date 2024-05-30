@@ -35,6 +35,7 @@ const Postcard = ({ recipe, isFavorite }: any) => {
               id={recipe.id}
               isFavoriteInitially={isFavorite}
               onClick={handleFavoriteClick}
+              authorId={recipe.user.id}
             />
           </div>
         </div>

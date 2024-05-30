@@ -7,11 +7,6 @@ import instance from "../../api/axios";
 import { Recipe } from "../../components/mealgrid/type";
 import Postcard from "../../components/postcard/postcard";
 import useFavoriteStatus from "../../hooks/use_favoriestatus";
-import mainpage_1 from "/images/mainpage_1.png";
-import mainpage_2 from "/images/mainpage_2.png";
-import mainpage_3 from "/images/mainpage_3.png";
-import mainpage_4 from "/images/mainpage_4.jpeg";
-import mainpage_5 from "/images/mainpage_5.jpeg";
 // import { Recipe } from "../community/postlist/recipelist.type";
 
 interface SlideImageProps {
@@ -23,11 +18,21 @@ interface ButtonProps {
 }
 
 const images = [
-  { image: mainpage_1, alt: "연회색" },
-  { image: mainpage_2, alt: "삽찐한회색" },
-  { image: mainpage_3, alt: "더 찐한 그레이" },
-  { image: mainpage_4, alt: "스마일 간장국수" },
-  { image: mainpage_5, alt: "스파게티" },
+  {
+    alt: "배너1",
+    url: "https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/banner1.png",
+    bgColor: "#F6F1EC",
+  },
+  {
+    alt: "배너2",
+    url: "https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/banner2.png",
+    bgColor: "#FFF9DB",
+  },
+  {
+    alt: "배너3",
+    url: "https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/banner3.png",
+    bgColor: "#FFF9F8",
+  },
 ];
 const Main: React.FC = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -146,18 +151,19 @@ const Main: React.FC = () => {
       <Header>
         <Slideshow>
           {images.map((image, index) => (
-            <SlideImage
-              key={index}
-              src={image.image}
-              alt={image.alt}
-              $active={index === currentImageIndex ? "true" : "false"}
-            />
+            <ImageDiv key={index} $bgColor={image.bgColor}>
+              <SlideImage
+                key={index}
+                src={image.url}
+                alt={image.alt}
+                $active={index === currentImageIndex ? "true" : "false"}
+              />
+            </ImageDiv>
           ))}
           <Button $left={"true"} onClick={prevSlide}>
             &#10094;
           </Button>
           <Button onClick={nextSlide}>&#10095;</Button>
-          <Title>Cook Bap으로 요리를 하자</Title>
         </Slideshow>
       </Header>
       <Section>
@@ -200,38 +206,39 @@ const Main: React.FC = () => {
 const PostGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 28px;
-  justify-content: center;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 20px;
+  margin-top: 5px;
 `;
 
 const Header = styled.header`
   display: flex;
-  gap: 3rem;
-  margin-left: -3rem;
-  margin-right: -3rem;
+  padding-top: 77px;
 `;
 
 const Slideshow = styled.div`
   width: 100%;
-  height: 418px;
+  height: 325px;
   padding: 0;
   position: relative;
   overflow: hidden;
 `;
 
-const Title = styled.h1`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #f97066;
-  z-index: 1;
+const ImageDiv = styled.div<{ $bgColor: string }>`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${({ $bgColor }) => $bgColor};
 `;
 
 const SlideImage = styled.img<SlideImageProps>`
-  width: 100%;
+  width: 700px;
   height: auto;
-  display: ${({ $active }) => ($active === "true" ? "block" : "none")};
+  display: ${({ $active }) => ($active === "true" ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
 `;
 
 const Button = styled.button<ButtonProps>`
@@ -254,14 +261,14 @@ const Button = styled.button<ButtonProps>`
 
 const Section = styled.div`
   max-width: 1280px;
-  margin: 100px auto;
+  margin: 70px auto;
   padding: 0 40px;
 `;
 
 const Textinfo = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 0 40px;
+  align-items: center;
 `;
 
 const PopularRecipe = styled.p`
@@ -272,7 +279,7 @@ const PopularRecipe = styled.p`
 const MoreLink = styled(Link)`
   font-size: 14px;
   text-decoration: none;
-  color: black;
+  color: #303030;
 `;
 const RecentRecipe = styled.p`
   font-size: 16px;
@@ -282,10 +289,13 @@ const RecentRecipe = styled.p`
 const RecentMoreLink = styled(Link)`
   font-size: 14px;
   text-decoration: none;
-  color: black;
+  color: #303030;
 `;
 
-const RecentArticle = styled.article``;
+const RecentArticle = styled.article`
+  margin-top: 50px;
+  margin-bottom: 100px;
+`;
 
 const FamousArticle = styled.article``;
 

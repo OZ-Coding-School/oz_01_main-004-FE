@@ -1,8 +1,8 @@
 import parse from "html-react-parser";
 import { useEffect, useState } from "react";
+import { BiBowlRice } from "react-icons/bi";
 import { BsChatDots } from "react-icons/bs";
-import { FaBowlRice } from "react-icons/fa6";
-import { IoChatboxEllipsesOutline } from "react-icons/io5";
+import { PiChatTextBold } from "react-icons/pi";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate, useParams } from "react-router-dom";
 import instance from "../../api/axios";
@@ -16,6 +16,7 @@ export default function DetailPost() {
   const [getAllData, setGetAllData]: any = useState([]);
   const [getUserData, setGetUser]: any = useState([]);
   const [foodIngredient, setFoodIngredient] = useState("");
+  const [isFavorite, setIsFavorite] = useState(false);
   const navigate = useNavigate();
   const [foodType, setFoodType] = useState("");
   const [writerUserId, setWriterUserId] = useState("");
@@ -41,6 +42,7 @@ export default function DetailPost() {
       setFoodType(response.data.recipe.food_type.food_type_name);
       setWriterUserId(String(response.data.recipe.user.id));
       setWriterNickName(response.data.recipe.user.nickname);
+      setIsFavorite(response.data.recipe.is_favorite);
     } catch (error) {
       console.error("받기 실패", error);
     }
@@ -56,6 +58,7 @@ export default function DetailPost() {
     try {
       await instance.post(`favorite/detail/${id}/`);
       alert("냠냠 찜하기 완료!");
+      window.location.reload();
     } catch (error) {
       alert("이미 찜했습니다!");
     }
@@ -66,6 +69,7 @@ export default function DetailPost() {
     try {
       await instance.delete(`favorite/detail/${id}/`);
       alert("찜하기 삭제 완료!");
+      window.location.reload();
     } catch (error) {
       console.error("찜하기삭제 실패!", error);
     }
@@ -97,7 +101,7 @@ export default function DetailPost() {
           <img
             src={getAllData.thumbnail}
             alt=""
-            style={{ width: "80vw", height: "30vh", objectFit: "cover" }}
+            style={{ width: "60vw", height: "40vh", objectFit: "cover" }}
           />
         </div>
         <div className={styles.funcSection}>
@@ -108,8 +112,8 @@ export default function DetailPost() {
                   src={getUserData.profile_image}
                   alt=""
                   style={{
-                    width: "30px",
-                    height: "30px",
+                    width: "25px",
+                    height: "25px",
                     boxSizing: "border-box",
                     borderRadius: "50%",
                     objectFit: "cover",
@@ -124,11 +128,13 @@ export default function DetailPost() {
               onClick={handleGoToChatFromDetailPost}
             >
               <BsChatDots
-                style={{ width: "24px", height: "28px", paddingBottom: "3px" }}
+                style={{ width: "16px", height: "16px", paddingBottom: "3px" }}
               ></BsChatDots>
-              <div>채팅하기</div>
+              <div className={styles.chattext}>채팅하기</div>
             </div>
-            <div>{convertToKoreanTime(getAllData.created_at)}</div>
+            <div className={styles.Day}>
+              {convertToKoreanTime(getAllData.created_at)}
+            </div>
             {writerUserId === myUserId ? (
               <div>
                 <ActionNav />
@@ -137,23 +143,25 @@ export default function DetailPost() {
           </div>
           <div className={styles.likeBox}>
             {/* <BiSolidBowlRice style={{ width: "30px", height: "35px" }} /> */}
-            <button className={styles.commentButton} onClick={mountLike}>
-              찜하기
-            </button>
-            <button className={styles.commentButton} onClick={unMountLike}>
-              찜하기 취소
-            </button>
+            <BiBowlRice style={{ width: "16px", height: "16px" }} />
+            {isFavorite ? (
+              <button className={styles.pickButton} onClick={unMountLike}>
+                찜하기 취소
+              </button>
+            ) : (
+              <button className={styles.pickButton} onClick={mountLike}>
+                찜하기
+              </button>
+            )}
           </div>
         </div>
         <div className={styles.chatNumbers}>
           <div>
-            <FaBowlRice style={{ width: "20px", height: "15px" }} />{" "}
+            <BiBowlRice style={{ width: "12px", height: "12px" }} />{" "}
             {getAllData.favorites_count}
           </div>
           <div>
-            <IoChatboxEllipsesOutline
-              style={{ width: "20px", height: "15px" }}
-            />
+            <PiChatTextBold style={{ width: "12px", height: "12px" }} />
             {getAllData.comments_count}
           </div>
         </div>
@@ -163,19 +171,19 @@ export default function DetailPost() {
             {renderContent(getAllData.content)}
           </div>
           <div className={styles.tagSectionContainer}>
-            <div>종류</div>
+            <div className={styles.Text}>종류</div>
             <div className={styles.tagType}>
               <div className={styles.tag}>{foodType}</div>
             </div>
           </div>
           <div className={styles.tagSectionContainer}>
-            <div>재료</div>
+            <div className={styles.Text}>재료</div>
             <div className={styles.tagType}>
               <div className={styles.tag}>{foodIngredient}</div>
             </div>
           </div>
           <div className={styles.tagSectionContainer}>
-            <div>레벨</div>
+            <div className={styles.Text}>레벨</div>
             <div className={styles.tagType}>
               <div className={styles.tag}>{getAllData.level}</div>
             </div>
@@ -184,9 +192,12 @@ export default function DetailPost() {
 
         {/* 여기서 잠깐! */}
         <div className={styles.CommentContainer}>
-          <div className={styles.oneCommentBox}>
-            <div style={{ fontSize: "20px", fontWeight: "500" }}>
-              댓글 {getAllData.comments_count}
+          <div>
+            <div className={styles.oneCommentBox}>
+              댓글
+              <div className={styles.CommentText}>
+                {getAllData.comments_count}
+              </div>
             </div>
             <Comments />
           </div>

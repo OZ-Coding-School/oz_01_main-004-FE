@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import SelectBox from "../../components/selectbox/selectbox";
 import { FoodIngredients, FoodTypes } from "./fooddata.api";
 import styles from "./index.module.css";
 import PostList from "./postlist/postlist";
@@ -8,8 +7,6 @@ import QueryStringDropdown from "./querystring/querystringdropdown";
 import QueryTagButton from "./querystring/querytagbutton";
 
 export default function Community() {
-  const sortOptions = [{ label: "최신순", value: "newest" }];
-
   const [foodType, setfoodType] = useState([]);
   const [foodIngredient, setfoodIngredient] = useState([]);
   const [filteredCount, setFilteredCount] = useState(0); // 필터링된 레시피 개수 상태
@@ -48,13 +45,11 @@ export default function Community() {
       </div>
       <div className={styles.filtercontainer}>
         <QueryTagButton />
-        <div className={styles.selectBox}>
-          <SelectBox options={sortOptions} />
-        </div>
       </div>
       <div>
         <p>
-          총 <span>{filteredCount}</span>개의 레시피가 있습니다.
+          총 <span className={styles.Span}>{filteredCount}</span>개의 레시피가
+          있습니다.
         </p>
       </div>
       <div className={styles.postList}>

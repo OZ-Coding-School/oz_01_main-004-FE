@@ -1,5 +1,5 @@
 .detailContainer {
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   padding-top: 8vh;
   height: auto;
@@ -8,44 +8,52 @@
   padding-bottom: 100px;
   /* flex-direction: column; */
   font-size: 14px;
+  width: 60vw;
+  color: rgb(47, 52, 56);
 }
 .postContainer {
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding-top: 6vh;
-  width: 80vw;
+  padding-top: 3vh;
+  width: 60vw;
 }
 
 .imgBox {
   display: flex;
   justify-content: center;
-  height: 500px;
+  /* width: 100%;
+  height: 100%; */
 }
 
 .funcSection {
   display: flex;
-  width: 80vw;
+  width: 60vw;
   flex-direction: row;
   justify-content: space-between;
   margin-top: 30px;
   align-items: center;
 }
-
 .likeBox {
   width: 150px;
   height: 40px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .nicknameBlock {
   box-sizing: border-box;
-  border-right: 1px solid gray;
   padding-right: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
+}
+.nicknameBlock > div {
+  font-weight: bold;
+  border-right: 1px solid #515151;
+  padding-right: 20px;
+  font-size: 16px;
 }
 
 .chatBox {
@@ -53,29 +61,40 @@
   gap: 7px;
   align-items: center;
   box-sizing: border-box;
-  border-right: 1px solid gray;
-  padding-right: 10px;
+  padding: 0 10px;
   cursor: pointer;
+  font-size: 16px;
 }
 .chatBox :hover {
-  color: #ff4d00;
+  color: #f97066;
+}
+
+.Day {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #525252;
 }
 
 .FuncBox {
   display: flex;
   flex-direction: row;
-  gap: 15px;
   align-items: center;
 }
-
+.pickButton {
+  border: none;
+  background-color: #ffffff;
+  cursor: pointer;
+}
 .chatNumbers {
   display: flex;
   box-sizing: border-box;
-  border-bottom: 1.5px solid gray;
+  border-bottom: 1px solid #dcdcdc;
   margin-top: 20px;
-  width: 80vw;
+  width: 60vw;
   justify-content: flex-end;
   gap: 10px;
+  color: rgb(33, 38, 41);
+  padding: 10px 0;
 }
 
 .ContentsBox {
@@ -83,6 +102,9 @@
   margin-top: 50px;
   gap: 20px;
   flex-direction: column;
+}
+.Text {
+  font-weight: bold;
 }
 
 .postContent {
@@ -105,40 +127,62 @@
 
 .tag {
   box-sizing: border-box;
-  border: 1px solid gray;
-  padding: 10px;
-  border-radius: 15px;
+  border: 1px solid #7b7b7b;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.oneCommentBox {
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  font-weight: 600;
+}
+.CommentText {
+  margin-left: 10px;
+  color: #f97066;
+  font-weight: 700;
+}
+.commentDiv {
+  display: flex;
+  flex-direction: column;
+  /* gap: 20px; */
+  /* margin-top: 50px; */
+  width: 60vw;
 }
 .CommentContainer {
   box-sizing: border-box;
-  border-top: 1px solid black;
+  border-top: 1px solid #dcdcdc;
   margin-top: 50px;
   padding-top: 25px;
   display: flex;
   justify-content: center;
 }
 .inputBox {
-  position: relative;
+  /* position: relative; */
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin: 10px 0;
+}
+.Form {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
 }
 
 .commentSubmit {
   display: flex;
-  position: absolute;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
   background: none;
   border: none;
-  font-size: 20px;
-  top: 20%;
-  margin-left: 73vw;
-  color: #ff4d00;
-  /* margin-left: 71vw;
-  margin-top: 1vw; */
-}
-.commentSubmit {
+  font-size: 16px;
+  color: #f97066;
   cursor: pointer;
 }
+
 .getCommentBox {
   display: flex;
   flex-direction: row;
@@ -150,13 +194,14 @@
 .commentLeftBox {
   display: flex;
   gap: 20px;
-  width: 60vw;
+  width: 70%;
 }
 
 .commentLeftData {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 65vw;
 }
 
 .userNick {
@@ -165,26 +210,46 @@
 }
 
 .commentRightBox {
+  width: 20%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-end;
   vertical-align: center;
 }
 
 .rightFuncBox {
+  width: 100%;
   display: flex;
   gap: 10px;
   justify-content: space-between;
+}
+.checkButton {
+  width: 100%;
+  background-color: #f97066;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
 }
 
 .commentButton {
   border: none;
   cursor: pointer;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 10px;
+  width: 100%;
 }
 
 .dateBox {
   text-align: center;
+  font-size: 12px;
+  color: #525252;
+  margin: 5px 0;
+}
+
+.Image {
+  width: 60px;
+  height: 60px;
 }

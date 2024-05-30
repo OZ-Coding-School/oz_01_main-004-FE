@@ -5,8 +5,8 @@ import { useSearchParams } from "react-router-dom";
 import instance from "../../../api/axios";
 import Postcard from "../../../components/postcard/postcard";
 import useFavoriteStatus from "../../../hooks/use_favoriestatus";
+import { Recipe } from "../../../type/recipelist.type";
 import styles from "./postlist.module.css";
-import { Recipe } from "./recipelist.type";
 
 const PostList = ({ setFilteredCount }: any) => {
   const [searchParams] = useSearchParams();
@@ -87,7 +87,7 @@ const PostList = ({ setFilteredCount }: any) => {
           ))
         ) : (
           <>
-            <p>배고픈 현지 : 레시피 없으니까 너가 등록해!</p>
+            <p>레시피가 없습니다. 새로 등록해보세요!</p>
           </>
         )}
       </div>

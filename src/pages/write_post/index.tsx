@@ -249,7 +249,7 @@ export default function WritePost() {
           {!imagePreviewUrl ? (
             <>
               <div className={styles.addImgtext}>커버사진을 추가해주세요.</div>
-              <LuUpload size={50} />
+              <LuUpload style={{ width: "30px", height: "30px" }} />
               <Button
                 type="button"
                 size="sm"

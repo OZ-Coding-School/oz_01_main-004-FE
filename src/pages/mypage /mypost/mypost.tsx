@@ -106,6 +106,7 @@ const MyPost: React.FC = () => {
                   size="sm"
                   variant="secondary"
                   onClick={() => handleEdit(post.id)}
+                  style={{ height: "30px" }}
                 >
                   수정
                 </Button>
@@ -113,6 +114,7 @@ const MyPost: React.FC = () => {
                   size="sm"
                   variant="primary"
                   onClick={() => handleDelete(post.id)}
+                  style={{ height: "30px" }}
                 >
                   삭제
                 </Button>
@@ -156,7 +158,7 @@ const PostGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 28px;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
 export default MyPost;

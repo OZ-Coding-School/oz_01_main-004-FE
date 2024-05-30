@@ -2,13 +2,13 @@
   appearance: none;
   margin: 0px;
   border-radius: 6px;
-  border: 1.5px solid #b3b3b3;
+  border: 1px solid #b3b3b3;
   padding: 0px 20px;
 }
 
 .input:focus {
   /* border-color: #fed0cc; */
-  border: 1.5px solid #f97066;
+  border: 1px solid #f97066;
   outline: none;
 }
 

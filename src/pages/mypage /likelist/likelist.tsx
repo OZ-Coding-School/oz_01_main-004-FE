@@ -58,7 +58,7 @@ const PostGrid = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 28px;
-  justify-content: center;
+  justify-content: flex-start;
 `;
 
 export default LikeList;
