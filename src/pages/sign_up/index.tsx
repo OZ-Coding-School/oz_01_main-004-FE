@@ -58,16 +58,20 @@ const SignUp: React.FC = () => {
         const response = await instance.post("users/email-check/", {
           email,
         });
-        if (response && response.data) {
-          setEmailValid(response.data.is_valid);
-          if (response.data.is_valid) {
-            setError("email", {
-              type: "manual",
-              message: "사용가능한 이메일 입니다.",
-            });
-          }
+        setEmailValid(response.data.is_valid);
+        if (response.data.is_valid) {
+          setError("email", {
+            type: "manual",
+            message: "사용가능한 이메일 입니다.",
+          });
+        } else {
+          setError("email", {
+            type: "manual",
+            message: "사용가능한 이메일 입니다.",
+          });
         }
       }
+      setLoading(true);
     } catch (error: any) {
       if (error.response && error.response.status === 409) {
         setEmailValid(false);
@@ -75,11 +79,11 @@ const SignUp: React.FC = () => {
           type: "manual",
           message: "이미 사용중인 이메일 입니다.",
         });
+        setLoading(false);
       } else {
         console.error("checking email", error);
+        setLoading(false);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
