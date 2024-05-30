@@ -92,12 +92,12 @@ export default function ModifyPost() {
   useEffect(() => {
     async function getPostData() {
       try {
-        // const config = {
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("access")}`,
-        //   },
-        // };
-        const response = await instance.get(`recipes/detail/${id}/`);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+          },
+        };
+        const response = await instance.get(`recipes/detail/${id}/`, config);
         const thumbnail_url = response.data.recipe.thumbnail;
         setFormState({
           ...formState,
@@ -273,14 +273,18 @@ export default function ModifyPost() {
         formData.append("image_url_list", JSON.stringify(imgAddList));
         formData.append("uuid_list", JSON.stringify(uuid_list));
 
-        // const config = {
-        //   headers: {
-        //     Authorization: `Bearer ${localStorage.getItem("access")}`,
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // };
+        const config = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        };
 
-        const response = await instance.put(`recipes/detail/${id}/`, formData);
+        const response = await instance.put(
+          `recipes/detail/${id}/`,
+          formData,
+          config,
+        );
         if (response && response.data && response.data.recipe) {
           const recipeId = response.data.recipe.id;
           alert("게시물을 수정하였습니다.");
