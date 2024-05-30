@@ -6,7 +6,8 @@ import styles from "./postcard.module.css";
 // import { Recipe } from "../../pages/community/postlist/recipelist.type";
 
 const Postcard = ({ recipe, isFavorite }: any) => {
-  const defaultImg = "../public/defaultimg/defaultimg.png";
+  const defaultImg =
+    "https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/cookbap_default_profile.png";
   const navigate = useNavigate();
 
   const handleFavoriteClick = () => {
@@ -18,7 +19,8 @@ const Postcard = ({ recipe, isFavorite }: any) => {
   };
 
   const userImage = recipe.user.profile_image;
-  const profileImg = "../public/mypage/basicProfile.jpg";
+  const profileImg =
+    "https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/cookbap_default_profile.png";
 
   return (
     <div>

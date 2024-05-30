@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import instance from "../../api/axios";
+import Button from "../../components/Button/Button";
 import { UserContext } from "../../context/authuser";
 import { UserContextType } from "../../type/user";
 import styles from "./index.module.css";
@@ -89,9 +90,22 @@ export default function MyPage() {
         >
           작성한 글
         </MypageBtn>
-        <button className={styles.leaveBtn} onClick={handleDelete}>
+        <Button
+          style={{
+            width: "100px",
+            border: "5px solid #fff8f7",
+            position: "fixed",
+            bottom: "0",
+            cursor: "pointer",
+
+            margin: "0 0 0 140px",
+          }}
+          variant="secondary"
+          size="sm"
+          onClick={handleDelete}
+        >
           회원탈퇴
-        </button>
+        </Button>
       </div>
       <div className={styles.containerRight}>
         {/* 선택된 숫자에 따라 해당하는 컴포넌트를 렌더링합니다. */}

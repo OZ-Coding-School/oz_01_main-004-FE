@@ -78,12 +78,7 @@ export default function GetMyChatList() {
                       boxSizing: "border-box",
                       borderRadius: "50%",
                     }}
-                    src={
-                      e.participant_data[0].profile_image !== null &&
-                      e.participant_data[0].profile_image !== undefined
-                        ? e.participant_data[1].profile_image
-                        : "/mypage/basicProfile.jpg"
-                    }
+                    src={e.participant_data[0].profile_image}
                     alt=""
                   />
                 </div>
