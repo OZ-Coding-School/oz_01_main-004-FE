@@ -5,14 +5,14 @@ import instance from "../../../api/axios";
 
 interface FavoriteProps {
   id: number;
-  authorId: number; // 작성자 ID를 위한 새로운 속성
+  authorId: number;
   isFavoriteInitially?: boolean;
   onClick?: (isFavorite: boolean) => void;
 }
 
 const Favorite = ({
   id,
-  authorId, // 작성자 ID를 가져옵니다
+  authorId,
   isFavoriteInitially = false,
   onClick,
 }: FavoriteProps) => {

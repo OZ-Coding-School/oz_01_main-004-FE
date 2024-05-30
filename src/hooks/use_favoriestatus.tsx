@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import instance from "../api/axios";
 
@@ -22,18 +23,24 @@ const useFavoriteStatus = () => {
           },
         });
 
-        if (response.data && response.data.favorite_list) {
-          const favoriteStates = response.data.favorite_list.reduce(
+        if (response.data && response.data.results) {
+          const favoriteStates = response.data.results.reduce(
             (acc: { [key: number]: boolean }, item: any) => {
-              acc[item.recipe.id] = true;
+              acc[item.recipe.id] = item.recipe.is_favorite;
               return acc;
             },
             {},
           );
           setFavoriteStates(favoriteStates);
+        } else {
+          console.error("Unexpected response structure:", response.data);
         }
       } catch (error) {
-        console.error("찜 상태 가져오기 실패", error);
+        const axiosError = error as AxiosError;
+        console.error(
+          "찜 상태 가져오기 실패",
+          axiosError.response ? axiosError.response.data : axiosError.message,
+        );
       } finally {
         setLoading(false);
       }
