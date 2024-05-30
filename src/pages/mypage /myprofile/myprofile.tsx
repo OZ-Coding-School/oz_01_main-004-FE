@@ -1,6 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import styled from "styled-components";
@@ -17,6 +17,7 @@ export default function Myprofile() {
     nickname: string;
     profile_image: string;
   }
+
   const {
     handleSubmit,
     register,
@@ -26,6 +27,113 @@ export default function Myprofile() {
   } = useForm<MyprofileInput>({
     mode: "onBlur",
   });
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [userImage, setUserImage] = useState<string | null>(null);
+  const [, setPutUserImage] = useState<File | null>(null);
+  const defaultImg =
+    "https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/cookbap_default_profile.png";
+
+  useEffect(() => {
+    // Retrieve image URL from local storage upon component mount
+    const storedImage = localStorage.getItem("profile_image");
+    if (storedImage) {
+      // 만약 로컬 스토리지에 이미지 URL이 존재한다면, 그 URL을 상태에 반영하거나 필요한 처리를 수행할 수 있습니다.
+      setUserImage(storedImage);
+    } else {
+      setUserImage(defaultImg);
+    }
+  }, []);
+
+  //데이터 가져오기
+  const getUser = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access")}`,
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await instance.get("users/detail/", config);
+      if (response && response.data && response.data.user) {
+        return response.data.user;
+      }
+    } catch (error) {
+      console.error("error", error);
+      return {};
+    }
+  };
+
+  const { data } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUser,
+    // 기본값을 설정하여 undefined 반환을 방지
+    initialData: {},
+  });
+
+  useEffect(() => {
+    if (data) {
+      const { email, nickname, password, profile_image } = data as {
+        email: string;
+        nickname: string;
+        password: string;
+        profile_image: string;
+      };
+      setValue("email", email);
+      setValue("nickname", nickname);
+      setValue("password", password);
+      setValue("profile_image", profile_image);
+      if (profile_image) {
+        setUserImage(profile_image);
+      } else {
+        setUserImage(defaultImg);
+      }
+    }
+  }, [data, setValue]);
+
+  //이미지 변경 ref
+  const handleImgClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleImageChange = async (e: any) => {
+    const file = e.target.files[0];
+    setPutUserImage(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          localStorage.setItem("profile_image", reader.result);
+          setUserImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+
+      const imgformData = new FormData();
+      imgformData.append("profile_image", file);
+
+      try {
+        const imgconfig = {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access")}`,
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        await instance.patch("users/profile-image/", imgformData, imgconfig);
+      } catch (error) {
+        console.error("img error", error);
+      }
+    }
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [eyeIcon, setEyeIcon] = useState(false);
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+    setEyeIcon(!eyeIcon);
+  };
 
   //데이터수정하기
   const onClickMypage: SubmitHandler<MyprofileInput> = async (data) => {
@@ -57,103 +165,6 @@ export default function Myprofile() {
     }
   };
 
-  //데이터 가져오기
-  const getUser = async () => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access")}`,
-          "Content-Type": "application/json",
-        },
-      };
-      const response = await instance.get("users/detail/", config);
-      return response.data.user;
-    } catch (error) {
-      console.error("error", error);
-      return {};
-    }
-  };
-  const { data } = useQuery({
-    queryKey: ["users"],
-    queryFn: getUser,
-    // 기본값을 설정하여 undefined 반환을 방지
-    initialData: {},
-  });
-
-  useEffect(() => {
-    if (data) {
-      const { email, nickname, password, profile_image } = data as {
-        email: string;
-        nickname: string;
-        password: string;
-        profile_image: string;
-      };
-      setValue("email", email);
-      setValue("nickname", nickname);
-      setValue("password", password);
-      setValue("profile_image", profile_image);
-    }
-  }, [data, setValue]);
-
-  const [userImage, setUserImage] = useState<string | null>(null);
-  const [, setPutUserImage] = useState(null);
-  const defaultImg = "../public/mypage/basicProfile.jpg";
-
-  //이미지 바꿔주기
-  const handleImageChange = async (e: any) => {
-    const file = e.target.files[0];
-    setPutUserImage(file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (typeof reader.result === "string") {
-          localStorage.setItem("profile_image", reader.result);
-          setUserImage(reader.result);
-        }
-      };
-      reader.readAsDataURL(file);
-
-      const imgformData = new FormData();
-      imgformData.append("profile_image", file);
-
-      try {
-        const imgconfig = {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access")}`,
-            "Content-Type": "multipart/form-data",
-          },
-        };
-        await instance.patch("users/profile-image/", imgformData, imgconfig);
-      } catch (error) {
-        console.error("img error", error);
-      }
-    }
-  };
-
-  const handleImgClick = () => {
-    const fileInput = document.getElementById(
-      "profileImageInput",
-    ) as HTMLInputElement | null;
-    if (fileInput) {
-      fileInput.click();
-    }
-  };
-  useEffect(() => {
-    // Retrieve image URL from local storage upon component mount
-    const storedImage = localStorage.getItem("profile_image");
-    if (storedImage) {
-      // 만약 로컬 스토리지에 이미지 URL이 존재한다면, 그 URL을 상태에 반영하거나 필요한 처리를 수행할 수 있습니다.
-      setUserImage(storedImage);
-    }
-  }, []);
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [eyeIcon, setEyeIcon] = useState(false);
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword);
-    setEyeIcon(!eyeIcon);
-  };
-
   return (
     <div className={styles.bigContainer}>
       <form
@@ -165,7 +176,7 @@ export default function Myprofile() {
             <div className={styles.profileImgDiv} onClick={handleImgClick}>
               <img
                 className={styles.profileImg}
-                src={userImage ? userImage : defaultImg}
+                src={userImage || defaultImg}
                 alt="프로필 이미지"
                 {...register("profile_image")}
               />
@@ -175,6 +186,7 @@ export default function Myprofile() {
                 accept="image/*"
                 id="profileImageInput"
                 {...register("profile_image")}
+                ref={fileInputRef}
                 onChange={handleImageChange}
               />
             </div>
