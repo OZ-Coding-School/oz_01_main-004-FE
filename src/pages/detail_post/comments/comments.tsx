@@ -100,112 +100,115 @@ export default function Comments() {
 
   return (
     <div>
-      <div className={styles.inputBox}>
-        <form onSubmit={commentsSubmit}>
-          <Input
-            inputSize="md"
-            variant="primary"
-            type="text"
-            value={comment}
-            onChange={(e) => {
-              setComment(e.target.value);
-            }}
-            style={{ width: "75vw" }}
-          />
-          <button type="submit" className={styles.commentSubmit}>
-            입력
-          </button>
-        </form>
-      </div>
-      {/* 커멘트 박스 */}
-      {getComments !== null &&
-        getComments.map((getComment: commentData) => (
-          <div key={getComment.id} className={styles.getCommentBox}>
-            <div className={styles.commentLeftBox}>
-              <img
-                style={{
-                  width: "50px",
-                  height: "50px",
-                  boxSizing: "border-box",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
-                src={
-                  getComment.user.profile_image
-                    ? getComment.user.profile_image
-                    : "/images/nopicture.png"
-                }
-                alt=""
-              />
-              <div className={styles.commentLeftData}>
-                <div className={styles.userNick}>
-                  {getComment.user.nickname}
-                </div>
+      <div className={styles.commentDiv}>
+        <div className={styles.inputBox}>
+          <form className={styles.Form} onSubmit={commentsSubmit}>
+            <Input
+              inputSize="sm"
+              variant="primary"
+              type="text"
+              value={comment}
+              onChange={(e) => {
+                setComment(e.target.value);
+              }}
+              placeholder="댓글을 입력해주세요."
+              style={{ width: "90%" }}
+            />
+            <button type="submit" className={styles.commentSubmit}>
+              입력
+            </button>
+          </form>
+        </div>
+        {/* 커멘트 박스 */}
+        {getComments !== null &&
+          getComments.map((getComment: commentData) => (
+            <div key={getComment.id} className={styles.getCommentBox}>
+              <div className={styles.commentLeftBox}>
+                <img
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    boxSizing: "border-box",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                  src={
+                    getComment.user.profile_image
+                      ? getComment.user.profile_image
+                      : "/images/nopicture.png"
+                  }
+                  alt=""
+                />
+                <div className={styles.commentLeftData}>
+                  <div className={styles.userNick}>
+                    {getComment.user.nickname}
+                  </div>
 
-                {editCommentId === getComment.id ? (
-                  // 수정 모드일 때는 입력 상자를 보여줌
-                  <Input
-                    style={{ width: "45vw" }}
-                    inputSize="sm"
-                    variant="primary"
-                    value={editedComment}
-                    onChange={(e) => setEditedComment(e.target.value)}
-                  />
-                ) : (
-                  // 수정 모드가 아닐 때는 댓글 내용을 보여줌
-                  <div>{getComment.content}</div>
-                )}
-              </div>
-            </div>
-            <div className={styles.commentRightBox}>
-              <div className={styles.dateBox}>
-                {noneYearToKorean(getComment.updated_at)}
-              </div>
-              {getComment.user.nickname === nickName ? (
-                <div className={styles.rightFuncBox}>
                   {editCommentId === getComment.id ? (
-                    // 수정 모드일 때는 수정 완료 버튼을 보여줌
+                    // 수정 모드일 때는 입력 상자를 보여줌
+                    <Input
+                      style={{ width: "100%" }}
+                      inputSize="sm"
+                      variant="primary"
+                      value={editedComment}
+                      onChange={(e) => setEditedComment(e.target.value)}
+                    />
+                  ) : (
+                    // 수정 모드가 아닐 때는 댓글 내용을 보여줌
+                    <div>{getComment.content}</div>
+                  )}
+                </div>
+              </div>
+              <div className={styles.commentRightBox}>
+                <div className={styles.dateBox}>
+                  {noneYearToKorean(getComment.updated_at)}
+                </div>
+                {getComment.user.nickname === nickName ? (
+                  <div className={styles.rightFuncBox}>
+                    {editCommentId === getComment.id ? (
+                      // 수정 모드일 때는 수정 완료 버튼을 보여줌
 
-                    <form onSubmit={putComments}>
-                      <button className={styles.commentButton} type="submit">
-                        완료
+                      <form className={styles.Form} onSubmit={putComments}>
+                        <button className={styles.checkButton} type="submit">
+                          완료
+                        </button>
+                      </form>
+                    ) : (
+                      // 수정 모드가 아닐 때는 수정 버튼을 보여줌
+
+                      <button
+                        className={styles.commentButton}
+                        onClick={() => setEditCommentId(getComment.id)}
+                      >
+                        수정
                       </button>
-                    </form>
-                  ) : (
-                    // 수정 모드가 아닐 때는 수정 버튼을 보여줌
-
-                    <button
-                      className={styles.commentButton}
-                      onClick={() => setEditCommentId(getComment.id)}
-                    >
-                      수정
-                    </button>
-                  )}
-                  {editCommentId === getComment.id ? (
-                    <button
-                      className={styles.commentButton}
-                      onClick={() => {
-                        setEditCommentId(null);
-                        setEditedComment("");
-                      }}
-                    >
-                      취소
-                    </button>
-                  ) : (
-                    <button
-                      className={styles.commentButton}
-                      onClick={() => {
-                        confirmDelete(getComment.id);
-                      }}
-                    >
-                      삭제
-                    </button>
-                  )}
-                </div>
-              ) : null}
+                    )}
+                    {editCommentId === getComment.id ? (
+                      <button
+                        className={styles.commentButton}
+                        onClick={() => {
+                          setEditCommentId(null);
+                          setEditedComment("");
+                        }}
+                      >
+                        취소
+                      </button>
+                    ) : (
+                      <button
+                        className={styles.commentButton}
+                        onClick={() => {
+                          confirmDelete(getComment.id);
+                        }}
+                      >
+                        삭제
+                      </button>
+                    )}
+                  </div>
+                ) : null}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </div>
     </div>
   );
 }

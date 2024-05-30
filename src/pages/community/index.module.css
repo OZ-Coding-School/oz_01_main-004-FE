@@ -44,7 +44,7 @@ h1 {
   flex-direction: column;
 }
 
-span {
+.Span {
   color: #f97066;
   font-weight: bold;
   margin: 0 3px;

@@ -5,6 +5,10 @@
   height: 92vh;
   padding-top: 4vh;
   max-width: 1280px;
+  margin: 0 auto;
+}
+.post {
+  width: 290px;
 }
 
 .grid {
@@ -13,12 +17,12 @@
 
 .buttonGroup {
   display: flex;
-
-  padding: 0 40px;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .buttonGroup button {
-  margin-right: 15px; /* 버튼 사이의 간격 추가 */
+  margin-right: 7px;
 }
 
 .ButtonContainer {

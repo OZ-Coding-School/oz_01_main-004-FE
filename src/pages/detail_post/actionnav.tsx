@@ -69,7 +69,7 @@ export default function ActionNav() {
 }
 
 const OptionIcon = styled(IoEllipsisVerticalCircle)`
-  width: 24px;
-  height: 24px;
-  color: rgb(33, 38, 41);
+  width: 22px;
+  height: 22px;
+  color: rgb(72, 72, 72);
 `;

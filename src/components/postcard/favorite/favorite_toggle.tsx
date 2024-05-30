@@ -5,16 +5,19 @@ import instance from "../../../api/axios";
 
 interface FavoriteProps {
   id: number;
+  authorId: number; // 작성자 ID를 위한 새로운 속성
   isFavoriteInitially?: boolean;
   onClick?: (isFavorite: boolean) => void;
 }
 
 const Favorite = ({
   id,
+  authorId, // 작성자 ID를 가져옵니다
   isFavoriteInitially = false,
   onClick,
 }: FavoriteProps) => {
   const [isFavorite, setIsFavorite] = useState(isFavoriteInitially);
+  const currentUserId = parseInt(localStorage.getItem("id") || "0"); // 현재 로그인된 사용자 ID를 가져옵니다
 
   useEffect(() => {
     setIsFavorite(isFavoriteInitially);
@@ -38,7 +41,6 @@ const Favorite = ({
     }
   };
 
-  //찜하기 삭제
   const unMountLike = async () => {
     try {
       await instance.delete(`favorite/detail/${id}/`, {
@@ -54,6 +56,11 @@ const Favorite = ({
   };
 
   const handleClick = async () => {
+    if (currentUserId === authorId) {
+      alert("내가 작성한 게시물은 찜할 수 없습니다.");
+      return;
+    }
+
     const newFavoriteState = !isFavorite;
     setIsFavorite(newFavoriteState);
     if (onClick) {
@@ -97,7 +104,7 @@ const StyledFavorite = styled(BiSolidBowlRice)`
 `;
 
 const StyledBowlRice = styled(BiBowlRice)`
-  color: #747474;
+  color: #999999;
   width: 28px;
   height: 28px;
 `;

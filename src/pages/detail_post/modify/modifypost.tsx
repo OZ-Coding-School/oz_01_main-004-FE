@@ -417,7 +417,7 @@ export default function ModifyPost() {
           취소
         </Button>
         <Button size="md" variant="primary" type="submit">
-          작성완료
+          수정완료
         </Button>
       </div>
     </form>
