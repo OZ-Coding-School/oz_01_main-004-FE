@@ -1,0 +1,29 @@
+.container {
+  width: 272px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.button {
+  width: 82px;
+  height: 35px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+.basebutton {
+  background-color: #f2f2f2;
+  color: #616161;
+  border: none;
+  font-weight: 600;
+}
+
+.clickbutton {
+  background-color: #ffffff;
+  color: #f97066;
+  border: 1px solid #f97066;
+}
+
+.buttondisabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

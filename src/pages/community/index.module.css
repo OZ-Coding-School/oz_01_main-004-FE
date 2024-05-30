@@ -1,0 +1,52 @@
+.maincontainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+  padding-top: 100px;
+}
+h1 {
+  color: #101828;
+}
+
+.categoryBox {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.filtercontainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 60px;
+  margin-bottom: 10px;
+}
+
+.count {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-right: 15px;
+}
+
+.selectBox {
+  display: flex;
+  width: 120px;
+  margin-left: 20px;
+}
+
+.postList {
+  margin-bottom: 80px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.Span {
+  color: #f97066;
+  font-weight: bold;
+  margin: 0 3px;
+  font-size: 20px;
+}

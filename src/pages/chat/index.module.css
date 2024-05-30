@@ -1,0 +1,216 @@
+.chatContainer {
+  width: 100%;
+  height: 92vh;
+  margin: 0;
+  padding-top: 6vh;
+  overflow: hidden;
+}
+
+.listChatBox {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 4vh;
+  height: 100%;
+}
+.listContainer {
+  box-sizing: border-box;
+  /* border-right: 1.5px solid gray; */
+  width: 25%;
+  height: 82.5vh;
+  /* padding-top: 2vh; */
+}
+
+.myProfile {
+  display: flex;
+  flex-direction: row;
+  padding-left: 10px;
+  gap: 20px;
+  justify-content: center;
+}
+
+.myNickname {
+  display: flex;
+  /* text-align: center; */
+  align-items: center;
+}
+.leftContainer {
+  display: flex;
+  width: 100%;
+  height: 92vh;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.chatListContainer {
+  height: 60vh;
+  overflow: scroll;
+  margin: 0;
+  padding: 0;
+}
+
+.chatListBox {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chatList {
+  box-sizing: border-box;
+  display: flex;
+  margin: 20px 10px;
+  padding: 5px;
+  cursor: pointer;
+  align-items: center;
+  width: 100%;
+}
+.chatList :hover {
+  color: red;
+}
+
+.checkedRoom {
+  color: #f97066;
+  box-sizing: border-box;
+  display: flex;
+  margin: 20px 10px;
+  padding: 5px;
+  cursor: pointer;
+  align-items: center;
+  width: 100%;
+}
+
+.chatNameBox {
+  padding-left: 20px;
+  width: 80%;
+}
+
+.chatUser {
+  display: flex;
+}
+.chatContent {
+  box-sizing: border-box;
+  width: 10vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detailContainer {
+  width: 70%;
+  height: 88vh;
+  margin: 0;
+  padding-top: 2vh;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.chatUser {
+  width: 70%;
+}
+
+.messageContainer {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  gap: 15px;
+  /* align-items: stretch; */
+  flex-direction: column;
+  /* padding-bottom: 100px; */
+  overflow-y: auto;
+}
+
+.scrollButtonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.smallChatBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.senderNickname {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.otherOneChatBox {
+  display: flex;
+  background-color: greenyellow;
+  width: auto;
+  padding: 15px;
+  /* text-align: center; */
+  box-sizing: border-box;
+  border-radius: 15px;
+  align-self: flex-start;
+}
+
+.myOneChatBox {
+  display: flex;
+  right: 0;
+  background-color: greenyellow;
+  border-radius: 15px;
+  width: auto;
+  padding: 15px;
+  align-self: flex-end;
+}
+.myMessageContent {
+  order: 2;
+  text-align: right;
+}
+
+.myMessageTimestamp {
+  order: 1;
+}
+.otherMessageTimestamp {
+  order: 1;
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  padding: 0 2vw;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.postChatContainer {
+  display: flex;
+  flex-direction: row;
+  /* position: fixed; */
+  width: 75%;
+  background-color: white;
+  margin-top: 10px;
+  bottom: 0;
+}
+
+.createRoomForm {
+  display: flex;
+  width: 100%;
+  height: 20vh;
+  padding: 2vh 0;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  bottom: 0;
+}
+
+.createRoomSubmit {
+  box-sizing: border-box;
+  background-color: #f97066;
+  color: white;
+  outline: none;
+  border: 4px solid #f97066;
+  border-radius: 8px;
+  width: 208px;
+  height: 32px;
+}

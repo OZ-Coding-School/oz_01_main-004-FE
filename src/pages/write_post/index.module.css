@@ -1,0 +1,63 @@
+.bigContainer {
+  width: 80%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 15vh;
+  margin: 0 auto;
+  align-items: center;
+}
+.titleDiv {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 35px;
+}
+.imgDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(227, 227, 227);
+  height: 400px;
+  width: 925px;
+  cursor: pointer;
+  margin-bottom: 50px;
+}
+.addImgtext {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+.coverImg {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+#quill {
+  height: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+.contentDiv {
+  width: 925px;
+  margin: 0 auto;
+}
+.typeDiv {
+  width: 925px;
+  margin: 40px 0 70px 15px;
+}
+.categoryDiv {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+}
+.dropdownDiv {
+  display: flex;
+  flex-direction: row;
+}
+.writeBtn {
+  display: flex;
+  flex-direction: row;
+}

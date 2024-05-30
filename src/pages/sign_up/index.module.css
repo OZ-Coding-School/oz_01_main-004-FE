@@ -1,0 +1,75 @@
+.container {
+  width: 100%;
+  flex-direction: column;
+  height: 92vh;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: 15vh;
+  align-items: center;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 850px;
+  height: 800px;
+  margin: 50px auto;
+  border: 1px solid #bfbfbf;
+}
+
+.layout h1 {
+  font-weight: 500;
+  margin-top: 60px;
+}
+.title {
+  margin-bottom: 10px;
+}
+.emailDiv {
+  display: block;
+  margin-top: 20px;
+  width: 491px;
+  height: 80px;
+  flex-direction: column;
+}
+.inputDiv {
+  margin-top: 36px;
+  display: block;
+  height: 80px;
+}
+.emailInput {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.emailBox {
+  display: block;
+  appearance: none;
+  font-size: 14px;
+  width: 380px;
+  height: 42px;
+  margin: 0 15px 0 0;
+  border-radius: 6px;
+  border: 1.5px solid #b3b3b3;
+  padding: 0px 20px;
+}
+.emailBox:focus {
+  /* border-color: #fed0cc; */
+  border: 1.5px solid #f97066;
+  outline: none;
+}
+.inputBox {
+  appearance: none;
+  font-size: 14px;
+  width: 449px;
+  height: 42px;
+  margin: 0px;
+  border-radius: 6px;
+  border: 1.5px solid #b3b3b3;
+  padding: 0px 20px;
+}
+.inputBox:focus {
+  /* border-color: #fed0cc; */
+  border: 1.5px solid #f97066;
+  outline: none;
+}
