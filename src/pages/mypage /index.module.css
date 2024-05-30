@@ -38,8 +38,10 @@
   position: fixed;
   bottom: 0;
   background-color: transparent;
-  margin: 0 0 0 150px;
-  font-size: 1rem;
+  margin: 25px 0 0 150px;
+  font-size: 1.1rem;
+
+  font-weight: 500;
   cursor: pointer;
   opacity: 70%;
 }

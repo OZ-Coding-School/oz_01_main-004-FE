@@ -18,6 +18,7 @@ export default function Login(): JSX.Element {
   const { setUserInfo } = useContext(UserContext) as UserContextType;
   const location = useLocation();
   const navigate = useNavigate();
+
   //로그인 전 왔던 페이지
   const from = location?.state?.redirectedFrom?.pathname || "/";
   //카카오 관련
@@ -62,6 +63,10 @@ export default function Login(): JSX.Element {
   };
   useEffect(() => {
     sessionStorage.setItem("beforeLogin", from);
+    const isToken = !!localStorage.getItem("refresh");
+    if (isToken) {
+      navigate(from);
+    }
   }, []);
 
   return (
