@@ -281,10 +281,11 @@ export default function ModifyPost() {
         // };
 
         const response = await instance.put(`recipes/detail/${id}/`, formData);
-        const recipeId = response.data.recipe.id;
-
-        alert("게시물을 수정하였습니다.");
-        navigate(`/detailPost/${recipeId}/`);
+        if (response && response.data && response.data.recipe) {
+          const recipeId = response.data.recipe.id;
+          alert("게시물을 수정하였습니다.");
+          navigate(`/detailPost/${recipeId}/`);
+        }
       } else {
         console.error("form data is missing", {
           content,
