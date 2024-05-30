@@ -67,7 +67,13 @@ export default function Login(): JSX.Element {
   return (
     <div className={styles.bodyContainer}>
       <div className={styles.loginContainer}>
-        <div className={styles.logo}>(CookBap)</div>
+        <div className={styles.logo}>
+          <img
+            className={styles.logoImg}
+            src="https://cookbap-bucket.s3.ap-northeast-2.amazonaws.com/cookbap/main/cookbap_main_logo.png"
+            alt="logo"
+          />
+        </div>
         <form
           className={styles.loginForm}
           name="login-form"
