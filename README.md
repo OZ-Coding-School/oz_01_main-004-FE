@@ -31,9 +31,10 @@
 
 |                                               <div align="center">커뮤니티 메인</div>                                               |                                            <div align="center">작성한 글 수정/삭제</div>                                            |                                                   <div align="center">채팅</div>                                                    |
 | :---------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/bf4dbbe4-4df2-406e-a978-e8bc4a17f8d6" width="190"> | <img src="https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/503a6ba0-7038-4ef1-b442-58f4544643ed" width="190"> | <img src="https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/9c2dd6c5-2016-4492-a197-ed0160726e51" width="190"> |
+| <img src="https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/bf4dbbe4-4df2-406e-a978-e8bc4a17f8d6" width="190"> | <img src="https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/503a6ba0-7038-4ef1-b442-58f4544643ed" width="190"> | <img src="https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/cd5e946c-9b28-4eed-9d57-55ccad5d8036" width="190"> |
 
 </div>
+
 
 
 
@@ -56,7 +57,10 @@
 
 ### System Architecture
 
-![cookbap아키텍쳐-removebg-preview](https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/3f38861a-1212-4e7e-97fd-c720a54b72b7)
+
+![cookbap아키텍쳐-removebg-preview](https://github.com/OZ-Coding-School/oz_01_main-004-FE/assets/147421540/9fbf148e-91a2-4982-aeac-11a266bfa9f2)
+
+
 
 ### Front-End
 
