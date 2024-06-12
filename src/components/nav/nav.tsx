@@ -70,8 +70,12 @@ export default function Nav(): JSX.Element {
               {isLogin ? (
                 <NevMypage
                   onClick={() => {
-                    logoutHandler(navigate, setUserInfo, isLogin);
-                    setSearchValue("");
+                    logoutHandler().then(() => {
+                      setUserInfo(null);
+                      setIsLogin(false);
+                      setSearchValue("");
+                      navigate("/login");
+                    });
                   }}
                 />
               ) : (
