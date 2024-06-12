@@ -42,6 +42,7 @@ instance.interceptors.response.use(
             const newAccessToken = response.data.access;
             // 원래 요청을 재시도합니다.
             // 새 토큰으로 원래 요청을 업데이트하고 다시 시도합니다.
+            localStorage.removeItem("access");
             localStorage.setItem("access", newAccessToken);
             error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
             return instance(error.config);
