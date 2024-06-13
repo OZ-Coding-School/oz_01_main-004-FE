@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useLoadingStore } from "../../store/loading_store";
+import logoutHandler from "../components/nav/logout_handler";
 
 // Axios 인스턴스 생성
 const instance = axios.create({
@@ -42,11 +43,11 @@ instance.interceptors.response.use(
             const newAccessToken = response.data.access;
             // 원래 요청을 재시도합니다.
             // 새 토큰으로 원래 요청을 업데이트하고 다시 시도합니다.
-            localStorage.removeItem("access");
             localStorage.setItem("access", newAccessToken);
             error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
             return instance(error.config);
           } catch (refreshError) {
+            logoutHandler();
             console.error("토큰 갱신 실패:", refreshError);
             // 추가적인 에러 처리 (예: 사용자에게 로그인 요청)
             alert("세션이 만료되었습니다. 다시 로그인해주세요.");
