@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useLoadingStore } from "../../store/loading_store";
+import { useIssueStore, useLoadingStore } from "../../store/loading_store";
 import logoutHandler from "../components/nav/logout_handler";
 
 // Axios 인스턴스 생성
@@ -10,18 +10,7 @@ const instance = axios.create({
 
 // Zustand 스토어에서 `setIsLoading` 함수 가져오기
 const { setIsLoading } = useLoadingStore.getState(); // 상태 가져오기
-
-// 요청 인터셉터를 추가하여 로딩 상태를 true로 설정합니다.
-instance.interceptors.request.use(
-  (config) => {
-    setIsLoading(true);
-    return config;
-  },
-  (error) => {
-    setIsLoading(false);
-    return Promise.reject(error);
-  },
-);
+const { setIsIssue } = useIssueStore.getState();
 
 instance.interceptors.response.use(
   (response) => {
@@ -31,11 +20,12 @@ instance.interceptors.response.use(
   async (error) => {
     setIsLoading(false);
     // 에러 처리
-
     if (error.response) {
       const status = error.response.status;
       switch (status) {
         case 401:
+          localStorage.removeItem("access");
+          // if (isIssue === true) {}
           try {
             const response = await instance.post("users/token-refresh/", {
               refresh: localStorage.getItem("refresh"),
@@ -46,13 +36,12 @@ instance.interceptors.response.use(
             localStorage.setItem("access", newAccessToken);
             error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
             return instance(error.config);
-          } catch (refreshError) {
-            logoutHandler();
-            console.error("토큰 갱신 실패:", refreshError);
-            // 추가적인 에러 처리 (예: 사용자에게 로그인 요청)
-            alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-            // 선택사항: 로그인 페이지로 리디렉션
+          } catch {
+            logoutHandler().then(() => {
+              setIsIssue(true);
+            });
           }
+
           break;
         case 403:
           console.error("403 Forbidden error:", error.response.data);

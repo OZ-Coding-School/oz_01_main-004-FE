@@ -11,6 +11,9 @@ export type getAuthData = {
   refresh: string;
   access: string;
 };
+
+export type setUserInfoType =
+  React.Dispatch<React.SetStateAction<AuthData> | null>;
 //UserContext의 타입
 export interface UserContextType {
   userInfo: AuthData | null;
