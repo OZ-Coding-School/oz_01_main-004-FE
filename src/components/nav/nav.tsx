@@ -72,7 +72,6 @@ export default function Nav(): JSX.Element {
                   onClick={() => {
                     logoutHandler().then(() => {
                       setUserInfo(null);
-                      setIsLogin(false);
                       setSearchValue("");
                       navigate("/login");
                     });

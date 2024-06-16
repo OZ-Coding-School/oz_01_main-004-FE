@@ -1,12 +1,12 @@
 import styles from "./likelist.module.css";
 // import MealGrid from "../../../components/mealgrid/mealgrid";
 import { useEffect, useState } from "react";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import styled from "styled-components";
 import instance from "../../../api/axios";
 import { Recipe } from "../../../components/mealgrid/type";
 import Postcard from "../../../components/postcard/postcard";
 import useFavoriteStatus from "../../../hooks/use_favoriestatus";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const LikeList: React.FC = () => {
   const [likeList, setLikeList] = useState<Recipe[]>([]);
@@ -25,7 +25,6 @@ const LikeList: React.FC = () => {
         },
       });
 
-      console.log(response.data, "응답확인");
       const data = response.data;
 
       if (data && data.results) {
@@ -35,7 +34,7 @@ const LikeList: React.FC = () => {
         }));
 
         setLikeList(updatedLikeList);
-        console.log(data.results, "여기favorite_list");
+
         setTotalPages(Math.ceil(response.data.count / 12));
       }
     } catch (error) {
