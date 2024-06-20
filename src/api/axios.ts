@@ -25,23 +25,25 @@ instance.interceptors.response.use(
       switch (status) {
         case 401:
           localStorage.removeItem("access");
-          // if (isIssue === true) {}
-          try {
-            const response = await instance.post("users/token-refresh/", {
-              refresh: localStorage.getItem("refresh"),
-            });
-            const newAccessToken = response.data.access;
-            // 원래 요청을 재시도합니다.
-            // 새 토큰으로 원래 요청을 업데이트하고 다시 시도합니다.
-            localStorage.setItem("access", newAccessToken);
-            error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
-            return instance(error.config);
-          } catch {
-            logoutHandler().then(() => {
+          const access = localStorage.getItem("access");
+          if (access) {
+            try {
+              const response = await instance.post("users/token-refresh/", {
+                refresh: localStorage.getItem("refresh"),
+              });
+              const newAccessToken = response.data.access;
+              // 원래 요청을 재시도합니다.
+              // 새 토큰으로 원래 요청을 업데이트하고 다시 시도합니다.
+              localStorage.setItem("access", newAccessToken);
+              error.config.headers[
+                "Authorization"
+              ] = `Bearer ${newAccessToken}`;
+              return instance(error.config);
+            } catch {
+              logoutHandler();
               setIsIssue(true);
-            });
+            }
           }
-
           break;
         case 403:
           console.error("403 Forbidden error:", error.response.data);

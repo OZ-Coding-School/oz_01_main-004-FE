@@ -63,7 +63,7 @@ export default function Login(): JSX.Element {
   };
   useEffect(() => {
     sessionStorage.setItem("beforeLogin", from);
-    const isToken = !!localStorage.getItem("refresh");
+    const isToken = !!localStorage.getItem("access");
     if (isToken) {
       navigate(from);
     }
